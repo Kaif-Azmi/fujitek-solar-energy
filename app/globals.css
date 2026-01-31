@@ -1,26 +1,209 @@
 @import "tailwindcss";
 
+/* =========================================================
+   DESIGN TOKENS — FUJITEK SOLAR (B2B PROFESSIONAL)
+   ========================================================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary — brand & main CTAs */
+  --brand: #2563EB;
+  --brand-hover: #1D4ED8;
+  --brand-muted: #EFF6FF;
+
+  /* Neutrals — backgrounds & surfaces */
+  --bg-page: #FFFFFF;
+  --bg-subtle: #F8FAFC;
+  --bg-hover: #F1F5F9;
+  --bg-muted: #F1F5F9;
+
+  /* Text hierarchy */
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+
+  /* Borders */
+  --border-subtle: #E2E8F0;
+  --border-strong: #CBD5E1;
+
+  /* Status — success (accent), destructive */
+  --success: #059669;
+  --success-bg: #D1FAE5;
+  --destructive: #DC2626;
+  --destructive-bg: #FEE2E2;
+
+  /* Spacing rhythm (reference; use Tailwind scale in UI) */
+  --section-padding: 5rem;
+  --container-padding: 1.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* =========================================================
+   BASE
+   ========================================================= */
+@layer base {
+  html, body, #__next {
+    height: 100%;
+    background-color: var(--bg-page);
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-family: ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Typography scale — use with Tailwind: page title, section, subsection, body, muted */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  h1 { font-size: 2.25rem; font-weight: 700; }
+  h2 { font-size: 1.875rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  small, .muted {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+
+  a {
+    color: var(--brand);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--brand-hover);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* =========================================================
+   COMPONENTS
+   ========================================================= */
+@layer components {
+  /* Primary CTA */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md
+           text-white font-medium transition;
+    background-color: var(--brand-hover);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--brand);
+  }
+
+  .btn-primary:focus-visible {
+    @apply ring-2 ring-offset-2;
+    --tw-ring-color: var(--brand);
+  }
+
+  /* Secondary */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-3 py-2 rounded-md
+           font-medium border transition;
+    color: var(--text-primary);
+    border-color: var(--border-subtle);
+    background-color: transparent;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--bg-hover);
+  }
+
+  /* Cards */
+  .card {
+    @apply rounded-lg p-5 border;
+    background-color: var(--bg-subtle);
+    border-color: var(--border-subtle);
+  }
+
+  /* Card variants: subtle, tasteful color accents that keep the UI light and premium */
+  .card--primary {
+    background-color: var(--bg-hover);
+    border-color: var(--border-subtle);
+  }
+
+  .card--primary-border {
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-left-color: var(--brand);
+  }
+
+  .card--accent-border {
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-left-color: var(--success);
+  }
+
+  /* Decorative dot for variant cards */
+  .card--primary .card-header::before,
+  .card--primary-border .card-header::before,
+  .card--accent-border .card-header::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+
+  .card--primary .card-header::before,
+  .card--primary-border .card-header::before { background-color: var(--brand); }
+  .card--accent-border .card-header::before { background-color: var(--success); }
+
+  /* Status icons */
+  .icon-success {
+    @apply inline-flex items-center justify-center w-6 h-6 rounded-full;
+    background-color: var(--success);
+    color: white;
+  }
+
+  .icon-success-bg {
+    @apply inline-flex items-center justify-center w-6 h-6 rounded-full;
+    background-color: var(--success-bg);
+    color: var(--success);
+  }
+
+  /* Icon helper used across UI (background uses brand for consistency) */
+  .icon {
+    @apply inline-flex items-center justify-center rounded-full text-white;
+    width: 2.25rem; /* 36px */
+    height: 2.25rem;
+    background-color: var(--brand);
+    color: white;
+    box-shadow: 0 1px 2px rgba(2,6,23,0.06);
+  }
+
+  .icon svg {
+    width: 1.125rem; /* 18px */
+    height: 1.125rem;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply px-3 py-2 rounded-md transition;
+    color: var(--text-secondary);
+  }
+
+  .nav-link:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  .nav-link.active {
+    color: var(--brand);
+    font-weight: 500;
+  }
 }

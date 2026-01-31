@@ -1,65 +1,65 @@
-import Image from "next/image";
+import BannerHero from '../components/BannerHero';
+import WhyChooseUs from '../components/WhyChooseUs';
+import ProductsPreview from '../components/ProductsPreview';
+import ServicesPreview from '../components/ServicesPreview';
+import ProjectsPreview from '../components/ProjectsPreview';
+import FinalCTA from '../components/FinalCTA';
+import FaqSection from '../components/FaqSection';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="w-full bg-background">
+      <BannerHero />
+
+      <section className="py-section bg-background" aria-label="Why choose us">
+        <WhyChooseUs reasons={[
+          { title: 'Quality', description: 'Industry-leading solar products with certified efficiency and durability standards.' },
+          { title: 'Experience', description: '15+ years of expertise in solar energy solutions and installations.' },
+          { title: 'Support', description: '24/7 customer support and comprehensive warranty coverage for peace of mind.' },
+          { title: 'Innovation', description: 'Cutting-edge technology and sustainable solutions for tomorrow\'s energy needs.' }
+        ]} />
+      </section>
+
+      <section className="py-section bg-surface" aria-label="Products">
+        <ProductsPreview
+          products={[
+            { name: 'Solar Panels', description: 'High-efficiency solar panels for residential and commercial use.' },
+            { name: 'Inverters', description: 'Reliable inverters to convert solar energy efficiently.' },
+            { name: 'Batteries', description: 'Energy storage solutions for uninterrupted power.' }
+          ]}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+
+      <section className="py-section bg-background" aria-label="Services">
+        <ServicesPreview
+          services={[
+            { title: 'Solar Installation', description: 'Professional installation of solar panels for residential and commercial properties with expert guidance.' },
+            { title: 'Energy Consultation', description: 'Comprehensive energy efficiency consultations to maximize your solar system performance.' },
+            { title: 'System Design', description: 'Custom system design and optimization tailored to your specific energy needs and budget.' },
+            { title: 'Maintenance Support', description: 'Ongoing maintenance and warranty support services to keep your system running efficiently.' },
+            { title: 'Performance Monitoring', description: 'Real-time monitoring and analytics to track your solar energy production and savings.' },
+            { title: '24/7 Support', description: 'Dedicated customer support team available around the clock for assistance and troubleshooting.' }
+          ]}
+        />
+      </section>
+
+      <section className="py-section bg-surface" aria-label="Projects">
+        <ProjectsPreview
+          projects={[
+            { title: 'Rooftop Solar – Delhi', description: 'Complete solar setup for a family home.' },
+            { title: 'Commercial Installation – Noida', description: 'Large-scale solar installation for a business.' },
+            { title: 'Community Center – Gurgaon', description: 'Sustainable energy solution for public spaces.' }
+          ]}
+        />
+      </section>
+
+      <FaqSection />
+
+      <FinalCTA
+        heading="Ready to Go Solar?"
+        supportingText="Contact us today to start your solar journey."
+        ctaLabel="Contact Us"
+      />
     </div>
   );
 }
