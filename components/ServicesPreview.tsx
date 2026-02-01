@@ -13,14 +13,74 @@ interface ServicesPreviewProps {
 export default function ServicesPreview({ services = [] }: ServicesPreviewProps) {
   return (
     <section className="w-full" aria-label="Services">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center text-foreground mb-12">Our Services</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="mx-auto max-w-6xl px-6">
+        {/* Section header */}
+        <div className="mb-14 text-center">
+          <span className="inline-block rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+            Services
+          </span>
+          <h2 className="mt-4 text-3xl font-bold text-foreground">
+            Our Services
+          </h2>
+          <p className="mt-3 max-w-2xl mx-auto text-muted">
+            End-to-end solar and inverter services designed to deliver reliable performance and long-term value.
+          </p>
+        </div>
+
+        {/* Services grid */}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
-            <Card key={index} className="flex flex-col items-center justify-center h-full text-center">
-              <CardContent className="pt-6 flex flex-col items-center justify-center flex-1 w-full">
-                <CardTitle className="mb-3 text-lg">{service.title}</CardTitle>
-                <p className="text-sm text-muted leading-relaxed flex-1">{service.shortDescription || service.description}</p>
+            <Card
+              key={index}
+              className="
+                group relative
+                flex h-full flex-col
+                border border-border
+                bg-background
+                transition-all duration-300
+
+                hover:-translate-y-1
+                hover:shadow-xl
+                hover:border-primary/40
+              "
+            >
+              {/* Icon placeholder (future-ready) */}
+              <div className="flex items-center justify-center pt-6">
+                <div
+                  className="
+                    flex h-12 w-12 items-center justify-center
+                    rounded-full
+                    bg-primary/10 text-primary
+                    transition-all
+                    group-hover:bg-primary
+                    group-hover:text-white
+                  "
+                >
+                  ⚡
+                </div>
+              </div>
+
+              <CardContent className="flex flex-1 flex-col items-center text-center p-6">
+                {/* Service title */}
+                <CardTitle className="mb-3 text-lg font-semibold text-foreground">
+                  {service.title}
+                </CardTitle>
+
+                {/* Description */}
+                <p className="mb-6 flex-1 text-sm leading-relaxed text-muted">
+                  {service.shortDescription || service.description}
+                </p>
+
+                {/* Action cue */}
+                <span
+                  className="
+                    text-sm font-medium text-primary
+                    opacity-0 transition-opacity
+                    group-hover:opacity-100
+                  "
+                >
+                  Learn more →
+                </span>
               </CardContent>
             </Card>
           ))}

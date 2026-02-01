@@ -2,6 +2,7 @@
  * Fujitek Solar company logo for use in cards and UI.
  * Text + sun icon in brand colors (no third-party assets).
  */
+
 export default function FujitekLogo({ className = '' }: { className?: string }) {
   return (
     <div

@@ -1,3 +1,4 @@
+import "./globals.css";
 import BannerHero from '../components/BannerHero';
 import WhyChooseUs from '../components/WhyChooseUs';
 import ProductsPreview from '../components/ProductsPreview';
@@ -8,56 +9,59 @@ import FaqSection from '../components/FaqSection';
 
 export default function Home() {
   return (
-    <div className="w-full bg-background">
+    <div className="w-full">
       <BannerHero />
 
-      <section className="py-section bg-background" aria-label="Why choose us">
-        <WhyChooseUs reasons={[
-          { title: 'Quality', description: 'Industry-leading solar products with certified efficiency and durability standards.' },
-          { title: 'Experience', description: '15+ years of expertise in solar energy solutions and installations.' },
-          { title: 'Support', description: '24/7 customer support and comprehensive warranty coverage for peace of mind.' },
-          { title: 'Innovation', description: 'Cutting-edge technology and sustainable solutions for tomorrow\'s energy needs.' }
-        ]} />
+      {/* WHY CHOOSE US */}
+      <section className=" bg-background" aria-label="Why choose us">
+        <WhyChooseUs />
       </section>
 
+      {/* PRODUCTS */}
       <section className="py-section bg-surface" aria-label="Products">
         <ProductsPreview
           products={[
-            { name: 'Solar Panels', description: 'High-efficiency solar panels for residential and commercial use.' },
-            { name: 'Inverters', description: 'Reliable inverters to convert solar energy efficiently.' },
-            { name: 'Batteries', description: 'Energy storage solutions for uninterrupted power.' }
+            { name: 'Solar Panels', description: 'High-efficiency panels for residential and commercial use.' },
+            { name: 'Inverters', description: 'Reliable inverters designed for stable power conversion.' },
+            { name: 'Batteries', description: 'Advanced energy storage for uninterrupted power supply.' },
           ]}
         />
       </section>
 
+      {/* SERVICES */}
       <section className="py-section bg-background" aria-label="Services">
         <ServicesPreview
           services={[
-            { title: 'Solar Installation', description: 'Professional installation of solar panels for residential and commercial properties with expert guidance.' },
-            { title: 'Energy Consultation', description: 'Comprehensive energy efficiency consultations to maximize your solar system performance.' },
-            { title: 'System Design', description: 'Custom system design and optimization tailored to your specific energy needs and budget.' },
-            { title: 'Maintenance Support', description: 'Ongoing maintenance and warranty support services to keep your system running efficiently.' },
-            { title: 'Performance Monitoring', description: 'Real-time monitoring and analytics to track your solar energy production and savings.' },
-            { title: '24/7 Support', description: 'Dedicated customer support team available around the clock for assistance and troubleshooting.' }
+            { title: 'Solar Installation', description: 'Professional installation with expert engineering support.' },
+            { title: 'Energy Consultation', description: 'System sizing and efficiency planning for maximum ROI.' },
+            { title: 'Custom System Design', description: 'Tailored solar and inverter solutions for every need.' },
+            { title: 'Maintenance & Support', description: 'Ongoing maintenance and warranty-backed support.' },
+            { title: 'Performance Monitoring', description: 'Real-time system monitoring and analytics.' },
+            { title: '24/7 Technical Support', description: 'Always-on support for troubleshooting and service.' },
           ]}
         />
       </section>
 
+      {/* PROJECTS */}
       <section className="py-section bg-surface" aria-label="Projects">
         <ProjectsPreview
           projects={[
-            { title: 'Rooftop Solar – Delhi', description: 'Complete solar setup for a family home.' },
-            { title: 'Commercial Installation – Noida', description: 'Large-scale solar installation for a business.' },
-            { title: 'Community Center – Gurgaon', description: 'Sustainable energy solution for public spaces.' }
+            { title: 'Rooftop Solar – Delhi', description: 'Residential rooftop solar installation.' },
+            { title: 'Commercial Solar – Noida', description: 'Large-scale commercial solar project.' },
+            { title: 'Community Center – Gurgaon', description: 'Sustainable energy solution for public infrastructure.' },
           ]}
         />
       </section>
 
-      <FaqSection />
+      {/* FAQ */}
+      <section className="bg-background" aria-label="FAQ">
+        <FaqSection />
+      </section>
 
+      {/* FINAL CTA */}
       <FinalCTA
         heading="Ready to Go Solar?"
-        supportingText="Contact us today to start your solar journey."
+        supportingText="Talk to our experts and start your solar journey today."
         ctaLabel="Contact Us"
       />
     </div>

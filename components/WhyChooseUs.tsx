@@ -1,132 +1,217 @@
-import { Card, CardContent, CardHeader, CardTitle, Lightning, Wrench, Handshake } from "./ui"
-import ExploreButton from "./ExploreButton"
-import Image from "next/image"
+import Image from "next/image";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Lightning,
+  Wrench,
+  Handshake,
+} from "./ui";
+import ExploreButton from "./ExploreButton";
 
 interface Reason {
-  title: string
-  description: string
+  title: string;
+  description: string;
 }
 
 interface WhyChooseUsProps {
-  reasons?: Reason[]
+  reasons?: Reason[];
 }
 
 const DEFAULT_REASONS: Reason[] = [
-  { title: "Advanced Inverter Technology", description: "High-performance inverters built for Indian grid conditions." },
-  { title: "End-to-End Service Support", description: "Complete support from installation to maintenance." },
-  { title: "Proven Industry Experience", description: "Years of expertise delivering dependable solar solutions." },
-  { title: "Trusted After-Sales Network", description: "Fast service, genuine parts, and expert technicians." },
-]
+  {
+    title: "Advanced Inverter Technology",
+    description:
+      "High-efficiency solar inverters engineered for Indian grid conditions, voltage fluctuations, and long operational life.",
+  },
+  {
+    title: "End-to-End Service Support",
+    description:
+      "From system design and installation to commissioning, monitoring, and maintenance — we handle it all.",
+  },
+  {
+    title: "Proven Industry Experience",
+    description:
+      "Years of on-ground experience delivering reliable solar and inverter solutions for residential, commercial, and industrial clients.",
+  },
+  {
+    title: "Trusted After-Sales Network",
+    description:
+      "Fast response times, genuine spare parts, and trained technicians to ensure uninterrupted system performance.",
+  },
+];
 
 export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
-  const items = reasons && reasons.length > 0 ? reasons : DEFAULT_REASONS
+  const items = reasons && reasons.length > 0 ? reasons : DEFAULT_REASONS;
 
   return (
-    <section className="w-full bg-background">
-      <div className="max-w-7xl mx-auto px-6 py-24">
+    <section className="relative w-full bg-background overflow-hidden">
+      
+      {/* ================= BACKGROUND PATTERN (NEW) ================= */}
+      <div className="pointer-events-none absolute inset-0 bg-dot-pattern opacity-60" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <div className="relative mx-auto max-w-7xl px-6 py-24">
 
-          {/* LEFT COLUMN (IMAGE ONLY ON DESKTOP) */}
-          <div className="hidden lg:block relative">
-            <Image
-              src="/solar_engineer.jpg"
-              alt="Solar Engineer"
-              width={600}
-              height={500}
-              className="rounded-3xl object-cover"
-              priority
-            />
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center">
 
-            {/* Desktop overlays */}
-            <Card className="absolute -top-10 -left-10 w-56 shadow-xl rounded-2xl card--primary">
-              <CardContent className="p-6">
-                <p className="text-3xl font-bold text-accent">98%</p>
-                <p className="text-sm text-muted">Efficiency Rate</p>
-              </CardContent>
-            </Card>
+          {/* ================= LEFT — IMAGE ================= */}
+          <div className="relative hidden lg:flex justify-center">
 
-            <Card className="absolute -bottom-10 -right-10 w-60 shadow-xl rounded-2xl card--primary">
-              <CardContent className="p-6">
-                <p className="text-3xl font-bold text-accent">24/7</p>
-                <p className="text-sm text-muted">Customer Support</p>
-              </CardContent>
-            </Card>
-          </div>
+            {/* GREEN GLOW (NEW — SaaS STYLE) */}
+            <div className="absolute -left-24 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-primary/20 blur-[140px]" />
 
-          {/* RIGHT COLUMN (FULL MOBILE FLOW + DESKTOP CONTENT) */}
-          <div>
+            <div className="relative">
 
-            {/* 1️⃣ WHY + HEADING + PARA */}
-            <p className="text-sm font-medium text-primary uppercase tracking-wider mb-3">
-              Why choose Fujitek
-            </p>
-
-            <h2 className="text-3xl md:text-4xl font-extrabold text-foreground leading-tight mb-4">
-              Powering Reliable Solar Solutions for Homes & Businesses
-            </h2>
-
-            <p className="text-muted mb-10 max-w-xl">
-              Fujitek Solar Energy delivers high-efficiency solar inverter solutions
-              designed for long-term reliability and performance.
-            </p>
-
-            {/* 2️⃣ IMAGE (MOBILE ONLY, AFTER TEXT) */}
-            <div className="lg:hidden mb-10">
               <Image
                 src="/solar_engineer.jpg"
-                alt="Solar Engineer"
+                alt="Fujitek solar engineer working on inverter installation"
                 width={600}
-                height={500}
-                className="rounded-3xl object-cover"
+                height={520}
+                className="relative z-10 rounded-3xl object-cover"
+                priority
+              />
+
+              {/* 98% CARD */}
+              <div className="absolute -top-6 -left-6 z-20">
+                <Card className="w-56 rounded-2xl border border-border bg-white shadow-xl">
+                  <CardContent className="p-5">
+                    <p className="text-3xl font-bold text-primary">98%</p>
+                    <p className="text-sm text-muted">
+                      System Efficiency Across Installations
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* 24/7 CARD */}
+              <div className="absolute -bottom-6 -right-6 z-20">
+                <Card className="w-60 rounded-2xl border border-border bg-white shadow-xl">
+                  <CardContent className="p-5">
+                    <p className="text-3xl font-bold text-primary">24/7</p>
+                    <p className="text-sm text-muted">
+                      Dedicated Technical & Service Support
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+            </div>
+          </div>
+
+          {/* ================= RIGHT — CONTENT ================= */}
+          <div>
+            <p className="mb-3 text-sm font-medium uppercase tracking-wider text-primary">
+              Why Choose Fujitek
+            </p>
+
+            <h2 className="mb-4 text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
+              Reliable Solar & Inverter Solutions Built for Long-Term Performance
+            </h2>
+
+            <p className="mb-10 max-w-xl text-muted">
+              At Fujitek Solar Energy, we combine advanced inverter technology,
+              engineering expertise, and dependable service to deliver solar
+              power systems you can trust — today and for years to come.
+            </p>
+
+            {/* MOBILE IMAGE */}
+            <div className="relative mb-10 lg:hidden">
+              <div className="absolute inset-0 rounded-3xl bg-primary/20 blur-[100px]" />
+              <Image
+                src="/solar_engineer.jpg"
+                alt="Fujitek solar engineer on-site"
+                width={600}
+                height={520}
+                className="relative rounded-3xl object-cover"
               />
             </div>
 
-            {/* 3️⃣ FEATURE CARDS (QUALITY → EXPERIENCE → SUPPORT) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* ================= FEATURE CARDS ================= */}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
-              {/* Quality */}
-              <Card className="md:row-span-2 shadow-md rounded-2xl relative card--primary-border">
-                <Lightning className="absolute top-4 right-4" />
+              {/* TECHNOLOGY */}
+              <Card className="relative md:row-span-2 rounded-2xl border border-border bg-background transition-all hover:shadow-xl hover:border-primary/40">
+                <div className="absolute right-4 top-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <Lightning />
+                  </div>
+                </div>
+
                 <CardHeader>
                   <CardTitle>{items[0].title}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-muted">
-                  {items[0].description}
+
+                <CardContent className="flex flex-col gap-4 text-sm text-muted">
+                  <p>{items[0].description}</p>
+
+                  <ul className="space-y-2">
+                    <li>• High conversion efficiency with low energy loss</li>
+                    <li>• Adaptive grid handling for voltage fluctuations</li>
+                    <li>• Built-in protection for safe operation</li>
+                  </ul>
+
+                  <div className="mt-auto grid grid-cols-3 gap-3 rounded-xl bg-primary/5 p-4 text-center">
+                    <div>
+                      <p className="font-semibold text-foreground">High</p>
+                      <p className="text-xs text-muted">Efficiency</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">Stable</p>
+                      <p className="text-xs text-muted">Grid Sync</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">Secure</p>
+                      <p className="text-xs text-muted">Design</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
-              {/* Experience */}
-              <Card className="shadow-md rounded-2xl relative card--primary-border">
-                <Wrench className="absolute top-4 right-4" />
+              {/* SERVICE */}
+              <Card className="relative rounded-2xl border border-border bg-background transition-all hover:shadow-xl">
+                <div className="absolute right-4 top-4">
+                  <div className="icon icon--solar">
+                    <Wrench />
+                  </div>
+                </div>
+
                 <CardHeader>
                   <CardTitle>{items[1].title}</CardTitle>
                 </CardHeader>
+
                 <CardContent className="text-sm text-muted">
                   {items[1].description}
                 </CardContent>
               </Card>
 
-              {/* Support */}
-              <Card className="shadow-md rounded-2xl relative card--accent-border">
-                <Handshake className="absolute top-4 right-4" />
+              {/* SUPPORT */}
+              <Card className="relative rounded-2xl border border-border bg-background transition-all hover:shadow-xl">
+                <div className="absolute right-4 top-4">
+                  <div className="icon icon--energy">
+                    <Handshake />
+                  </div>
+                </div>
+
                 <CardHeader>
                   <CardTitle>{items[3].title}</CardTitle>
                 </CardHeader>
+
                 <CardContent className="text-sm text-muted">
                   {items[3].description}
                 </CardContent>
               </Card>
             </div>
 
-            {/* 4️⃣ BUTTON (ALWAYS LAST) */}
-            <div className="mt-10">
+            {/* CTA */}
+            <div className="mt-12">
               <ExploreButton />
             </div>
-
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
+
+

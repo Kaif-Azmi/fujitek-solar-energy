@@ -23,16 +23,21 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "4.x",
+    "@tailwindcss/postcss": "4.x",
+
+    "postcss": "^8.4.38",
+
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+
     "eslint": "^9",
     "eslint-config-next": "16.1.5",
+
     "mongodb-memory-server": "^8.16.1",
-    "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^1.6.1"
   }

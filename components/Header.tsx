@@ -3,31 +3,72 @@
 import Link from "next/link";
 import { useState } from "react";
 import HeaderAuth from "./HeaderAuth";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+
+const NAV_ITEMS = [
+  { id: "home", href: "/", label: "Home" },
+  { id: "products", href: "/products", label: "Products" },
+  { id: "service", href: "/service", label: "Service" },
+  { id: "about", href: "/about", label: "About" },
+  { id: "contact", href: "/contact", label: "Contact" },
+];
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const navLink =
-    "text-sm font-medium text-secondary hover:text-foreground transition-colors";
+  const pathname = usePathname();
 
   const mobileLink =
     "block rounded-lg px-4 py-3 text-base font-medium text-foreground transition hover:bg-hover";
 
   return (
-    <header className="sticky top-0 z-50 bg-background">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
+      <div className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
         {/* Logo */}
-        <div className="text-lg font-semibold tracking-tight text-foreground">
-          Fujitek Solar Energy
-        </div>
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/fujitek-solar-energy-logo.svg"
+            alt="Fujitek Solar Energy"
+            width={160}
+            height={40}
+            priority
+            className="h-14 w-auto"
+          />
+        </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden items-center space-x-8 md:flex">
-          <Link href="/" className={navLink}>Home</Link>
-          <Link href="/products" className={navLink}>Products</Link>
-          <Link href="/service" className={navLink}>Service</Link>
-          <Link href="/about" className={navLink}>About</Link>
-          <Link href="/contact" className={navLink}>Contact</Link>
+        {/* ===== Center Segmented Toggle Navbar (Desktop) ===== */}
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 md:flex">
+          <div className="relative flex items-center gap-1 rounded-full bg-surface px-1 py-1 shadow-sm border border-border">
+            {NAV_ITEMS.map((item) => {
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
+
+              return (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  className={`
+                    relative z-10 px-5 py-2 text-sm font-medium rounded-full
+                    transition-all duration-200
+                    ${
+                      isActive
+                        ? "text-white"
+                        : "text-secondary hover:text-foreground"
+                    }
+                  `}
+                >
+                  {item.label}
+
+                  {/* Active floating capsule */}
+                  {isActive && (
+                    <span className="absolute inset-0 -z-10 rounded-full bg-primary shadow-sm" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
 
         {/* Right actions */}
@@ -39,7 +80,7 @@ export default function Header() {
             href="https://wa.me/918887852321"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted transition hover:bg-hover hover:text-foreground"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-foreground"
             aria-label="Chat on WhatsApp"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -50,39 +91,46 @@ export default function Header() {
           {/* Mobile Toggle */}
           <button
             onClick={() => setIsMenuOpen((p) => !p)}
-            className="relative flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted transition hover:bg-hover hover:text-foreground md:hidden"
+            className="relative flex h-9 w-9 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-foreground md:hidden"
             aria-label="Toggle menu"
           >
-            <span className={`absolute h-0.5 w-4 bg-current transition-transform ${isMenuOpen ? "rotate-45" : "-translate-y-1.5"}`} />
-            <span className={`absolute h-0.5 w-4 bg-current transition-opacity ${isMenuOpen ? "opacity-0" : "opacity-100"}`} />
-            <span className={`absolute h-0.5 w-4 bg-current transition-transform ${isMenuOpen ? "-rotate-45" : "translate-y-1.5"}`} />
+            <span
+              className={`absolute h-0.5 w-4 bg-current transition-transform ${
+                isMenuOpen ? "rotate-45" : "-translate-y-1.5"
+              }`}
+            />
+            <span
+              className={`absolute h-0.5 w-4 bg-current transition-opacity ${
+                isMenuOpen ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute h-0.5 w-4 bg-current transition-transform ${
+                isMenuOpen ? "-rotate-45" : "translate-y-1.5"
+              }`}
+            />
           </button>
         </div>
       </div>
 
-      {/* Mobile / Tablet Menu */}
+      {/* ===== Mobile Menu ===== */}
       <div
         className={`md:hidden transition-all duration-300 ${
           isMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
-        <div
-          className="
-            mx-4 mb-4
-            max-w-md
-            sm:mx-auto
-            rounded-xl
-            border border-border
-            bg-background
-            shadow-lg
-          "
-        >
+        <div className="mx-4 mb-4 max-w-md rounded-xl border border-border bg-background shadow-lg sm:mx-auto">
           <nav className="flex flex-col gap-1 p-4">
-            <Link href="/" className={mobileLink} onClick={() => setIsMenuOpen(false)}>Home</Link>
-            <Link href="/products" className={mobileLink} onClick={() => setIsMenuOpen(false)}>Products</Link>
-            <Link href="/service" className={mobileLink} onClick={() => setIsMenuOpen(false)}>Service</Link>
-            <Link href="/about" className={mobileLink} onClick={() => setIsMenuOpen(false)}>About</Link>
-            <Link href="/contact" className={mobileLink} onClick={() => setIsMenuOpen(false)}>Contact</Link>
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.id}
+                href={item.href}
+                className={mobileLink}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
 
             <div className="my-2 h-px bg-border" />
             <HeaderAuth />

@@ -1,3 +1,7 @@
+"use client";
+
+import { Button } from "@/components/ui";
+
 interface HeroProps {
   heading: string;
   subheading: string;
@@ -7,10 +11,22 @@ interface HeroProps {
 export default function Hero({ heading, subheading, ctaLabel }: HeroProps) {
   return (
     <section className="w-full">
-      <div className="max-w-4xl mx-auto text-center px-6">
-        <h1 className="text-4xl font-bold text-foreground mb-4">{heading}</h1>
-        <p className="text-xl text-muted mb-8">{subheading}</p>
-        <button className="bg-primary-hover text-white px-6 py-3 rounded-md hover:bg-primary transition-colors font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">{ctaLabel}</button>
+      <div className="mx-auto max-w-4xl px-6 text-center">
+        <h1 className="mb-4 text-4xl font-bold text-foreground">
+          {heading}
+        </h1>
+
+        <p className="mb-8 text-xl text-muted">
+          {subheading}
+        </p>
+
+        <Button
+          variant="default"   // ✅ Accent (yellow)
+          size="lg"
+          className="mx-auto"
+        >
+          {ctaLabel}
+        </Button>
       </div>
     </section>
   );

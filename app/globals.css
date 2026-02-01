@@ -1,45 +1,68 @@
+@config "../tailwind.config.ts";
 @import "tailwindcss";
 
-/* =========================================================
-   DESIGN TOKENS — FUJITEK SOLAR (B2B PROFESSIONAL)
-   ========================================================= */
-:root {
-  /* Primary — brand & main CTAs */
-  --brand: #2563EB;
-  --brand-hover: #1D4ED8;
-  --brand-muted: #EFF6FF;
-
-  /* Neutrals — backgrounds & surfaces */
-  --bg-page: #FFFFFF;
-  --bg-subtle: #F8FAFC;
-  --bg-hover: #F1F5F9;
-  --bg-muted: #F1F5F9;
-
-  /* Text hierarchy */
-  --text-primary: #0F172A;
-  --text-secondary: #334155;
-  --text-muted: #64748B;
-
-  /* Borders */
-  --border-subtle: #E2E8F0;
-  --border-strong: #CBD5E1;
-
-  /* Status — success (accent), destructive */
-  --success: #059669;
-  --success-bg: #D1FAE5;
-  --destructive: #DC2626;
-  --destructive-bg: #FEE2E2;
-
-  /* Spacing rhythm (reference; use Tailwind scale in UI) */
-  --section-padding: 5rem;
-  --container-padding: 1.5rem;
-}
 
 /* =========================================================
-   BASE
+   BASE — DESIGN TOKENS (CRITICAL FOR TAILWIND v4)
    ========================================================= */
 @layer base {
-  html, body, #__next {
+  :root {
+    /* ===============================
+       BRAND CORE (LOCKED)
+       =============================== */
+    --brand: #2E7D32;              /* Solar Green */
+    --brand-hover: #1B5E20;
+    --brand-muted: #E8F5E9;
+
+    --secondary: #01176A;          /* Navy Blue */
+    --secondary-muted: #E6EAF5;
+
+    --accent: #FBC02D;             /* Solar Yellow */
+    --accent-hover: #F9A825;
+
+    /* ===============================
+       NEUTRALS
+       =============================== */
+    --bg-page: #ffffff;
+    --bg-subtle: #F8FAFC;
+    --bg-hover: #F1F5F9;
+    --bg-muted: #F1F5F9;
+
+    /* ===============================
+       TEXT
+       =============================== */
+    --text-primary: #1F2933;
+    --text-secondary: #334155;
+    --text-muted: #64748B;
+
+    /* ===============================
+       BORDERS
+       =============================== */
+    --border-subtle: #E2E8F0;
+    --border-strong: #CBD5E1;
+
+    /* ===============================
+       STATUS
+       =============================== */
+    --success: #2E7D32;
+    --success-bg: #E8F5E9;
+    --destructive: #DC2626;
+    --destructive-bg: #FEE2E2;
+
+    /* ===============================
+       INTERACTION DEPTH
+       =============================== */
+    --hover-shadow: 0 12px 30px rgba(2, 6, 23, 0.15);
+    --hover-ring: rgba(46, 125, 50, 0.35);
+
+    --section-padding: 5rem;
+    --container-padding: 1.5rem;
+  }
+
+  /* ===============================
+     BASE ELEMENTS
+     =============================== */
+  html, body {
     height: 100%;
     background-color: var(--bg-page);
   }
@@ -53,7 +76,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Typography scale — use with Tailwind: page title, section, subsection, body, muted */
   h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
     font-weight: 600;
@@ -61,14 +83,8 @@
     letter-spacing: -0.02em;
   }
 
-  h1 { font-size: 2.25rem; font-weight: 700; }
-  h2 { font-size: 1.875rem; }
-  h3 { font-size: 1.5rem; }
-  h4 { font-size: 1.25rem; }
-
   p {
     color: var(--text-secondary);
-    line-height: 1.6;
   }
 
   small, .muted {
@@ -78,7 +94,6 @@
 
   a {
     color: var(--brand);
-    text-decoration: none;
   }
 
   a:hover {
@@ -92,106 +107,60 @@
    COMPONENTS
    ========================================================= */
 @layer components {
-  /* Primary CTA */
-  .btn-primary {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-md
-           text-white font-medium transition;
-    background-color: var(--brand-hover);
-  }
 
-  .btn-primary:hover {
-    background-color: var(--brand);
-  }
-
-  .btn-primary:focus-visible {
-    @apply ring-2 ring-offset-2;
-    --tw-ring-color: var(--brand);
-  }
-
-  /* Secondary */
-  .btn-secondary {
-    @apply inline-flex items-center justify-center px-3 py-2 rounded-md
-           font-medium border transition;
-    color: var(--text-primary);
-    border-color: var(--border-subtle);
-    background-color: transparent;
-  }
-
-  .btn-secondary:hover {
-    background-color: var(--bg-hover);
-  }
-
-  /* Cards */
+  /* ===============================
+     CARDS
+     =============================== */
   .card {
-    @apply rounded-lg p-5 border;
+    @apply rounded-lg border;
     background-color: var(--bg-subtle);
     border-color: var(--border-subtle);
+    transition: box-shadow 0.25s ease,
+                transform 0.25s ease,
+                border-color 0.25s ease;
   }
 
-  /* Card variants: subtle, tasteful color accents that keep the UI light and premium */
-  .card--primary {
-    background-color: var(--bg-hover);
-    border-color: var(--border-subtle);
+  .card:hover {
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-2px);
+    border-color: var(--brand-hover);
   }
 
-  .card--primary-border {
-    border-left-width: 4px;
-    border-left-style: solid;
-    border-left-color: var(--brand);
-  }
-
-  .card--accent-border {
-    border-left-width: 4px;
-    border-left-style: solid;
-    border-left-color: var(--success);
-  }
-
-  /* Decorative dot for variant cards */
-  .card--primary .card-header::before,
-  .card--primary-border .card-header::before,
-  .card--accent-border .card-header::before {
-    content: "";
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 9999px;
-    margin-right: 0.5rem;
-    vertical-align: middle;
-  }
-
-  .card--primary .card-header::before,
-  .card--primary-border .card-header::before { background-color: var(--brand); }
-  .card--accent-border .card-header::before { background-color: var(--success); }
-
-  /* Status icons */
-  .icon-success {
-    @apply inline-flex items-center justify-center w-6 h-6 rounded-full;
-    background-color: var(--success);
-    color: white;
-  }
-
-  .icon-success-bg {
-    @apply inline-flex items-center justify-center w-6 h-6 rounded-full;
-    background-color: var(--success-bg);
-    color: var(--success);
-  }
-
-  /* Icon helper used across UI (background uses brand for consistency) */
+  /* ===============================
+     ICON SYSTEM
+     =============================== */
   .icon {
-    @apply inline-flex items-center justify-center rounded-full text-white;
-    width: 2.25rem; /* 36px */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
     height: 2.25rem;
+    border-radius: 9999px;
+    background-color: var(--secondary);
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(2, 6, 23, 0.06);
+    transition: background-color 0.2s ease,
+                box-shadow 0.2s ease;
+  }
+
+  .icon--solar {
     background-color: var(--brand);
-    color: white;
-    box-shadow: 0 1px 2px rgba(2,6,23,0.06);
+    color: #ffffff;
   }
 
-  .icon svg {
-    width: 1.125rem; /* 18px */
-    height: 1.125rem;
+  .icon--energy {
+    background-color: var(--accent);
+    color: var(--secondary);
   }
 
-  /* Navigation */
+  .icon--neutral {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  /* ===============================
+     NAV LINKS
+     =============================== */
   .nav-link {
     @apply px-3 py-2 rounded-md transition;
     color: var(--text-secondary);
@@ -206,4 +175,25 @@
     color: var(--brand);
     font-weight: 500;
   }
+
+  /* ===============================
+     HARD CONTRAST LOCK
+     =============================== */
+  .force-solid {
+    background-color: #ffffff !important;
+    color: var(--brand) !important;
+  }
+
+
+  /* ===============================
+     Dot Pattern
+     =============================== */
+  .bg-dot-pattern {
+    background-image: radial-gradient(
+      rgba(46, 125, 50, 0.12) 4px,
+      transparent 30px
+    );
+    background-size: 28px 28px;
+  }
+  
 }

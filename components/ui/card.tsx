@@ -2,15 +2,15 @@ import * as React from "react";
 
 /**
  * Card color variants
- * These are SOFT accent surfaces, not loud backgrounds
+ * Soft brand-aligned surfaces (solar + inverter)
  */
-type CardVariant = "default" | "blue" | "green" | "yellow";
+type CardVariant = "default" | "navy" | "green" | "yellow";
 
 const variantStyles: Record<CardVariant, string> = {
-  default: "bg-background",
-  blue: "bg-blue-500/40",
-  green: "bg-[#75bd46]/40",
-  yellow: "bg-yellow-500/20",
+  default: "bg-surface",
+  navy: "bg-navy/5",
+  green: "bg-primary/5",
+  yellow: "bg-accent/10",
 };
 
 /**
@@ -97,7 +97,7 @@ const CardDescription = React.forwardRef<
     ref={ref}
     className={`
       text-sm leading-relaxed
-      text-muted-foreground
+      text-muted
       ${className}
     `}
     {...props}

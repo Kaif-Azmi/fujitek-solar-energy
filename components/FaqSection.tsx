@@ -1,5 +1,11 @@
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle, Button } from './ui';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Button,
+} from './ui';
 
 interface FaqItem {
   question: string;
@@ -10,88 +16,180 @@ const FAQS: FaqItem[] = [
   {
     question: 'What types of inverters does Fujitek offer?',
     answer:
-      'We provide a range of inverters including string inverters and hybrid inverters optimized for residential and commercial installations across Indian grid conditions.',
+      'We provide string and hybrid inverters engineered for residential, commercial, and industrial solar installations, optimised for Indian grid conditions.',
   },
   {
     question: 'Do you provide installation and commissioning?',
     answer:
-      'Yes — Fujitek offers end-to-end support from site assessment, installation, and commissioning to ensure systems run at peak efficiency.',
+      'Yes. Fujitek offers complete lifecycle support including site survey, installation, commissioning, and performance optimisation.',
   },
   {
     question: 'What warranties do you offer?',
     answer:
-      'Our products come with industry-standard manufacturer warranties and we provide after-sales service to support warranty claims and maintenance.',
+      'All products include manufacturer warranties, supported by our dedicated after-sales and service network.',
   },
   {
     question: 'Can I monitor system performance remotely?',
     answer:
-      'Most Fujitek inverters support remote monitoring and performance analytics so you can track production and system health in real time.',
+      'Most Fujitek inverters support real-time remote monitoring, analytics, and system health insights.',
   },
   {
-    question: 'How quickly is after-sales support available?',
+    question: 'How fast is after-sales support?',
     answer:
-      'We maintain a trusted after-sales network to ensure prompt service — typical response times vary by region but we prioritise urgent issues.',
+      'We maintain a strong national service network with prioritised response for critical issues.',
   },
   {
-    question: 'Do you offer solutions for industrial sites?',
+    question: 'Do you handle industrial-scale projects?',
     answer:
-      'Yes. We design scalable systems for industrial and commercial sites with tailored engineering and project management services.',
+      'Yes. We design and execute scalable solar and inverter systems for large commercial and industrial facilities.',
   },
 ];
 
 export default function FaqSection() {
   return (
-    <section className="w-full bg-surface">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-start md:items-center">
-          {/* Left: FAQ list (60%) */}
+    <section className="relative w-full bg-surface">
+      <div className="mx-auto max-w-7xl px-6 py-24">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-5 items-start">
+          {/* ================= LEFT — FAQ ================= */}
           <div className="md:col-span-3">
-            <div className="mb-6">
-              <p className="text-sm font-medium text-primary uppercase tracking-wider">FAQ</p>
-              <h2 className="mt-2 text-2xl md:text-3xl font-bold text-foreground">Common Questions</h2>
-              <p className="mt-3 text-muted max-w-2xl">Answers to the most common questions we receive.</p>
+            {/* Section Header */}
+            <div className="mb-12 max-w-2xl">
+              <span className="inline-flex rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+                FAQs
+              </span>
+              <h2 className="mt-5 text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+                Questions you might have
+              </h2>
+              <p className="mt-4 text-secondary">
+                Clear answers to help you understand our solar and inverter solutions with confidence.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* FAQ Grid */}
+            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
               {FAQS.map((f, i) => (
-                <Card key={i} className="relative rounded-lg border-border shadow-sm min-h-40">
-                  {/* question icon - positioned top-right */}
-                  <div className="absolute top-4 right-4 z-10">
-                    <div className="w-9 h-9 rounded-full bg-surface border border-border flex items-center justify-center text-sm text-muted shadow">?</div>
+                <Card
+                  key={i}
+                  className="
+                    group relative overflow-hidden
+                    bg-background
+                    border border-border
+                    transition-all duration-300
+
+                    hover:-translate-y-2
+                    hover:shadow-2xl
+                    hover:border-primary/40
+                  "
+                  style={{ transitionDelay: `${i * 40}ms` }}
+                >
+                  {/* Soft glow */}
+                  <div
+                    className="
+                      pointer-events-none absolute inset-0
+                      bg-gradient-to-br from-primary/10 via-transparent to-transparent
+                      opacity-0 group-hover:opacity-100
+                      transition-opacity
+                    "
+                  />
+
+                  {/* Accent spine */}
+                  <div
+                    className="
+                      absolute left-0 top-0 h-full w-[3px]
+                      bg-primary
+                      opacity-0 group-hover:opacity-100
+                      transition-opacity
+                    "
+                  />
+
+                  {/* Icon bubble */}
+                  <div className="absolute right-4 top-4 z-10">
+                    <div
+                      className="
+                        flex h-11 w-11 items-center justify-center
+                        rounded-full
+                        bg-primary/10 text-primary
+                        ring-1 ring-primary/20
+                        transition-all
+
+                        group-hover:bg-primary
+                        group-hover:text-white
+                        group-hover:ring-primary/40
+                      "
+                    >
+                      ?
+                    </div>
                   </div>
 
-                  <CardHeader className="p-6 pr-14">
-                    <CardTitle className="text-lg">{f.question}</CardTitle>
+                  <CardHeader className="p-6 pr-16">
+                    <CardTitle className="text-lg leading-snug">
+                      {f.question}
+                    </CardTitle>
                   </CardHeader>
 
-                  <div className="border-t border-border" />
-
-                  <CardContent className="p-6 pt-3 text-sm text-muted leading-relaxed">{f.answer}</CardContent>
+                  <CardContent className="px-6 pb-6 pt-2 text-sm leading-relaxed text-muted">
+                    {f.answer}
+                  </CardContent>
                 </Card>
               ))}
             </div>
           </div>
 
-          {/* Right: Support card (40%) */}
-          <div className="md:col-span-2 flex items-center">
-            <Card className="rounded-lg border-border shadow-sm w-full card--accent-border flex min-h-[280px] flex-col items-center justify-center">
-              <CardContent className="flex flex-col items-center justify-center text-center p-8 w-full">
-                <div className="w-16 h-16 rounded-full bg-success-bg flex items-center justify-center mb-4 text-success" aria-hidden>
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 21l1.8-4.2A8.01 8.01 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          {/* ================= RIGHT — SUPPORT ================= */}
+          <div className="md:col-span-2">
+            <Card
+              variant="green"
+              className="
+                relative overflow-hidden
+                flex min-h-[380px] flex-col
+                justify-center
+              "
+            >
+              {/* Background gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-transparent" />
+
+              <CardContent className="relative z-10 flex flex-col items-center text-center p-12">
+                {/* Icon */}
+                <div className="
+                  mb-7 flex h-16 w-16 items-center justify-center
+                  rounded-full
+                  bg-primary/25 text-primary
+                  ring-1 ring-primary/30
+                ">
+                  <svg
+                    className="h-8 w-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 21l1.8-4.2A8.01 8.01 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    />
                   </svg>
                 </div>
 
-                <h3 className="text-xl font-semibold text-foreground">Still have Questions?</h3>
-                <p className="mt-2 text-sm text-secondary">Our team will answer all your questions. We ensure a quick response.</p>
+                <h3 className="text-2xl font-semibold text-foreground">
+                  Still need clarity?
+                </h3>
 
-                <div className="mt-6 w-full max-w-xs">
+                <p className="mt-4 text-sm text-secondary max-w-sm">
+                  Our experts will help you choose the right solar and inverter solution for your needs.
+                </p>
+
+                <div className="mt-10 w-full max-w-xs">
                   <Link href="/contact">
-                    <Button className="w-full" variant="default">Contact Support</Button>
+                    <Button size="lg" className="w-full">
+                      Talk to an Expert
+                    </Button>
                   </Link>
                 </div>
 
-                <p className="mt-4 text-xs text-muted">Available Monday–Saturday · Response within 24–48 hours</p>
+                <p className="mt-5 text-xs text-muted">
+                  Monday–Saturday · Response within 24–48 hours
+                </p>
               </CardContent>
             </Card>
           </div>

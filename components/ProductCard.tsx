@@ -18,7 +18,7 @@ export default function ProductCard({
       <div className="absolute -left-[40%] top-0 group-hover:rotate-12 transition-all duration-300 group-hover:scale-150">
         <svg
           viewBox="0 0 24 24"
-          className="fill-gray-300 rotate-\[24deg\]"
+          className="fill-amber-300 rotate-\[24deg\]"
           height={200}
           width={200}
         >
@@ -27,7 +27,7 @@ export default function ProductCard({
       </div>
 
       {/* Background blob */}
-      <div className="absolute rounded-full bg-gray-500 z-20 left-1/2 top-[44%] h-[110%] w-[110%] -translate-x-1/2 group-hover:top-[58%] transition-all duration-300" />
+      <div className="absolute rounded-full bg-blue-950 z-20 left-1/2 top-[44%] h-[110%] w-[110%] -translate-x-1/2 group-hover:top-[58%] transition-all duration-300" />
 
       {/* Title */}
       <div className="uppercase text-center leading-none z-40">
