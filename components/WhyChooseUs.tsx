@@ -47,22 +47,17 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
 
   return (
     <section className="relative w-full bg-background overflow-hidden">
-      
       {/* ================= BACKGROUND PATTERN (NEW) ================= */}
       <div className="pointer-events-none absolute inset-0 bg-dot-pattern opacity-60" />
 
       <div className="relative mx-auto max-w-7xl px-6 py-24">
-
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center">
-
           {/* ================= LEFT — IMAGE ================= */}
           <div className="relative hidden lg:flex justify-center">
-
             {/* GREEN GLOW (NEW — SaaS STYLE) */}
             <div className="absolute -left-24 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-primary/20 blur-[140px]" />
 
             <div className="relative">
-
               <Image
                 src="/solar_engineer.jpg"
                 alt="Fujitek solar engineer working on inverter installation"
@@ -72,30 +67,56 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
                 priority
               />
 
-              {/* 98% CARD */}
+              {/* ================= EFFICIENCY CARD ================= */}
               <div className="absolute -top-6 -left-6 z-20">
-                <Card className="w-56 rounded-2xl border border-border bg-white shadow-xl">
+                <Card
+                  className="
+    w-56
+    rounded-2xl
+    border border-border
+    bg-background
+    shadow-[0_20px_50px_rgba(0,0,0,0.15)]
+  "
+                >
+                  {/* Accent strip */}
+                  <div className="h-1 w-full rounded-t-2xl bg-primary" />
+
                   <CardContent className="p-5">
-                    <p className="text-3xl font-bold text-primary">98%</p>
-                    <p className="text-sm text-muted">
-                      System Efficiency Across Installations
+                    <p className="text-4xl font-extrabold leading-none text-primary">
+                      98%
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      System efficiency maintained across real-world
+                      installations
                     </p>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* 24/7 CARD */}
+              {/* ================= SUPPORT CARD ================= */}
               <div className="absolute -bottom-6 -right-6 z-20">
-                <Card className="w-60 rounded-2xl border border-border bg-white shadow-xl">
+                <Card
+                  className="
+    w-60
+    rounded-2xl
+    border border-border
+    bg-background
+    shadow-[0_20px_50px_rgba(0,0,0,0.15)]
+  "
+                >
+                  {/* Accent strip */}
+                  <div className="h-1 w-full rounded-t-2xl bg-accent" />
+
                   <CardContent className="p-5">
-                    <p className="text-3xl font-bold text-primary">24/7</p>
-                    <p className="text-sm text-muted">
-                      Dedicated Technical & Service Support
+                    <p className="text-4xl font-extrabold leading-none text-primary">
+                      24/7
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      Continuous monitoring and expert technical support
                     </p>
                   </CardContent>
                 </Card>
               </div>
-
             </div>
           </div>
 
@@ -106,7 +127,8 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
             </p>
 
             <h2 className="mb-4 text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
-              Reliable Solar & Inverter Solutions Built for Long-Term Performance
+              Reliable Solar & Inverter Solutions Built for Long-Term
+              Performance
             </h2>
 
             <p className="mb-10 max-w-xl text-muted">
@@ -129,79 +151,76 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
 
             {/* ================= FEATURE CARDS ================= */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+  {/* TECHNOLOGY */}
+  <Card className="group relative flex flex-col rounded-2xl border border-border bg-background transition-all hover:border-primary/40 hover:shadow-xl md:row-span-2">
+    <CardHeader className="flex flex-row items-start gap-4">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
+        <Lightning className="h-5 w-5" />
+      </div>
 
-              {/* TECHNOLOGY */}
-              <Card className="relative md:row-span-2 rounded-2xl border border-border bg-background transition-all hover:shadow-xl hover:border-primary/40">
-                <div className="absolute right-4 top-4">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <Lightning />
-                  </div>
-                </div>
+      <CardTitle className="leading-snug">
+        {items[0].title}
+      </CardTitle>
+    </CardHeader>
 
-                <CardHeader>
-                  <CardTitle>{items[0].title}</CardTitle>
-                </CardHeader>
+    <CardContent className="flex flex-1 flex-col gap-4 text-sm text-muted">
+      <p>{items[0].description}</p>
 
-                <CardContent className="flex flex-col gap-4 text-sm text-muted">
-                  <p>{items[0].description}</p>
+      <ul className="space-y-2">
+        <li>• High conversion efficiency with low energy loss</li>
+        <li>• Adaptive grid handling for voltage fluctuations</li>
+        <li>• Built-in protection for safe operation</li>
+      </ul>
 
-                  <ul className="space-y-2">
-                    <li>• High conversion efficiency with low energy loss</li>
-                    <li>• Adaptive grid handling for voltage fluctuations</li>
-                    <li>• Built-in protection for safe operation</li>
-                  </ul>
+      {/* Feature Metrics */}
+      <div className="mt-auto grid grid-cols-3 gap-3 rounded-xl bg-primary/5 p-4 text-center">
+        <div>
+          <p className="font-semibold text-foreground">High</p>
+          <p className="text-xs text-muted">Efficiency</p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground">Stable</p>
+          <p className="text-xs text-muted">Grid Sync</p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground">Secure</p>
+          <p className="text-xs text-muted">Design</p>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
 
-                  <div className="mt-auto grid grid-cols-3 gap-3 rounded-xl bg-primary/5 p-4 text-center">
-                    <div>
-                      <p className="font-semibold text-foreground">High</p>
-                      <p className="text-xs text-muted">Efficiency</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground">Stable</p>
-                      <p className="text-xs text-muted">Grid Sync</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground">Secure</p>
-                      <p className="text-xs text-muted">Design</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+  {/* SERVICE */}
+  <Card className="group relative flex flex-col rounded-2xl border border-border bg-background transition-all hover:border-primary/40 hover:shadow-xl">
+    <CardHeader className="flex flex-row items-start gap-4">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
+        <Wrench className="h-5 w-5" />
+      </div>
 
-              {/* SERVICE */}
-              <Card className="relative rounded-2xl border border-border bg-background transition-all hover:shadow-xl">
-                <div className="absolute right-4 top-4">
-                  <div className="icon icon--solar">
-                    <Wrench />
-                  </div>
-                </div>
+      <CardTitle>{items[1].title}</CardTitle>
+    </CardHeader>
 
-                <CardHeader>
-                  <CardTitle>{items[1].title}</CardTitle>
-                </CardHeader>
+    <CardContent className="text-sm text-muted">
+      {items[1].description}
+    </CardContent>
+  </Card>
 
-                <CardContent className="text-sm text-muted">
-                  {items[1].description}
-                </CardContent>
-              </Card>
+  {/* SUPPORT */}
+  <Card className="group relative flex flex-col rounded-2xl border border-border bg-background transition-all hover:border-primary/40 hover:shadow-xl">
+    <CardHeader className="flex flex-row items-start gap-4">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
+        <Handshake className="h-5 w-5" />
+      </div>
 
-              {/* SUPPORT */}
-              <Card className="relative rounded-2xl border border-border bg-background transition-all hover:shadow-xl">
-                <div className="absolute right-4 top-4">
-                  <div className="icon icon--energy">
-                    <Handshake />
-                  </div>
-                </div>
+      <CardTitle>{items[3].title}</CardTitle>
+    </CardHeader>
 
-                <CardHeader>
-                  <CardTitle>{items[3].title}</CardTitle>
-                </CardHeader>
+    <CardContent className="text-sm text-muted">
+      {items[3].description}
+    </CardContent>
+  </Card>
+</div>
 
-                <CardContent className="text-sm text-muted">
-                  {items[3].description}
-                </CardContent>
-              </Card>
-            </div>
 
             {/* CTA */}
             <div className="mt-12">
@@ -213,5 +232,3 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
     </section>
   );
 }
-
-

@@ -2,15 +2,14 @@ import * as React from "react";
 
 /**
  * Card color variants
- * Soft brand-aligned surfaces (solar + inverter)
  */
 type CardVariant = "default" | "navy" | "green" | "yellow";
 
 const variantStyles: Record<CardVariant, string> = {
   default: "bg-surface",
-  navy: "bg-navy/5",
-  green: "bg-primary/5",
-  yellow: "bg-accent/10",
+  navy: "bg-navy/8",
+  green: "bg-primary/8",
+  yellow: "bg-accent/12",
 };
 
 /**
@@ -26,17 +25,25 @@ const Card = React.forwardRef<
     ref={ref}
     className={`
       group relative rounded-xl
-      border border-border/60
       ${variantStyles[variant]}
-      shadow-sm
-      transition-all duration-200
 
-      hover:shadow-md
+      /* single clean border (no pseudo elements) */
+      border border-border/30
+
+      /* depth */
+      shadow-[0_8px_24px_rgba(0,0,0,0.08)]
+      transition-all duration-200 ease-out
+
+      /* hover */
       hover:-translate-y-[1px]
+      hover:shadow-[0_16px_40px_rgba(0,0,0,0.12)]
       hover:border-primary/40
 
+      /* focus */
       focus-within:ring-2
       focus-within:ring-primary/30
+      focus-within:ring-offset-2
+      focus-within:ring-offset-background
 
       ${className}
     `}
@@ -55,10 +62,10 @@ const CardHeader = React.forwardRef<
   <div
     ref={ref}
     className={`
-      flex flex-col space-y-1.5
+      flex flex-col gap-1.5
       p-6
-      border-b border-border/40
-      bg-muted/30
+      border-b border-border/30
+      bg-muted-bg/40
       ${className}
     `}
     {...props}
@@ -70,7 +77,7 @@ CardHeader.displayName = "CardHeader";
  * CARD TITLE
  */
 const CardTitle = React.forwardRef<
-  HTMLParagraphElement,
+  HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className = "", ...props }, ref) => (
   <h3
@@ -135,9 +142,9 @@ const CardFooter = React.forwardRef<
     ref={ref}
     className={`
       flex items-center justify-between
-      p-6 pt-0
-      border-t border-border/40
-      bg-background
+      p-6 pt-4
+      border-t border-border/30
+      bg-background/80
       ${className}
     `}
     {...props}

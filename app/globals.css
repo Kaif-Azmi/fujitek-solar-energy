@@ -195,5 +195,39 @@
     );
     background-size: 28px 28px;
   }
-  
+
+
+  /* ===============================
+     Infinite Marquee
+     =============================== */
+  @keyframes marquee-ltr {
+  0% {
+    transform: translateX(-15%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes marquee-rtl {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-15%);
+  }
+}
+
+.marquee-ltr {
+  animation: marquee-ltr 10s linear infinite;
+}
+
+.marquee-rtl {
+  animation: marquee-rtl 10s linear infinite;
+}
+.marquee-ltr:hover,
+.marquee-rtl:hover {
+  animation-play-state: paused;
+}
+
 }

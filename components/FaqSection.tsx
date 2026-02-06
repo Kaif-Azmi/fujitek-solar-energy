@@ -1,11 +1,5 @@
-import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Button,
-} from './ui';
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle, Button } from "./ui";
 
 interface FaqItem {
   question: string;
@@ -14,34 +8,34 @@ interface FaqItem {
 
 const FAQS: FaqItem[] = [
   {
-    question: 'What types of inverters does Fujitek offer?',
+    question: "What types of inverters does Fujitek offer?",
     answer:
-      'We provide string and hybrid inverters engineered for residential, commercial, and industrial solar installations, optimised for Indian grid conditions.',
+      "We provide string and hybrid inverters engineered for residential, commercial, and industrial solar installations, optimised for Indian grid conditions.",
   },
   {
-    question: 'Do you provide installation and commissioning?',
+    question: "Do you provide installation and commissioning?",
     answer:
-      'Yes. Fujitek offers complete lifecycle support including site survey, installation, commissioning, and performance optimisation.',
+      "Yes. Fujitek offers complete lifecycle support including site survey, installation, commissioning, and performance optimisation.",
   },
   {
-    question: 'What warranties do you offer?',
+    question: "What warranties do you offer?",
     answer:
-      'All products include manufacturer warranties, supported by our dedicated after-sales and service network.',
+      "All products include manufacturer warranties, supported by our dedicated after-sales and service network.",
   },
   {
-    question: 'Can I monitor system performance remotely?',
+    question: "Can I monitor system performance remotely?",
     answer:
-      'Most Fujitek inverters support real-time remote monitoring, analytics, and system health insights.',
+      "Most Fujitek inverters support real-time remote monitoring, analytics, and system health insights.",
   },
   {
-    question: 'How fast is after-sales support?',
+    question: "How fast is after-sales support?",
     answer:
-      'We maintain a strong national service network with prioritised response for critical issues.',
+      "We maintain a strong national service network with prioritised response for critical issues.",
   },
   {
-    question: 'Do you handle industrial-scale projects?',
+    question: "Do you handle industrial-scale projects?",
     answer:
-      'Yes. We design and execute scalable solar and inverter systems for large commercial and industrial facilities.',
+      "Yes. We design and execute scalable solar and inverter systems for large commercial and industrial facilities.",
   },
 ];
 
@@ -49,7 +43,7 @@ export default function FaqSection() {
   return (
     <section className="relative w-full bg-surface">
       <div className="mx-auto max-w-7xl px-6 py-24">
-        <div className="grid grid-cols-1 gap-14 md:grid-cols-5 items-start">
+        <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-5">
           {/* ================= LEFT — FAQ ================= */}
           <div className="md:col-span-3">
             {/* Section Header */}
@@ -57,11 +51,14 @@ export default function FaqSection() {
               <span className="inline-flex rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
                 FAQs
               </span>
-              <h2 className="mt-5 text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+
+              <h2 className="mt-5 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                 Questions you might have
               </h2>
+
               <p className="mt-4 text-secondary">
-                Clear answers to help you understand our solar and inverter solutions with confidence.
+                Clear answers to help you understand our solar and inverter
+                solutions with confidence.
               </p>
             </div>
 
@@ -71,15 +68,11 @@ export default function FaqSection() {
                 <Card
                   key={i}
                   className="
-                    group relative overflow-hidden
-                    bg-background
-                    border border-border
-                    transition-all duration-300
-
-                    hover:-translate-y-2
-                    hover:shadow-2xl
-                    hover:border-primary/40
-                  "
+    relative overflow-hidden
+    bg-background
+    transition-all duration-300
+    hover:-translate-y-2
+  "
                   style={{ transitionDelay: `${i * 40}ms` }}
                 >
                   {/* Soft glow */}
@@ -87,8 +80,8 @@ export default function FaqSection() {
                     className="
                       pointer-events-none absolute inset-0
                       bg-gradient-to-br from-primary/10 via-transparent to-transparent
-                      opacity-0 group-hover:opacity-100
-                      transition-opacity
+                      opacity-0 transition-opacity
+                      group-hover:opacity-100
                     "
                   />
 
@@ -97,8 +90,8 @@ export default function FaqSection() {
                     className="
                       absolute left-0 top-0 h-full w-[3px]
                       bg-primary
-                      opacity-0 group-hover:opacity-100
-                      transition-opacity
+                      opacity-0 transition-opacity
+                      group-hover:opacity-100
                     "
                   />
 
@@ -111,7 +104,6 @@ export default function FaqSection() {
                         bg-primary/10 text-primary
                         ring-1 ring-primary/20
                         transition-all
-
                         group-hover:bg-primary
                         group-hover:text-white
                         group-hover:ring-primary/40
@@ -140,22 +132,23 @@ export default function FaqSection() {
             <Card
               variant="green"
               className="
-                relative overflow-hidden
-                flex min-h-[380px] flex-col
-                justify-center
+                relative flex min-h-[380px] flex-col
+                justify-center overflow-hidden
               "
             >
               {/* Background gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-transparent" />
 
-              <CardContent className="relative z-10 flex flex-col items-center text-center p-12">
+              <CardContent className="relative z-10 flex flex-col items-center p-12 text-center">
                 {/* Icon */}
-                <div className="
-                  mb-7 flex h-16 w-16 items-center justify-center
-                  rounded-full
-                  bg-primary/25 text-primary
-                  ring-1 ring-primary/30
-                ">
+                <div
+                  className="
+                    mb-7 flex h-16 w-16 items-center justify-center
+                    rounded-full
+                    bg-primary/25 text-primary
+                    ring-1 ring-primary/30
+                  "
+                >
                   <svg
                     className="h-8 w-8"
                     fill="none"
@@ -175,8 +168,9 @@ export default function FaqSection() {
                   Still need clarity?
                 </h3>
 
-                <p className="mt-4 text-sm text-secondary max-w-sm">
-                  Our experts will help you choose the right solar and inverter solution for your needs.
+                <p className="mt-4 max-w-sm text-sm text-secondary">
+                  Our experts will help you choose the right solar and inverter
+                  solution for your needs.
                 </p>
 
                 <div className="mt-10 w-full max-w-xs">

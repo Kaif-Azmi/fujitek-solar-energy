@@ -21,13 +21,17 @@ export default function BannerHero() {
 
   useEffect(() => {
     async function fetchBanners() {
-      const res = await fetch('/api/banners');
-      const data = await res.json();
-      setBanners(
-        Array.isArray(data)
-          ? data.filter((b: Banner) => b.status === 'Active')
-          : []
-      );
+      try {
+        const res = await fetch('/api/banners');
+        const data = await res.json();
+        setBanners(
+          Array.isArray(data)
+            ? data.filter((b: Banner) => b.status === 'Active')
+            : []
+        );
+      } catch {
+        setBanners([]);
+      }
     }
     fetchBanners();
   }, []);
@@ -41,14 +45,23 @@ export default function BannerHero() {
     return () => clearInterval(id);
   }, [banners, isHovered]);
 
-  if (!banners.length) return null;
+  /* =========================================================
+     ✅ SKELETON (NO GAP / NO CLS)
+     ========================================================= */
+  if (!banners.length) {
+    return (
+      <section className="relative w-full overflow-hidden">
+        <div className="h-[18rem] sm:h-[24rem] lg:h-[32rem] bg-surface" />
+      </section>
+    );
+  }
 
   const banner = banners[currentIndex];
 
   return (
     <section className="relative w-full overflow-hidden">
       <div
-        className="relative h-[22rem] sm:h-[26rem] lg:h-[32rem]"
+        className="relative h-[18rem] sm:h-[24rem] lg:h-[32rem]"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -65,11 +78,17 @@ export default function BannerHero() {
           <div className="absolute inset-0 bg-surface" />
         )}
 
-        {/* White overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/60 to-white/20" />
+        {/* Softer overlay */}
+        <div className="
+          absolute inset-0
+          bg-gradient-to-r
+          from-white/70
+          via-white/40
+          to-transparent
+        " />
 
         {/* Content */}
-        <div className="relative z-10 flex h-full items-center">
+        <div className="relative z-10 flex h-full items-start pt-12">
           <div className="mx-auto w-full max-w-7xl px-6">
             <div className="max-w-2xl">
               {/* Badge */}
@@ -113,9 +132,11 @@ export default function BannerHero() {
               onClick={() =>
                 setCurrentIndex((p) => (p - 1 + banners.length) % banners.length)
               }
-              className="absolute left-4 top-1/2 z-20 -translate-y-1/2
-                         flex h-12 w-12 items-center justify-center rounded-full
-                         bg-white/90 text-xl text-navy transition hover:bg-white"
+              className="
+                absolute left-4 top-1/2 z-20 -translate-y-1/2
+                flex h-12 w-12 items-center justify-center rounded-full
+                bg-white/90 text-xl text-navy transition hover:bg-white
+              "
               aria-label="Previous slide"
             >
               ‹
@@ -125,9 +146,11 @@ export default function BannerHero() {
               onClick={() =>
                 setCurrentIndex((p) => (p + 1) % banners.length)
               }
-              className="absolute right-4 top-1/2 z-20 -translate-y-1/2
-                         flex h-12 w-12 items-center justify-center rounded-full
-                         bg-white/90 text-xl text-navy transition hover:bg-white"
+              className="
+                absolute right-4 top-1/2 z-20 -translate-y-1/2
+                flex h-12 w-12 items-center justify-center rounded-full
+                bg-white/90 text-xl text-navy transition hover:bg-white
+              "
               aria-label="Next slide"
             >
               ›

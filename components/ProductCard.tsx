@@ -1,4 +1,5 @@
 import React from "react";
+import { ArrowUpRight, Zap } from "lucide-react";
 
 export interface ProductCardProps {
   title: string;
@@ -12,48 +13,76 @@ export default function ProductCard({
   price,
 }: ProductCardProps) {
   return (
-    <div className="product-card w-\[300px\] rounded-md shadow-xl overflow-hidden relative cursor-pointer snap-start shrink-0 py-8 px-6 bg-white flex flex-col items-center justify-center gap-3 transition-all duration-300 group">
+    <div
+      className="
+        group relative w-[300px] shrink-0 snap-start
+        overflow-hidden rounded-xl
+        border border-border
+        bg-background
+        shadow-[0_8px_24px_rgba(2,6,23,0.08)]
+        transition-all duration-300
+        hover:-translate-y-1
+        hover:shadow-[0_16px_40px_rgba(2,6,23,0.14)]
+      "
+    >
+      {/* ===== Accent glow ===== */}
+      <div
+        className="
+          pointer-events-none absolute -top-24 -right-24
+          h-64 w-64 rounded-full
+          bg-accent/20 blur-3xl
+          opacity-0 transition-opacity duration-300
+          group-hover:opacity-100
+        "
+      />
 
-      {/* Decorative star */}
-      <div className="absolute -left-[40%] top-0 group-hover:rotate-12 transition-all duration-300 group-hover:scale-150">
-        <svg
-          viewBox="0 0 24 24"
-          className="fill-amber-300 rotate-\[24deg\]"
-          height={200}
-          width={200}
-        >
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-        </svg>
-      </div>
-
-      {/* Background blob */}
-      <div className="absolute rounded-full bg-blue-950 z-20 left-1/2 top-[44%] h-[110%] w-[110%] -translate-x-1/2 group-hover:top-[58%] transition-all duration-300" />
-
-      {/* Title */}
-      <div className="uppercase text-center leading-none z-40">
-        <p className="text-black font-semibold text-xs font-serif">
+      {/* ===== Header ===== */}
+      <div className="relative z-10 flex flex-col items-center gap-1 px-6 pt-8">
+        <span className="text-xs font-semibold uppercase tracking-wide text-primary">
           {price}
-        </p>
-        <p className="font-bold text-xl tracking-wider text-gray-500">
+        </span>
+
+        <h3 className="text-center text-lg font-bold text-foreground">
           {title}
-        </p>
+        </h3>
       </div>
 
-      {/* Image placeholder (safe SVG retained) */}
-      <div className="w-[180px] aspect-square bg-gray-100 z-40 rounded-md flex items-center justify-center">
-        <span className="text-gray-400 text-sm">Product Image</span>
+      {/* ===== Image Placeholder ===== */}
+      <div className="relative z-10 mx-auto mt-6 flex h-44 w-44 items-center justify-center rounded-lg bg-surface">
+        <Zap className="h-10 w-10 text-primary/40" />
+        <span className="sr-only">Product image</span>
       </div>
 
-      {/* Bottom content */}
-      <div className="z-40 flex flex-col items-center gap-4 text-center">
-        <p className="text-sm text-white line-clamp-2 px-4">
+      {/* ===== Content ===== */}
+      <div className="relative z-10 mt-6 flex flex-col items-center gap-4 px-6 pb-8 text-center">
+        <p className="line-clamp-3 text-sm leading-relaxed text-secondary">
           {description}
         </p>
 
-        <button className="uppercase font-semibold text-xs px-4 py-1 rounded-full bg-white text-gray-800">
+        <button
+          className="
+            inline-flex items-center gap-2
+            rounded-full border border-border
+            bg-background px-5 py-2
+            text-xs font-semibold uppercase tracking-wide text-foreground
+            transition-all
+            hover:bg-primary hover:text-white
+            focus:outline-none focus:ring-2 focus:ring-primary/30
+          "
+        >
           Order Now
+          <ArrowUpRight className="h-4 w-4" />
         </button>
       </div>
+
+      {/* ===== Bottom bar ===== */}
+      <div
+        className="
+          absolute inset-x-0 bottom-0 h-1
+          bg-gradient-to-r from-primary via-accent to-primary
+          opacity-60
+        "
+      />
     </div>
   );
 }

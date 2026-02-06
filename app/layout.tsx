@@ -1,9 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Providers from '@/components/Providers';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Providers from "@/components/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
   ],
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -45,9 +44,8 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          <main className="min-h-[60vh]">
-            {children}
-          </main>
+          <main>{children}</main>
+
           <Footer />
         </Providers>
       </body>
