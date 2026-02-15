@@ -9,6 +9,8 @@ import {
   Wrench,
   Handshake,
 } from '@/components/ui'
+import { InfiniteGrid } from "@/components/ui/infinite-grid";
+import FinalCTA from "@/components/FinalCTA";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 
 interface Service {
@@ -97,64 +99,65 @@ export default function ServicesPage() {
       </section>
 
       {/* ================= SERVICES ================= */}
-      <section aria-label='services'>
-  <div className="max-w-6xl mx-auto px-6">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-      {services.map((service, index) => (
-        <Card
-          key={index}
-          className="
-            group relative h-full bg-background
-            border border-border
-            transition-all duration-300 ease-out
-            hover:-translate-y-1 hover:shadow-2xl
-            hover:border-primary/40
-          "
-        >
-          <CardContent className="p-8 flex flex-col gap-5">
-
-            {/* ICON */}
-            <div
-              className="
-                relative flex h-14 w-14 items-center justify-center
-                rounded-xl bg-primary/10 text-primary
-                transition-all duration-300
-
-                group-hover:bg-primary
-                group-hover:text-white
-                group-hover:scale-110
-              "
-            >
-              {/* subtle glow ring */}
-              <span
+      <section aria-label='services' className="relative overflow-hidden">
+        <InfiniteGrid className="z-0 opacity-30" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 py-section">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {services.map((service, index) => (
+              <Card
+                key={index}
                 className="
-                  absolute inset-0 rounded-xl
-                  bg-primary/20 opacity-0 blur-md
-                  transition-opacity duration-300
-                  group-hover:opacity-100
+                  group relative h-full bg-background
+                  border border-border
+                  transition-all duration-300 ease-out
+                  hover:-translate-y-1 hover:shadow-2xl
+                  hover:border-primary/40
                 "
-              />
+              >
+                <CardContent className="p-8 flex flex-col gap-5">
 
-              {/* actual icon */}
-              <span className="relative">
-                {service.icon}
-              </span>
-            </div>
+                  {/* ICON */}
+                  <div
+                    className="
+                      relative flex h-14 w-14 items-center justify-center
+                      rounded-xl bg-primary/10 text-primary
+                      transition-all duration-300
 
-            <CardTitle className="text-lg font-semibold text-foreground">
-              {service.title}
-            </CardTitle>
+                      group-hover:bg-primary
+                      group-hover:text-white
+                      group-hover:scale-110
+                    "
+                  >
+                    {/* subtle glow ring */}
+                    <span
+                      className="
+                        absolute inset-0 rounded-xl
+                        bg-primary/20 opacity-0 blur-md
+                        transition-opacity duration-300
+                        group-hover:opacity-100
+                      "
+                    />
 
-            <p className="text-secondary leading-relaxed">
-              {service.description}
-            </p>
+                    {/* actual icon */}
+                    <span className="relative">
+                      {service.icon}
+                    </span>
+                  </div>
 
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  </div>
-</section>
+                  <CardTitle className="text-lg font-semibold text-foreground">
+                    {service.title}
+                  </CardTitle>
+
+                  <p className="text-secondary leading-relaxed">
+                    {service.description}
+                  </p>
+
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
 
       {/* ================= TRUST ================= */}
@@ -211,30 +214,13 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ================= FINAL CTA ================= */}
-      <section className="relative bg-primary text-white">
-        <div className="absolute inset-0 bg-primary/90" />
-
-        <div className="relative max-w-6xl mx-auto px-6 py-24 text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-5">
-            Ready to Switch to Solar Energy?
-          </h2>
-
-          <p className="text-white/90 max-w-xl mx-auto mb-10">
-            Start your journey toward clean, reliable, and cost-effective power
-            today.
-          </p>
-
-          <Link href="/contact">
-            <Button
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90"
-            >
-              Contact Our Team
-            </Button>
-          </Link>
-        </div>
-      </section>
+      <FinalCTA
+        heading="Power Your Home or Business with Confidence"
+        supportingText="From system design to lifetime support, our service team is ready to build a solar plan that fits your goals."
+        ctaLabel="Get Free Consultation"
+        ctaHref="/contact"
+        ariaLabel="Services page call to action"
+      />
 
     </div>
   )

@@ -1,17 +1,33 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { ADMIN_AUTH_COOKIE, verifyAdminToken } from "@/lib/admin-auth";
 
-// NOTE: Middleware-based JWT checks for `/admin` were removed to avoid
-// conflicts with Auth.js / NextAuth sessions. The `app/admin/layout.tsx`
-// performs server-side protection using `getServerSession(...)` which is
-// the recommended, reliable approach for App Router server components.
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-export function middleware(_request: NextRequest) {
-  // no-op middleware kept intentionally for future use
+  if (!pathname.startsWith("/admin")) {
+    return NextResponse.next();
+  }
+
+  const token = request.cookies.get(ADMIN_AUTH_COOKIE)?.value;
+  const isAuthorized = await verifyAdminToken(token);
+
+  if (pathname === "/admin/login") {
+    if (isAuthorized) {
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+    }
+    return NextResponse.next();
+  }
+
+  if (!isAuthorized) {
+    const loginUrl = new URL("/admin/login", request.url);
+    loginUrl.searchParams.set("next", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  // No active route matchers. Admin protection is handled server-side.
-  matcher: [],
+  matcher: ["/admin/:path*"],
 };

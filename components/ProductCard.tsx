@@ -1,81 +1,60 @@
-import React from "react";
-import { ArrowUpRight, Zap } from "lucide-react";
+import { IndianRupee } from "lucide-react";
 
 export interface ProductCardProps {
-  title: string;
-  description: string;
-  price: string;
+  name: string;
+  category: "Panel" | "Inverter" | "Battery" | "EV Charger";
+  price: number;
+  imageUrl: string;
 }
 
-export default function ProductCard({
-  title,
-  description,
-  price,
-}: ProductCardProps) {
+const CATEGORY_LABELS: Record<ProductCardProps["category"], string> = {
+  Panel: "Solar Panels",
+  Inverter: "Inverters",
+  Battery: "Batteries",
+  "EV Charger": "EV Chargers",
+};
+
+export default function ProductCard({ name, category, price, imageUrl }: ProductCardProps) {
   return (
-    <div
-      className="
-        group relative w-[300px] shrink-0 snap-start
-        overflow-hidden rounded-2xl
-        bg-white
-        border border-primary/10
-        shadow-[0_12px_32px_rgba(0,0,0,0.08)]
-        transition-all duration-300
-        hover:-translate-y-2
-        hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)]
-      "
-    >
-      {/* Accent Glow */}
-      <div
-        className="
-          pointer-events-none absolute -top-32 -right-32
-          h-72 w-72 rounded-full
-          bg-accent/30 blur-3xl
-          opacity-0 transition-opacity duration-300
-          group-hover:opacity-100
-        "
-      />
+    <article>
+      <div className="group relative overflow-hidden rounded-2xl border border-border/70 bg-background shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/10">
+        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
+          <div className="absolute -left-24 -top-24 h-56 w-56 rounded-full bg-accent/20 blur-2xl" />
+          <div className="absolute -right-24 -bottom-28 h-64 w-64 rounded-full bg-primary/15 blur-2xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent" />
+        </div>
 
-      {/* Price */}
-      <div className="relative z-10 px-6 pt-8 text-center">
-        <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-          {price}
-        </span>
+        <div className="relative border-b border-border/60 bg-primary/5 p-4 sm:p-6">
+          <div className="grid aspect-[4/3] w-full place-items-center [perspective:900px] sm:aspect-[16/11]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={imageUrl}
+              alt={name}
+              className="h-full w-full object-contain transition-transform duration-300 ease-out will-change-transform motion-reduce:transform-none group-hover:scale-[1.05] md:group-hover:[transform:rotateX(10deg)_rotateY(-14deg)_translateZ(26px)_scale(1.03)]"
+              loading="lazy"
+            />
+          </div>
+        </div>
 
-        <h3 className="mt-4 text-lg text-strong text-foreground">
-          {title}
-        </h3>
+        <div className="relative space-y-3 p-4 sm:p-5">
+          <div className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 md:group-hover:[transform:translateZ(14px)] motion-reduce:transform-none">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/90">
+              {CATEGORY_LABELS[category]}
+            </p>
+          </div>
+
+          <h3 className="text-pretty text-base font-semibold leading-snug text-foreground sm:text-lg">
+            {name}
+          </h3>
+
+          <div className="flex items-baseline gap-2 text-foreground">
+            <span className="text-lg font-bold tabular-nums sm:text-xl">
+              ₹ {price.toLocaleString("en-IN")}
+            </span>
+            <IndianRupee className="sr-only" aria-hidden />
+          </div>
+        </div>
       </div>
-
-      {/* Image Area */}
-      <div className="relative z-10 mx-auto mt-6 flex h-44 w-44 items-center justify-center rounded-xl bg-primary/5 border border-primary/10 transition-all duration-300 group-hover:bg-primary/10">
-        <Zap className="h-10 w-10 text-primary/60 transition-transform duration-300 group-hover:scale-110" />
-        <span className="sr-only">Product image</span>
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 mt-6 flex flex-col items-center gap-5 px-6 pb-8 text-center">
-        <p className="line-clamp-3 text-sm leading-relaxed text-secondary">
-          {description}
-        </p>
-
-        <button
-          className="
-            inline-flex items-center gap-2
-            rounded-full
-            bg-primary px-6 py-2.5
-            text-xs font-semibold uppercase tracking-wide text-white
-            transition-all duration-300
-            hover:bg-primary/90
-            hover:shadow-lg
-            focus:outline-none focus:ring-2 focus:ring-primary/30
-          "
-        >
-          Order Now
-          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </button>
-      </div>
-    </div>
+    </article>
   );
 }
-

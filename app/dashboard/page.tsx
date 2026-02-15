@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, Button } from '@/components/u
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions as any);
-  if (!session) redirect('/login');
+  if (!session) redirect('/admin/login');
   const role = (session as { role?: string }).role;
   if (role === 'admin') redirect('/admin');
   const user = (session as { user?: { name?: string | null; email?: string | null } }).user;

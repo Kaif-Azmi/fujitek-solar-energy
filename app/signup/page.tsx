@@ -36,7 +36,7 @@ export default function SignupPage() {
         return;
       }
 
-      router.push('/login?registered=1');
+      router.push('/');
       router.refresh();
     } catch {
       setError('Something went wrong. Please try again.');
@@ -134,9 +134,9 @@ export default function SignupPage() {
 
         {/* Footer */}
         <p className="text-center text-sm text-secondary">
-          Already have an account?{' '}
-          <Link href="/login" className="font-medium text-primary hover:underline">
-            Sign in
+          Return to{" "}
+          <Link href="/" className="font-medium text-primary hover:underline">
+            homepage
           </Link>
         </p>
       </form>

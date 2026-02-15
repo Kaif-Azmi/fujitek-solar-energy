@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import HeroSection from "@/components/HeroSection";
+import { InfiniteGrid } from "@/components/ui/infinite-grid";
 import {
   Button,
   Input,
@@ -57,9 +59,18 @@ export default function Contact() {
   };
 
   return (
-    <section className="min-h-screen bg-surface py-16 md:py-24" aria-label="Contact Fujitek Solar Energy">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-5">
+    <div className="min-h-screen bg-surface">
+      <HeroSection
+        badge="CONTACT US"
+        title="Let’s Power Your Future"
+        highlight="with Trusted Solar Solutions"
+        description="Fill out the form and our experts will guide you with the best solar solution tailored to your needs."
+      />
+
+      <section className="relative overflow-hidden" aria-label="Contact Fujitek Solar Energy">
+        <InfiniteGrid className="z-0 opacity-30" />
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+          <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-5">
 
           {/* ================= FORM ================= */}
           <div className="order-1 md:order-2 md:col-span-3">
@@ -224,15 +235,9 @@ export default function Contact() {
 
           {/* ================= INFO ================= */}
           <div className="order-2 md:order-1 md:col-span-2">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase text-primary">
-              <Phone className="h-4 w-4" />
-              Contact
-            </span>
-
-            <h1 className="mt-6 text-3xl font-extrabold md:text-4xl">
-              Let’s Power Your
-              <span className="block text-primary">Future with Solar</span>
-            </h1>
+            <h2 className="text-2xl font-extrabold text-foreground md:text-3xl">
+              Talk to Our Solar Team
+            </h2>
 
             <p className="mt-6 max-w-md text-secondary">
               Fill out the form and our experts will guide you with the best
@@ -280,8 +285,9 @@ export default function Contact() {
             </div>
           </div>
 
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

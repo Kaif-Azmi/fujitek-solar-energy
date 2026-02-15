@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import HeaderAuth from "./HeaderAuth";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
@@ -74,18 +73,16 @@ export default function Header() {
 
         {/* Right actions */}
         <div className="flex items-center gap-3">
-          <HeaderAuth />
-
           {/* WhatsApp */}
           <a
             href="https://wa.me/918887852321"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-primary no-underline"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-[#25D366] transition hover:bg-hover hover:text-[#1ebe57] no-underline"
             aria-label="Chat on WhatsApp"
           >
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12.04 2C6.58 2 2.14 6.44 2.14 11.9c0 1.94.55 3.82 1.6 5.45L2 22l4.78-1.57a9.77 9.77 0 005.26 1.5h.01c5.46 0 9.9-4.44 9.9-9.9C21.95 6.44 17.5 2 12.04 2z" />
+            <svg className="h-5 w-5" viewBox="0 0 448 512" fill="currentColor" aria-hidden>
+              <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-221.7 99.3-221.7 221.7 0 39.1 10.2 77.3 29.6 111L0 480l118.7-31.1c32.7 17.8 69.5 27.2 107.3 27.2h.1c122.3 0 221.7-99.3 221.7-221.7 0-59.3-23.1-115-65-157.3zM223.9 438.7h-.1c-33.1 0-65.5-8.9-93.8-25.8l-6.7-4-70.4 18.5 18.8-68.6-4.4-7c-18.6-29.6-28.4-63.7-28.4-98.6 0-102 83-185 185-185 49.5 0 96.1 19.3 131.2 54.3 35.1 35.1 54.4 81.8 54.4 131.3 0 102-83 184.9-185 184.9zm101.4-138.2c-5.5-2.8-32.8-16.1-37.9-17.9-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.5-14.3 17.9-17.6 21.5-3.2 3.7-6.5 4.1-12 .9-32.6-16.3-54-29.1-75.6-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.1-4.5-10.8-9.1-9.4-12.5-9.6-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9s-19.4 18.9-19.4 46 19.8 53.3 22.5 57c2.8 3.7 38.9 59.4 94.3 83.2 35 15.1 48.7 16.4 66.2 13.8 10.7-1.6 32.8-13.4 37.4-26.3 4.6-12.9 4.6-24 3.2-26.3-1.3-2.3-5-3.7-10.5-6.5z" />
             </svg>
           </a>
 
@@ -139,8 +136,6 @@ export default function Header() {
               </Link>
             ))}
 
-            <div className="my-2 h-px bg-border" />
-            <HeaderAuth />
           </nav>
         </div>
       </div>

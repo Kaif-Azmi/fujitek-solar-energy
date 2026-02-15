@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -44,187 +45,128 @@ const DEFAULT_REASONS: Reason[] = [
 
 export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
   const items = reasons && reasons.length > 0 ? reasons : DEFAULT_REASONS;
+  const iconByIndex = [Lightning, Wrench, Handshake, Handshake];
 
   return (
-    <section className="relative w-full bg-background overflow-hidden">
-      {/* ================= BACKGROUND PATTERN (NEW) ================= */}
-      <div className="pointer-events-none absolute inset-0 bg-dot-pattern opacity-60" />
+    <section className="relative w-full overflow-hidden bg-background">
+      <div className="pointer-events-none absolute inset-0 bg-dot-pattern opacity-50" />
+      <div className="pointer-events-none absolute -left-24 top-24 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-24 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-6 py-24">
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center">
-          {/* ================= LEFT — IMAGE ================= */}
-          <div className="relative hidden lg:flex justify-center">
-            {/* GREEN GLOW (NEW — SaaS STYLE) */}
-            <div className="absolute -left-24 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-primary/20 blur-[140px]" />
-
-            <div className="relative">
-              <Image
-                src="/solar_engineer.jpg"
-                alt="Fujitek solar engineer working on inverter installation"
-                width={600}
-                height={520}
-                className="relative z-10 rounded-3xl object-cover"
-                priority
-              />
-
-              {/* ================= EFFICIENCY CARD ================= */}
-              <div className="absolute -top-6 -left-6 z-20">
-                <Card
-                  className="
-    w-56
-    rounded-2xl
-    border border-border
-    bg-background
-    shadow-[0_20px_50px_rgba(0,0,0,0.15)]
-  "
-                >
-                  {/* Accent strip */}
-                  <div className="h-1 w-full rounded-t-2xl bg-primary" />
-
-                  <CardContent className="p-5">
-                    <p className="text-4xl font-extrabold leading-none text-primary">
-                      98%
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">
-                      System efficiency maintained across real-world
-                      installations
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* ================= SUPPORT CARD ================= */}
-              <div className="absolute -bottom-6 -right-6 z-20">
-                <Card
-                  className="
-    w-60
-    rounded-2xl
-    border border-border
-    bg-background
-    shadow-[0_20px_50px_rgba(0,0,0,0.15)]
-  "
-                >
-                  {/* Accent strip */}
-                  <div className="h-1 w-full rounded-t-2xl bg-accent" />
-
-                  <CardContent className="p-5">
-                    <p className="text-4xl font-extrabold leading-none text-primary">
-                      24/7
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">
-                      Continuous monitoring and expert technical support
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </div>
-
-          {/* ================= RIGHT — CONTENT ================= */}
-          <div>
-            <p className="mb-3 text-sm font-medium uppercase tracking-wider text-primary">
+        <div className="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:items-center">
+          {/* LEFT: COPY + CTA */}
+          <div className="max-w-xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
               Why Choose Fujitek
             </p>
 
-            <h2 className="mb-4 text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
-              Reliable Solar & Inverter Solutions Built for Long-Term
-              Performance
+            <h2 className="text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
+              Reliable Solar and Inverter Solutions, Backed by Real Support
             </h2>
 
-            <p className="mb-10 max-w-xl text-muted">
-              At Fujitek Solar Energy, we combine advanced inverter technology,
-              engineering expertise, and dependable service to deliver solar
-              power systems you can trust — today and for years to come.
+            <p className="mt-4 text-base leading-relaxed text-secondary">
+              We combine engineering expertise, high-efficiency components, and dependable
+              service so your system stays stable, efficient, and future-ready.
             </p>
 
-            {/* MOBILE IMAGE */}
-            <div className="relative mb-10 lg:hidden">
-              <div className="absolute inset-0 rounded-3xl bg-primary/20 blur-[100px]" />
+            <div className="mt-8 flex flex-wrap gap-3">
+              <div className="inline-flex items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-4 py-3 shadow-sm">
+                <span className="text-2xl font-extrabold leading-none text-primary">98%</span>
+                <span className="text-sm text-muted">Efficiency maintained in real installs</span>
+              </div>
+              <div className="inline-flex items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-4 py-3 shadow-sm">
+                <span className="text-2xl font-extrabold leading-none text-primary">24/7</span>
+                <span className="text-sm text-muted">Monitoring and technical support</span>
+              </div>
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Button asChild variant="explore">
+                <Link href="/service" aria-label="Explore our services">
+                  Explore Services
+                </Link>
+              </Button>
+              <Button asChild variant="exploreInverse">
+                <Link href="/contact" aria-label="Contact Fujitek Solar">
+                  Get Free Consultation
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          {/* RIGHT: IMAGE + FEATURE GRID */}
+          <div className="space-y-6">
+            <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-primary/5 shadow-sm">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/35 via-transparent to-transparent" />
               <Image
                 src="/solar_engineer.jpg"
-                alt="Fujitek solar engineer on-site"
-                width={600}
-                height={520}
-                className="relative rounded-3xl object-cover"
+                alt="Fujitek solar engineer working on inverter installation"
+                width={900}
+                height={680}
+                className="h-full w-full object-cover"
+                priority
               />
             </div>
 
-            {/* ================= FEATURE CARDS ================= */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-  {/* TECHNOLOGY */}
-  <Card className="group relative flex flex-col rounded-2xl border border-border bg-background transition-all hover:border-primary/40 hover:shadow-xl md:row-span-2">
-    <CardHeader className="flex flex-row items-start gap-4">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
-        <Lightning className="h-5 w-5" />
-      </div>
+              {items.slice(0, 4).map((reason, idx) => {
+                const Icon = iconByIndex[idx] || Handshake;
+                const isPrimary = idx === 0;
 
-      <CardTitle className="leading-snug">
-        {items[0].title}
-      </CardTitle>
-    </CardHeader>
+                return (
+                  <Card
+                    key={reason.title}
+                    className={[
+                      "group relative overflow-hidden rounded-2xl border border-border/70 bg-background shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/10",
+                      isPrimary ? "md:row-span-2" : "",
+                    ].join(" ")}
+                  >
+                    <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <div className="absolute -left-16 -top-16 h-44 w-44 rounded-full bg-accent/15 blur-2xl" />
+                      <div className="absolute -right-20 -bottom-24 h-56 w-56 rounded-full bg-primary/10 blur-2xl" />
+                    </div>
 
-    <CardContent className="flex flex-1 flex-col gap-4 text-sm text-muted">
-      <p>{items[0].description}</p>
+                    <CardHeader className="relative flex flex-row items-start gap-4">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <CardTitle className="text-base font-semibold leading-snug text-foreground">
+                        {reason.title}
+                      </CardTitle>
+                    </CardHeader>
 
-      <ul className="space-y-2">
-        <li>• High conversion efficiency with low energy loss</li>
-        <li>• Adaptive grid handling for voltage fluctuations</li>
-        <li>• Built-in protection for safe operation</li>
-      </ul>
+                    <CardContent className="relative space-y-4 text-sm leading-relaxed text-secondary">
+                      <p>{reason.description}</p>
 
-      {/* Feature Metrics */}
-      <div className="mt-auto grid grid-cols-3 gap-3 rounded-xl bg-primary/5 p-4 text-center">
-        <div>
-          <p className="font-semibold text-foreground">High</p>
-          <p className="text-xs text-muted">Efficiency</p>
-        </div>
-        <div>
-          <p className="font-semibold text-foreground">Stable</p>
-          <p className="text-xs text-muted">Grid Sync</p>
-        </div>
-        <div>
-          <p className="font-semibold text-foreground">Secure</p>
-          <p className="text-xs text-muted">Design</p>
-        </div>
-      </div>
-    </CardContent>
-  </Card>
+                      {isPrimary && (
+                        <>
+                          <ul className="space-y-2 text-sm text-secondary">
+                            <li>• High conversion efficiency with low energy loss</li>
+                            <li>• Adaptive grid handling for voltage fluctuations</li>
+                            <li>• Built-in protection for safe operation</li>
+                          </ul>
 
-  {/* SERVICE */}
-  <Card className="group relative flex flex-col rounded-2xl border border-border bg-background transition-all hover:border-primary/40 hover:shadow-xl">
-    <CardHeader className="flex flex-row items-start gap-4">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
-        <Wrench className="h-5 w-5" />
-      </div>
-
-      <CardTitle>{items[1].title}</CardTitle>
-    </CardHeader>
-
-    <CardContent className="text-sm text-muted">
-      {items[1].description}
-    </CardContent>
-  </Card>
-
-  {/* SUPPORT */}
-  <Card className="group relative flex flex-col rounded-2xl border border-border bg-background transition-all hover:border-primary/40 hover:shadow-xl">
-    <CardHeader className="flex flex-row items-start gap-4">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
-        <Handshake className="h-5 w-5" />
-      </div>
-
-      <CardTitle>{items[3].title}</CardTitle>
-    </CardHeader>
-
-    <CardContent className="text-sm text-muted">
-      {items[3].description}
-    </CardContent>
-  </Card>
-</div>
-
-
-            {/* CTA */}
-            <div className="mt-12">
-              <Button variant="explore">Explore</Button>
+                          <div className="grid grid-cols-3 gap-3 rounded-xl bg-primary/5 p-4 text-center">
+                            <div>
+                              <p className="font-semibold text-foreground">High</p>
+                              <p className="text-xs text-muted">Efficiency</p>
+                            </div>
+                            <div>
+                              <p className="font-semibold text-foreground">Stable</p>
+                              <p className="text-xs text-muted">Grid Sync</p>
+                            </div>
+                            <div>
+                              <p className="font-semibold text-foreground">Secure</p>
+                              <p className="text-xs text-muted">Design</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </div>

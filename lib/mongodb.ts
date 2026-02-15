@@ -1,9 +1,6 @@
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
-if (!uri) {
-  throw new Error('MONGODB_URI environment variable is required');
-}
 
 // Extract DB name from the connection string path (requires /<dbname> present)
 function parseDbNameFromUri(connectionString: string): string {
@@ -23,7 +20,7 @@ function parseDbNameFromUri(connectionString: string): string {
   }
 }
 
-const DB_NAME = parseDbNameFromUri(uri);
+let DB_NAME: string | null = null;
 
 declare global {
   // eslint-disable-next-line no-var
@@ -32,9 +29,13 @@ declare global {
   var __mongoClient: MongoClient | undefined;
 }
 
-if (!globalThis.__mongoClientPromise) {
-  const client = new MongoClient(uri, {});
+function ensureMongoClientPromise() {
+  if (globalThis.__mongoClientPromise) return;
+  if (!uri) {
+    throw new Error('MONGODB_URI environment variable is required');
+  }
 
+  const client = new MongoClient(uri, {});
   globalThis.__mongoClientPromise = client
     .connect()
     .then(() => {
@@ -56,9 +57,7 @@ if (!globalThis.__mongoClientPromise) {
  * Throws if the initial connection failed.
  */
 export async function getMongoClient(): Promise<MongoClient> {
-  if (!globalThis.__mongoClientPromise) {
-    throw new Error('MongoDB client promise is not initialized');
-  }
+  ensureMongoClientPromise();
   return await globalThis.__mongoClientPromise;
 }
 
@@ -67,6 +66,10 @@ export async function getMongoClient(): Promise<MongoClient> {
  * Throws on any error.
  */
 export async function getDb() {
+  if (!uri) {
+    throw new Error('MONGODB_URI environment variable is required');
+  }
+  if (!DB_NAME) DB_NAME = parseDbNameFromUri(uri);
   const client = await getMongoClient();
   return client.db(DB_NAME);
 }

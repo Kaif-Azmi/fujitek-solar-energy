@@ -1,62 +1,110 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui';
-import ProductCard from '@/components/ProductCard';
+import Link from "next/link";
+import { Button } from "@/components/ui";
+import ProductCard from "@/components/ProductCard";
+import HeroSection from "@/components/HeroSection";
+import FinalCTA from "@/components/FinalCTA";
+import { InfiniteGrid } from "@/components/ui/infinite-grid";
 import type { Metadata } from "next";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
+import { getDb } from "@/lib/mongodb";
+import { ObjectId } from "mongodb";
 
-interface Product {
-  title: string;
-  description: string;
-  price: string;
-}
+type ProductCategory = "Panel" | "Inverter" | "Battery" | "EV Charger";
+
+type ProductDoc = {
+  _id: ObjectId;
+  name: string;
+  category: ProductCategory;
+  price: number;
+  imageUrl: string;
+  publicId: string;
+  status: "active" | "inactive";
+  createdAt: Date;
+};
 
 export const metadata: Metadata = buildPageMetadata(pageSeo.products);
 
-export default function Products() {
-  const products: Product[] = [
-    { title: 'Solar Panels', description: 'High-efficiency photovoltaic panels for maximum energy generation', price: 'Starting from $500' },
-    { title: 'Inverters', description: 'Advanced inverters for power conversion and system optimization', price: 'Starting from $2000' },
-    { title: 'Battery Storage', description: 'Energy storage solutions for 24/7 power availability', price: 'Starting from $3000' },
-    { title: 'Mounting Systems', description: 'Durable mounting hardware for safe installation', price: 'Starting from $300' },
-    { title: 'Monitoring Systems', description: 'Real-time system monitoring and analytics', price: 'Starting from $800' },
-    { title: 'Accessories', description: 'Cables, connectors, and other essential components', price: 'Starting from $100' },
-  ];
+async function getActiveProducts() {
+  const db = await getDb();
+  const docs = await db
+    .collection<ProductDoc>("admin_products")
+    .find({ status: "active" })
+    .sort({ createdAt: -1 })
+    .toArray();
+
+  return docs.map((doc) => ({
+    id: doc._id.toString(),
+    name: doc.name,
+    category: doc.category,
+    price: doc.price,
+    imageUrl: doc.imageUrl,
+  }));
+}
+
+export default async function ProductsPage() {
+  const products = await getActiveProducts();
 
   return (
     <div className="min-h-screen bg-surface">
-      <div className="max-w-6xl mx-auto px-6 py-section">
-        <header className="text-center mb-16">
-          <h1 className="text-4xl text-strong text-foreground mb-4">Our Products</h1>
-          <p className="text-lg text-secondary max-w-2xl mx-auto">
-            We offer a complete range of solar energy products and components to meet all your renewable energy needs.
-          </p>
-        </header>
+      <HeroSection
+        badge="OUR PRODUCTS"
+        title="Complete Solar Product Lineup"
+        highlight="Engineered for Lasting Performance"
+        description="Explore active Fujitek solar products designed for reliable, efficient, and future-ready energy systems."
+      />
 
-        <div className="grid grid-cols-1 place-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product, index) => (
-            <ProductCard
-              key={index}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-            />
-          ))}
-        </div>
+      <section className="relative overflow-hidden">
+        <InfiniteGrid className="z-0 opacity-35" />
+        <div className="relative z-10 mx-auto max-w-6xl px-6 py-section">
+          {products.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-border bg-background p-10 text-center">
+              <p className="text-lg font-semibold text-foreground">No active products available</p>
+              <p className="mt-2 text-sm text-secondary">
+                Please check back soon for updated product listings.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  name={product.name}
+                  category={product.category}
+                  price={product.price}
+                  imageUrl={product.imageUrl}
+                />
+              ))}
+            </div>
+          )}
 
-        <div className="mt-16 text-center">
-          <p className="text-secondary mb-4">
-            Need help choosing components? Explore our{" "}
-            <Link href="/service" className="text-primary underline-offset-4 hover:underline">
-              solar installation and maintenance services
-            </Link>{" "}
-            or speak with our team.
-          </p>
-          <Link href="/contact">
-            <Button variant="default" size="lg">Talk to a Solar Consultant</Button>
-          </Link>
+          <div className="mt-16 text-center">
+            <p className="mb-4 text-secondary">
+              Need help choosing components? Explore our{" "}
+              <Link
+                href="/service"
+                className="text-primary underline-offset-4 hover:underline"
+              >
+                solar installation and maintenance services
+              </Link>{" "}
+              or speak with our team.
+            </p>
+
+            <Link href="/contact">
+              <Button variant="default" size="lg">
+                Talk to a Solar Consultant
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <FinalCTA
+        heading="Ready to Go Solar?"
+        supportingText="Get expert guidance on the right panels, inverters, batteries, and EV charging solutions for your needs."
+        ctaLabel="Contact Us"
+        ctaHref="/contact"
+        ariaLabel="Products page call to action"
+      />
     </div>
   );
 }
-

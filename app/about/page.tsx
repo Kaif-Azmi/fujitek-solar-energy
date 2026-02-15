@@ -14,6 +14,9 @@ import {
   TrendingUp,
 } from "lucide-react";
 import MissionLottie from "@/components/MissionLottie";
+import HeroSection from "@/components/HeroSection";
+import FinalCTA from "@/components/FinalCTA";
+import { InfiniteGrid } from "@/components/ui/infinite-grid";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata(pageSeo.about);
@@ -82,24 +85,16 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-surface">
+      <HeroSection
+        badge="ABOUT US"
+        title="About Fujitek Solar Energy"
+        highlight="Driven by Clean Energy Innovation"
+        description="Driving India’s transition to sustainable and intelligent solar energy solutions."
+      />
 
-      {/* ================= HERO ================= */}
-      <header className="relative overflow-hidden bg-navy py-section">
-        <div className="absolute inset-0 bg-navy/90" />
-        <div className="absolute -top-40 -right-40 h-[420px] w-[420px] rounded-full bg-accent/20 blur-3xl" />
-
-        <div className="relative mx-auto max-w-6xl px-6 text-center">
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-            About Fujitek Solar Energy
-          </h1>
-          <p className="mx-auto max-w-2xl text-lg text-white/90">
-            Driving India’s transition to sustainable and intelligent solar
-            energy solutions.
-          </p>
-        </div>
-      </header>
-
-      <div className="mx-auto max-w-6xl px-6 py-section">
+      <section className="relative overflow-hidden">
+        <InfiniteGrid className="z-0 opacity-30" />
+        <div className="relative z-10 mx-auto max-w-6xl px-6 py-section">
 
         {/* ================= MISSION ================= */}
         <section className="mb-section grid grid-cols-1 items-center gap-12 md:grid-cols-2">
@@ -232,27 +227,16 @@ export default function About() {
           </div>
         </section>
 
-        {/* ================= CTA ================= */}
-        <Card className="overflow-hidden border-primary">
-          <div className="relative flex min-h-[240px] flex-col items-center justify-center gap-5 p-10 text-center">
-            <div className="absolute inset-0 bg-secondary/95" />
+        </div>
+      </section>
 
-            <h3 className="relative text-2xl font-extrabold text-white">
-              Join the Solar Revolution
-            </h3>
-
-            <p className="relative max-w-md text-base text-white/90">
-              Let’s build a cleaner, smarter, and more sustainable future together.
-            </p>
-
-            <Link href="/contact" className="relative">
-              <Button variant="inverse" size="lg">
-                Get Started
-              </Button>
-            </Link>
-          </div>
-        </Card>
-      </div>
+      <FinalCTA
+        heading="Join the Solar Revolution"
+        supportingText="Let’s build a cleaner, smarter, and more sustainable future together with reliable solar systems and expert support."
+        ctaLabel="Get Started"
+        ctaHref="/contact"
+        ariaLabel="About page call to action"
+      />
     </div>
   );
 }

@@ -54,7 +54,7 @@ export const authOptions = {
   },
 
   pages: {
-    signIn: '/login',
+    signIn: '/admin/login',
     newUser: '/signup',
   },
 

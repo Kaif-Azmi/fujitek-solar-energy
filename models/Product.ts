@@ -3,14 +3,18 @@ import type { Product } from '@/lib/types/product';
 
 const productSchema = new mongoose.Schema<Product>(
   {
-    id: { type: String, required: true },
+    id: { type: String, required: false },
     name: { type: String, required: true },
-    category: { type: String, required: true },
-    description: { type: String },
-    image: { type: String },
-    specs: { type: Map, of: String, default: new Map() },
-    isActive: { type: Boolean, default: true },
-    createdAt: { type: String, required: true },
+    category: {
+      type: String,
+      enum: ['Panel', 'Inverter', 'Battery', 'EV Charger'],
+      required: true,
+    },
+    price: { type: Number, required: true, min: 0 },
+    imageUrl: { type: String, required: true },
+    publicId: { type: String, required: true },
+    status: { type: String, enum: ['active', 'inactive'], default: 'active' },
+    createdAt: { type: Date, default: Date.now },
   },
   { timestamps: false }
 );
