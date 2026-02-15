@@ -19,16 +19,17 @@ export default function Header() {
   const pathname = usePathname();
 
   const mobileLink =
-    "block rounded-lg px-4 py-3 text-base font-medium text-foreground transition hover:bg-hover";
+    "block rounded-lg px-4 py-3 text-base font-medium text-foreground transition no-underline hover:bg-hover hover:text-primary";
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border relative">
       <div className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+        
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center no-underline">
           <Image
             src="/fujitek-solar-energy-logo.svg"
-            alt="Fujitek Solar Energy"
+            alt="Fujitek Solar Energy logo"
             width={160}
             height={40}
             priority
@@ -36,8 +37,8 @@ export default function Header() {
           />
         </Link>
 
-        {/* ===== Center Segmented Toggle Navbar (Desktop) ===== */}
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 md:flex">
+        {/* ===== Desktop Navbar ===== */}
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 md:flex" aria-label="Primary">
           <div className="relative flex items-center gap-1 rounded-full bg-surface px-1 py-1 shadow-sm border border-border">
             {NAV_ITEMS.map((item) => {
               const isActive =
@@ -49,19 +50,19 @@ export default function Header() {
                 <Link
                   key={item.id}
                   href={item.href}
+                  aria-current={isActive ? "page" : undefined}
                   className={`
                     relative z-10 px-5 py-2 text-sm font-medium rounded-full
-                    transition-all duration-200
+                    transition-colors duration-200 no-underline
                     ${
                       isActive
                         ? "text-white"
-                        : "text-secondary hover:text-foreground"
+                        : "text-secondary hover:text-primary"
                     }
                   `}
                 >
                   {item.label}
 
-                  {/* Active floating capsule */}
                   {isActive && (
                     <span className="absolute inset-0 -z-10 rounded-full bg-primary shadow-sm" />
                   )}
@@ -80,7 +81,7 @@ export default function Header() {
             href="https://wa.me/918887852321"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-foreground"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-primary no-underline"
             aria-label="Chat on WhatsApp"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -90,9 +91,12 @@ export default function Header() {
 
           {/* Mobile Toggle */}
           <button
+            type="button"
             onClick={() => setIsMenuOpen((p) => !p)}
-            className="relative flex h-9 w-9 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-foreground md:hidden"
+            className="relative flex h-9 w-9 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-primary md:hidden"
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-navigation"
           >
             <span
               className={`absolute h-0.5 w-4 bg-current transition-transform ${
@@ -113,14 +117,17 @@ export default function Header() {
         </div>
       </div>
 
-      {/* ===== Mobile Menu ===== */}
+      {/* ===== Mobile Menu (Absolute Dropdown) ===== */}
       <div
-        className={`md:hidden transition-all duration-300 ${
-          isMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        id="mobile-navigation"
+        className={`absolute left-0 top-full w-full md:hidden transition-all duration-300 ${
+          isMenuOpen
+            ? "opacity-100 translate-y-0"
+            : "pointer-events-none opacity-0 -translate-y-2"
         }`}
       >
-        <div className="mx-4 mb-4 max-w-md rounded-xl border border-border bg-background shadow-lg sm:mx-auto">
-          <nav className="flex flex-col gap-1 p-4">
+        <div className="mx-4 mt-3 mb-4 max-w-md rounded-xl border border-border bg-background shadow-lg sm:mx-auto">
+          <nav className="flex flex-col gap-1 p-4" aria-label="Mobile">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.id}

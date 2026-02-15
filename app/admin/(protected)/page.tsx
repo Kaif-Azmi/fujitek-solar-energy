@@ -11,7 +11,7 @@ export default function Admin() {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
+      <h2 className="text-2xl text-strong mb-6">Dashboard</h2>
       <Card>
         <CardHeader>
           <CardTitle>Welcome to Admin Panel</CardTitle>
@@ -30,3 +30,4 @@ export default function Admin() {
     </div>
   );
 }
+

@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Providers from "@/components/Providers";
+import { siteSeo } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,19 +18,24 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Fujitek Solar Energy | Solar & Inverter Solutions",
-    template: "%s | Fujitek Solar Energy",
+    default: `${siteSeo.name} | Solar & Inverter Solutions`,
+    template: `%s | ${siteSeo.name}`,
   },
-  description:
-    "Fujitek Solar Energy provides high-efficiency solar panels, inverters, and end-to-end solar solutions for homes, businesses, and industries across India.",
-  keywords: [
-    "solar energy",
-    "solar inverter",
-    "solar panels",
-    "solar installation",
-    "renewable energy",
-    "fujitek solar",
-  ],
+  description: siteSeo.description,
+  keywords: siteSeo.keywords,
+  metadataBase: new URL(siteSeo.url),
+  openGraph: {
+    title: `${siteSeo.name} | Solar & Inverter Solutions`,
+    description: siteSeo.description,
+    type: "website",
+    siteName: siteSeo.name,
+    url: siteSeo.url,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteSeo.name} | Solar & Inverter Solutions`,
+    description: siteSeo.description,
+  },
 };
 
 export default function RootLayout({
@@ -40,7 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`bg-app ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
           <Header />

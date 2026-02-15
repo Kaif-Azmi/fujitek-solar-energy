@@ -14,7 +14,7 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-surface py-section">
       <div className="max-w-2xl mx-auto px-6">
-        <h1 className="text-4xl font-bold text-foreground mb-2">My Account</h1>
+        <h1 className="text-4xl text-strong text-foreground mb-2">My Account</h1>
         <p className="text-secondary mb-8">
           Welcome back{user?.name ? `, ${user.name}` : ''}. Your saved details are used when you contact us or request product information.
         </p>
@@ -41,3 +41,4 @@ export default async function DashboardPage() {
     </div>
   );
 }
+

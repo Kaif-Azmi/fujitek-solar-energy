@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { Metadata } from "next";
 import {
   Card,
   CardContent,
@@ -8,12 +9,15 @@ import {
   Wrench,
   Handshake,
 } from '@/components/ui'
+import { buildPageMetadata, pageSeo } from "@/lib/seo";
 
 interface Service {
   title: string
   description: string
   icon: React.ReactNode
 }
+
+export const metadata: Metadata = buildPageMetadata(pageSeo.services);
 
 export default function ServicesPage() {
   const services: Service[] = [
@@ -67,7 +71,7 @@ export default function ServicesPage() {
 
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden bg-primary/5">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent" />
+        <div className="absolute inset-0 bg-primary/10" />
 
         <div className="relative max-w-6xl mx-auto px-6 py-28 text-center">
           <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-4">
@@ -83,7 +87,11 @@ export default function ServicesPage() {
 
           <p className="text-lg text-secondary max-w-2xl mx-auto">
             From system design to lifetime support, Fujitek Solar Energy delivers
-            performance you can rely on.
+            performance you can rely on. Pair these services with our{" "}
+            <Link href="/products" className="text-primary underline-offset-4 hover:underline">
+              solar products and inverter solutions
+            </Link>
+            .
           </p>
         </div>
       </section>
@@ -156,7 +164,7 @@ export default function ServicesPage() {
             <CardContent className="p-12 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
 
               <div>
-                <h2 className="text-2xl font-bold text-foreground mb-4">
+                <h2 className="text-2xl text-strong text-foreground mb-4">
                   Why Choose Fujitek Solar Services?
                 </h2>
 
@@ -205,7 +213,7 @@ export default function ServicesPage() {
 
       {/* ================= FINAL CTA ================= */}
       <section className="relative bg-primary text-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary-hover opacity-90" />
+        <div className="absolute inset-0 bg-primary/90" />
 
         <div className="relative max-w-6xl mx-auto px-6 py-24 text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold mb-5">
@@ -231,3 +239,4 @@ export default function ServicesPage() {
     </div>
   )
 }
+

@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-[28rem] bg-background p-8 rounded-xl border border-border shadow-sm space-y-5"
       >
-        <h1 className="text-2xl font-bold text-foreground text-center">Admin Login</h1>
+        <h1 className="text-2xl text-strong text-foreground text-center">Admin Login</h1>
         {error && (
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>
@@ -124,3 +124,4 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+

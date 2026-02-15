@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import Link from "next/link";
 
 interface Banner {
   _id?: string;
@@ -14,7 +15,30 @@ interface Banner {
   status: string;
 }
 
-export default function BannerHero() {
+interface BannerHeroProps {
+  ariaLabel?: string;
+  fallbackTitle?: string;
+  fallbackSubtitle?: string;
+  fallbackCtaLabel?: string;
+  fallbackCtaHref?: string;
+}
+
+const HERO_DEFAULTS = {
+  ariaLabel: "Solar hero banner",
+  fallbackTitle: "Sustainable Energy Solutions for Homes and Businesses",
+  fallbackSubtitle:
+    "Explore reliable solar panels, inverters, and expert services from Fujitek Solar Energy.",
+  fallbackCtaLabel: "Explore solar products and services",
+  fallbackCtaHref: "/products",
+};
+
+export default function BannerHero({
+  ariaLabel = HERO_DEFAULTS.ariaLabel,
+  fallbackTitle = HERO_DEFAULTS.fallbackTitle,
+  fallbackSubtitle = HERO_DEFAULTS.fallbackSubtitle,
+  fallbackCtaLabel = HERO_DEFAULTS.fallbackCtaLabel,
+  fallbackCtaHref = HERO_DEFAULTS.fallbackCtaHref,
+}: BannerHeroProps) {
   const [banners, setBanners] = useState<Banner[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -38,20 +62,39 @@ export default function BannerHero() {
 
   useEffect(() => {
     if (banners.length <= 1 || isHovered) return;
+
     const id = setInterval(
       () => setCurrentIndex((p) => (p + 1) % banners.length),
       5000
     );
+
     return () => clearInterval(id);
   }, [banners, isHovered]);
 
-  /* =========================================================
-     ✅ SKELETON (NO GAP / NO CLS)
-     ========================================================= */
+  /* ================= Skeleton ================= */
   if (!banners.length) {
     return (
-      <section className="relative w-full overflow-hidden">
-        <div className="h-[18rem] sm:h-[24rem] lg:h-[32rem] bg-surface" />
+      <section className="relative w-full overflow-hidden" aria-label={ariaLabel}>
+        <div className="relative h-[20rem] sm:h-[26rem] lg:h-[34rem] bg-primary">
+          <div className="absolute inset-0 bg-secondary/50" />
+          <div className="relative z-10 flex h-full items-center">
+            <div className="mx-auto w-full max-w-7xl px-6">
+              <div className="max-w-2xl text-white">
+                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
+                  {fallbackTitle}
+                </h1>
+                <p className="mt-6 text-lg text-white/90">{fallbackSubtitle}</p>
+                <div className="mt-10">
+                  <Link href={fallbackCtaHref}>
+                    <Button variant="explore" size="lg">
+                      {fallbackCtaLabel}
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     );
   }
@@ -59,68 +102,65 @@ export default function BannerHero() {
   const banner = banners[currentIndex];
 
   return (
-    <section className="relative w-full overflow-hidden">
+    <section className="relative w-full overflow-hidden" aria-label={ariaLabel}>
       <div
-        className="relative h-[18rem] sm:h-[24rem] lg:h-[32rem]"
+        className="relative h-[20rem] sm:h-[26rem] lg:h-[34rem]"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Background image */}
+        {/* Background */}
         {banner.imageUrl ? (
           <Image
             src={banner.imageUrl}
-            alt={banner.title}
+            alt={`${banner.title} banner image`}
             fill
             priority
             className="object-cover"
           />
         ) : (
-          <div className="absolute inset-0 bg-surface" />
+          <div className="absolute inset-0 bg-primary" />
         )}
 
-        {/* Softer overlay */}
-        <div className="
-          absolute inset-0
-          bg-gradient-to-r
-          from-white/70
-          via-white/40
-          to-transparent
-        " />
+        {/* Contrast overlay */}
+        <div className="absolute inset-0 bg-secondary/50" />
 
         {/* Content */}
-        <div className="relative z-10 flex h-full items-start pt-12">
+        <div className="relative z-10 flex h-full items-center">
           <div className="mx-auto w-full max-w-7xl px-6">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl text-white">
+
               {/* Badge */}
-              <span className="mb-4 inline-flex rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+              <span className="mb-6 inline-flex rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur">
                 Fujitek Solar Energy
               </span>
 
               {/* Heading */}
-              <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                Sustainable{' '}
-                <span className="text-primary">Energy Solutions</span>{' '}
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
+                Sustainable{" "}
+                <span className="text-accent">
+                  Energy Solutions
+                </span>{" "}
                 for Tomorrow
               </h1>
 
               {/* Subtitle */}
               {banner.subtitle && (
-                <p className="mt-4 text-base text-secondary sm:text-lg">
+                <p className="mt-6 text-lg text-white/90">
                   {banner.subtitle}
                 </p>
               )}
 
               {/* CTA */}
               {banner.ctaText && (
-                <div className="mt-8">
-                  <Button size="lg" className="gap-3">
-                    {banner.ctaText}
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full border border-navy text-lg">
-                      ↗
-                    </span>
-                  </Button>
+                <div className="mt-10">
+                  <Link href="/contact">
+                    <Button variant="explore" size="lg">
+                      {banner.ctaText}
+                    </Button>
+                  </Link>
                 </div>
               )}
+
             </div>
           </div>
         </div>
@@ -129,13 +169,15 @@ export default function BannerHero() {
         {banners.length > 1 && (
           <>
             <button
+              type="button"
               onClick={() =>
                 setCurrentIndex((p) => (p - 1 + banners.length) % banners.length)
               }
               className="
-                absolute left-4 top-1/2 z-20 -translate-y-1/2
+                absolute left-6 top-1/2 z-20 -translate-y-1/2
                 flex h-12 w-12 items-center justify-center rounded-full
-                bg-white/90 text-xl text-navy transition hover:bg-white
+                bg-black/40 text-white backdrop-blur
+                transition hover:bg-black/60
               "
               aria-label="Previous slide"
             >
@@ -143,13 +185,15 @@ export default function BannerHero() {
             </button>
 
             <button
+              type="button"
               onClick={() =>
                 setCurrentIndex((p) => (p + 1) % banners.length)
               }
               className="
-                absolute right-4 top-1/2 z-20 -translate-y-1/2
+                absolute right-6 top-1/2 z-20 -translate-y-1/2
                 flex h-12 w-12 items-center justify-center rounded-full
-                bg-white/90 text-xl text-navy transition hover:bg-white
+                bg-black/40 text-white backdrop-blur
+                transition hover:bg-black/60
               "
               aria-label="Next slide"
             >
@@ -161,13 +205,16 @@ export default function BannerHero() {
 
       {/* Dots */}
       {banners.length > 1 && (
-        <div className="mt-4 flex justify-center gap-2">
+        <div className="mt-6 flex justify-center gap-2">
           {banners.map((_, i) => (
             <button
+              type="button"
               key={i}
               onClick={() => setCurrentIndex(i)}
               className={`h-2 rounded-full transition-all ${
-                i === currentIndex ? 'w-8 bg-primary' : 'w-2 bg-border'
+                i === currentIndex
+                  ? "w-8 bg-primary"
+                  : "w-2 bg-white/40"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />

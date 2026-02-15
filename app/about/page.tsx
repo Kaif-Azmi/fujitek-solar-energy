@@ -1,6 +1,5 @@
-'use client';
-
 import Link from "next/link";
+import type { Metadata } from "next";
 import {
   Card,
   CardContent,
@@ -15,6 +14,9 @@ import {
   TrendingUp,
 } from "lucide-react";
 import MissionLottie from "@/components/MissionLottie";
+import { buildPageMetadata, pageSeo } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata(pageSeo.about);
 
 /* ================= JOURNEY DATA ================= */
 const JOURNEY = [
@@ -83,7 +85,7 @@ export default function About() {
 
       {/* ================= HERO ================= */}
       <header className="relative overflow-hidden bg-navy py-section">
-        <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy to-primary/40" />
+        <div className="absolute inset-0 bg-navy/90" />
         <div className="absolute -top-40 -right-40 h-[420px] w-[420px] rounded-full bg-accent/20 blur-3xl" />
 
         <div className="relative mx-auto max-w-6xl px-6 text-center">
@@ -104,7 +106,7 @@ export default function About() {
           <Card className="border-border bg-background shadow-sm">
             <CardContent className="p-8">
               <div className="mb-4 h-1 w-16 rounded-full bg-primary" />
-              <h2 className="mb-4 text-3xl font-bold text-foreground">
+              <h2 className="mb-4 text-3xl text-strong text-foreground">
                 Our Mission
               </h2>
               <p className="mb-4 leading-relaxed text-secondary">
@@ -123,12 +125,12 @@ export default function About() {
 
         {/* ================= JOURNEY ================= */}
         <section className="mb-section relative">
-          <h2 className="mb-20 text-center text-3xl font-bold text-foreground">
+          <h2 className="mb-20 text-center text-3xl text-strong text-foreground">
             Our Journey
           </h2>
 
           <div className="relative">
-            <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-navy/40 to-transparent md:block" />
+            <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-navy/30 md:block" />
 
             <div className="space-y-20">
               {JOURNEY.map((item, index) => {
@@ -203,7 +205,7 @@ export default function About() {
 
         {/* ================= VALUES ================= */}
         <section className="mb-section">
-          <h2 className="mb-12 text-center text-3xl font-bold text-foreground">
+          <h2 className="mb-12 text-center text-3xl text-strong text-foreground">
             Our Core Values
           </h2>
 
@@ -233,7 +235,7 @@ export default function About() {
         {/* ================= CTA ================= */}
         <Card className="overflow-hidden border-primary">
           <div className="relative flex min-h-[240px] flex-col items-center justify-center gap-5 p-10 text-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-navy via-primary to-black/40" />
+            <div className="absolute inset-0 bg-secondary/95" />
 
             <h3 className="relative text-2xl font-extrabold text-white">
               Join the Solar Revolution
@@ -254,3 +256,4 @@ export default function About() {
     </div>
   );
 }
+

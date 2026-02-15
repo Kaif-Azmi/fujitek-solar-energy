@@ -63,7 +63,7 @@ export default function UserLoginPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-[28rem] bg-background p-8 rounded-xl border border-border shadow-sm space-y-5"
       >
-        <h1 className="text-2xl font-bold text-foreground text-center">Sign in</h1>
+        <h1 className="text-2xl text-strong text-foreground text-center">Sign in</h1>
         <p className="text-center text-sm text-secondary">
           Use your account to save inquiries and request product details.
         </p>
@@ -143,3 +143,4 @@ export default function UserLoginPage() {
     </div>
   );
 }
+

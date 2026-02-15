@@ -4,7 +4,7 @@ export default function LeadsPage() {
   return (
     <div className="p-6 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Leads</h1>
+        <h1 className="text-3xl text-strong">Leads</h1>
         <p className="text-slate-500 mt-1">View and manage contact submissions</p>
       </div>
       <Card>
@@ -18,3 +18,4 @@ export default function LeadsPage() {
     </div>
   );
 }
+

@@ -8,21 +8,22 @@ import FinalCTA from "../components/FinalCTA";
 import FaqSection from "../components/FaqSection";
 import InfiniteServicesMarquee from "../components/InfiniteServicesMarquee";
 import SolarBenefits from '@/components/SolarBenefits';
+import type { Metadata } from "next";
+import { buildPageMetadata, pageSeo } from "@/lib/seo";
 
-
-
+export const metadata: Metadata = buildPageMetadata(pageSeo.home);
 export default function Home() {
   return (
     <div className="w-full">
       <BannerHero />
 
       {/* WHY CHOOSE US */}
-      <section className=" bg-background" aria-label="Why choose us">
+      <section className="bg-surface-elevated" aria-label="Why choose us">
         <WhyChooseUs />
       </section>
 
       {/* PRODUCTS */}
-      <section className="py-section bg-surface" aria-label="Products">
+      <section className="bg-surface" aria-label="Products">
         <ProductsPreview
           products={[
             {
@@ -45,11 +46,11 @@ export default function Home() {
       </section>
 
         {/* {Benefits of solar} */}
-        <section aria-label="Solar Benefits">
+        <section className="bg-surface-elevated" aria-label="Solar Benefits">
           <SolarBenefits />
         </section>
       {/* SERVICES */}
-      <section aria-label="Services">
+      <section className="bg-surface" aria-label="Services">
         <ServicesPreview
           services={[
             {
@@ -84,7 +85,7 @@ export default function Home() {
       </section>
 
       {/* PROJECTS */}
-      <section className="py-section bg-surface" aria-label="Projects">
+      <section className="py-section bg-surface-elevated" aria-label="Projects">
         <ProjectsPreview
           projects={[
             {
@@ -105,12 +106,12 @@ export default function Home() {
       </section>
 
       {/*Infinite marquee*/}
-      <section aria-label="Services strip">
+      <section className="bg-surface" aria-label="Services strip">
         <InfiniteServicesMarquee />
       </section>
 
       {/* FAQ */}
-      <section className="bg-background" aria-label="FAQ">
+      <section className="bg-surface-elevated" aria-label="FAQ">
         <FaqSection />
       </section>
 

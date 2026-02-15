@@ -11,6 +11,7 @@ interface Props {
 
 export default async function AdminProtectedLayout({ children }: Props) {
   const session = await getServerSession(authOptions as any);
+  console.log("ADMIN SESSION >>>", JSON.stringify(session, null, 2));
   if (!session) redirect('/admin/login');
   const role = (session as { role?: string }).role;
   if (role !== 'admin') redirect('/');
@@ -19,7 +20,7 @@ export default async function AdminProtectedLayout({ children }: Props) {
     <div className="min-h-screen flex bg-blue-50">
       <aside className="w-64 bg-white border-r border-slate-200">
         <div className="p-4 border-b">
-          <div className="text-lg font-bold">Admin Dashboard</div>
+          <div className="text-lg text-strong">Admin Dashboard</div>
           <div className="text-sm text-slate-500">Development</div>
         </div>
         <nav className="p-4 space-y-1">
@@ -45,3 +46,4 @@ export default async function AdminProtectedLayout({ children }: Props) {
     </div>
   );
 }
+

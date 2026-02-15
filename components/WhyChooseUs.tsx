@@ -8,7 +8,7 @@ import {
   Wrench,
   Handshake,
 } from "./ui";
-import ExploreButton from "./ExploreButton";
+import { Button } from "@/components/ui/button";
 
 interface Reason {
   title: string;
@@ -224,7 +224,7 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
 
             {/* CTA */}
             <div className="mt-12">
-              <ExploreButton />
+              <Button variant="explore">Explore</Button>
             </div>
           </div>
         </div>

@@ -1,48 +1,56 @@
 import * as React from "react";
 
 export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  variant?: "default" | "inverse";
+}
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className = "", ...props }, ref) => (
-    <textarea
-      ref={ref}
-      className={`
-        flex min-h-[6rem] w-full rounded-lg
-        bg-background px-3 py-2
-        text-sm text-foreground
-        placeholder:text-muted
+  ({ className = "", variant = "default", ...props }, ref) => {
+    const variantStyles = {
+      default: "bg-white text-foreground border-border placeholder:text-muted",
+      inverse: "bg-primary text-white border-accent placeholder:text-white/60",
+    };
+    const variantFocusStyles = {
+      default: "",
+      inverse: "focus:ring-accent/40",
+    };
 
-        /* base border (soft) */
-        border border-border/40
+    return (
+      <textarea
+        ref={ref}
+        className={`
+          flex min-h-[6rem] w-full rounded-lg
+          px-3 py-2
+          text-sm
+          border
+          ${variantStyles[variant]}
 
-        /* subtle depth to avoid flat look */
-        shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]
+          shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]
 
-        resize-y
-        transition-all duration-200 ease-out
+          resize-y
+          transition-all duration-200 ease-out
 
-        /* hover */
-        hover:border-border/60
+          hover:border-border/60
 
-        /* focus */
-        focus:outline-none
-        focus:border-primary/50
-        focus:shadow-[0_0_0_1px_rgba(0,0,0,0.02)]
-        focus:ring-2
-        focus:ring-primary/30
-        focus:ring-offset-1
-        focus:ring-offset-background
+          focus:outline-none
+          focus:border-primary/50
+          focus:shadow-[0_0_0_1px_rgba(0,0,0,0.02)]
+          focus:ring-2
+          focus:ring-primary/30
+          focus:ring-offset-1
+          focus:ring-offset-background
+          ${variantFocusStyles[variant]}
 
-        /* disabled */
-        disabled:cursor-not-allowed
-        disabled:opacity-50
+          disabled:cursor-not-allowed
+          disabled:opacity-50
 
-        ${className}
-      `}
-      {...props}
-    />
-  )
+          ${className}
+        `}
+        {...props}
+      />
+    );
+  }
 );
 
 Textarea.displayName = "Textarea";

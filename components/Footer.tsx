@@ -2,26 +2,33 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-background">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <footer className="relative overflow-hidden bg-[#163f6d] text-white">
+
+      {/* subtle accent glow (reduced) */}
+      <div className="pointer-events-none absolute -top-32 -left-32 h-80 w-80 rounded-full bg-accent/10 blur-3xl" />
+
+      <div className="relative mx-auto max-w-7xl px-6 py-16">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
 
           {/* Brand */}
           <div>
-            <div className="text-base font-semibold text-foreground">
+            <div className="text-lg text-strong tracking-tight">
               Fujitek Solar Energy
             </div>
-            <p className="mt-2 text-sm text-secondary max-w-sm">
-              Reliable and sustainable solar solutions built for long-term impact.
+            <p className="mt-3 text-sm text-white/75 max-w-sm leading-relaxed">
+              Reliable and sustainable solar solutions built for
+              long-term impact and energy independence.
             </p>
           </div>
 
           {/* Navigation */}
-          <nav>
-            <div className="mb-4 text-xs font-semibold uppercase tracking-wide text-muted">
+          <nav aria-label="Footer navigation">
+            <div className="mb-4 text-xs font-semibold uppercase tracking-wider text-white/60">
               Quick Links
             </div>
-            <ul className="space-y-2">
+
+            <ul className="space-y-3">
               {[
                 { href: "/", label: "Home" },
                 { href: "/products", label: "Products" },
@@ -32,7 +39,12 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-secondary hover:text-foreground transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                    aria-label={`Go to ${link.label} page`}
+                    className="
+                      text-sm text-white/75
+                      transition-all duration-300
+                      hover:text-accent
+                    "
                   >
                     {link.label}
                   </Link>
@@ -43,31 +55,40 @@ export default function Footer() {
 
           {/* Contact */}
           <address className="not-italic">
-            <div className="mb-4 text-xs font-semibold uppercase tracking-wide text-muted">
+            <div className="mb-4 text-xs font-semibold uppercase tracking-wider text-white/60">
               Contact
             </div>
-            <p className="text-sm text-secondary">
+
+            <p className="text-sm text-white/75">
               info@fujiteksolar.com
             </p>
-            <p className="text-sm text-secondary">
+
+            <p className="text-sm text-white/75">
               +1 (123) 456-7890
             </p>
-            <p className="mt-2 text-sm">
+
+            <p className="mt-4 text-sm">
               <a
                 href="https://wa.me/1234567890"
-                className="text-primary hover:underline transition"
+                className="
+                  inline-flex items-center gap-2
+                  text-accent font-semibold
+                  transition-all duration-300
+                  hover:translate-x-1
+                "
               >
-                Chat on WhatsApp
+                Chat on WhatsApp →
               </a>
             </p>
           </address>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-10 pt-6 border-t border-border text-center text-xs text-muted">
+        <div className="mt-14 pt-8 border-t border-white/10 text-center text-xs text-white/50">
           © 2026 Fujitek Solar Energy. All rights reserved.
         </div>
       </div>
     </footer>
   );
 }
+

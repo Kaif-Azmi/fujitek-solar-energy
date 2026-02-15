@@ -53,7 +53,7 @@ export default function SignupPage() {
       >
         {/* Heading */}
         <div className="text-center space-y-1">
-          <h1 className="text-2xl font-bold text-foreground">
+          <h1 className="text-2xl text-strong text-foreground">
             Create your account
           </h1>
           <p className="text-sm text-secondary">
@@ -143,3 +143,4 @@ export default function SignupPage() {
     </div>
   );
 }
+

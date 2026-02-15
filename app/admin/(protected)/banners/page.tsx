@@ -55,7 +55,7 @@ export default function BannersPage() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Banners</h1>
+        <h1 className="text-3xl text-strong">Banners</h1>
         <p className="text-slate-500 mt-1">Manage homepage promotional banners.</p>
       </div>
 
@@ -326,3 +326,4 @@ export default function BannersPage() {
     </div>
   );
 }
+

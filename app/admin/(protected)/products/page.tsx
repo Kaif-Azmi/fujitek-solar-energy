@@ -4,7 +4,7 @@ export default function ProductsPage() {
   return (
     <div className="p-6 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Products</h1>
+        <h1 className="text-3xl text-strong">Products</h1>
         <p className="text-slate-500 mt-1">Manage product catalog</p>
       </div>
       <Card>
@@ -18,3 +18,4 @@ export default function ProductsPage() {
     </div>
   );
 }
+

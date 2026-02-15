@@ -1,20 +1,20 @@
 import * as React from "react";
 
-/**
- * Card color variants
- */
-type CardVariant = "default" | "navy" | "green" | "yellow";
+type CardVariant =
+  | "default"
+  | "navy"
+  | "green"
+  | "yellow"
+  | "primary";
 
 const variantStyles: Record<CardVariant, string> = {
-  default: "bg-surface",
-  navy: "bg-navy/8",
-  green: "bg-primary/8",
-  yellow: "bg-accent/12",
+  default: "text-foreground",
+  navy: "bg-secondary text-white",
+  green: "bg-primary/10 text-foreground",
+  yellow: "bg-accent/15 text-foreground",
+  primary: "bg-primary text-white",
 };
 
-/**
- * CARD
- */
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
@@ -27,19 +27,14 @@ const Card = React.forwardRef<
       group relative rounded-xl
       ${variantStyles[variant]}
 
-      /* single clean border (no pseudo elements) */
       border border-border/30
 
-      /* depth */
-      shadow-[0_8px_24px_rgba(0,0,0,0.08)]
+      shadow-medium
       transition-all duration-200 ease-out
 
-      /* hover */
-      hover:-translate-y-[1px]
-      hover:shadow-[0_16px_40px_rgba(0,0,0,0.12)]
-      hover:border-primary/40
+      hover:-translate-y-[2px]
+      hover:shadow-strong
 
-      /* focus */
       focus-within:ring-2
       focus-within:ring-primary/30
       focus-within:ring-offset-2
@@ -52,9 +47,8 @@ const Card = React.forwardRef<
 ));
 Card.displayName = "Card";
 
-/**
- * CARD HEADER
- */
+/* ================= HEADER ================= */
+
 const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -64,8 +58,7 @@ const CardHeader = React.forwardRef<
     className={`
       flex flex-col gap-1.5
       p-6
-      border-b border-border/30
-      bg-muted-bg/40
+      border-b border-border/20
       ${className}
     `}
     {...props}
@@ -73,9 +66,8 @@ const CardHeader = React.forwardRef<
 ));
 CardHeader.displayName = "CardHeader";
 
-/**
- * CARD TITLE
- */
+/* ================= TITLE ================= */
+
 const CardTitle = React.forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
@@ -85,7 +77,6 @@ const CardTitle = React.forwardRef<
     className={`
       text-lg font-semibold
       leading-tight tracking-tight
-      text-foreground
       ${className}
     `}
     {...props}
@@ -93,9 +84,8 @@ const CardTitle = React.forwardRef<
 ));
 CardTitle.displayName = "CardTitle";
 
-/**
- * CARD DESCRIPTION
- */
+/* ================= DESCRIPTION ================= */
+
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
@@ -104,7 +94,7 @@ const CardDescription = React.forwardRef<
     ref={ref}
     className={`
       text-sm leading-relaxed
-      text-muted
+      opacity-80
       ${className}
     `}
     {...props}
@@ -112,28 +102,22 @@ const CardDescription = React.forwardRef<
 ));
 CardDescription.displayName = "CardDescription";
 
-/**
- * CARD CONTENT
- */
+/* ================= CONTENT ================= */
+
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className = "", ...props }, ref) => (
   <div
     ref={ref}
-    className={`
-      p-6
-      text-foreground
-      ${className}
-    `}
+    className={`p-6 ${className}`}
     {...props}
   />
 ));
 CardContent.displayName = "CardContent";
 
-/**
- * CARD FOOTER
- */
+/* ================= FOOTER ================= */
+
 const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -143,8 +127,7 @@ const CardFooter = React.forwardRef<
     className={`
       flex items-center justify-between
       p-6 pt-4
-      border-t border-border/30
-      bg-background/80
+      border-t border-border/20
       ${className}
     `}
     {...props}

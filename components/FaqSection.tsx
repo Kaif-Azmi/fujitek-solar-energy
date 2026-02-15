@@ -52,8 +52,8 @@ export default function FaqSection() {
                 FAQs
               </span>
 
-              <h2 className="mt-5 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                Questions you might have
+              <h2 className="mt-5 text-3xl text-strong tracking-tight text-foreground md:text-4xl">
+                Frequently Asked Questions About Solar and Inverter Services
               </h2>
 
               <p className="mt-4 text-secondary">
@@ -79,7 +79,7 @@ export default function FaqSection() {
                   <div
                     className="
                       pointer-events-none absolute inset-0
-                      bg-gradient-to-br from-primary/10 via-transparent to-transparent
+                      bg-primary/10
                       opacity-0 transition-opacity
                       group-hover:opacity-100
                     "
@@ -132,12 +132,13 @@ export default function FaqSection() {
             <Card
               variant="green"
               className="
+              bg-primary
                 relative flex min-h-[380px] flex-col
                 justify-center overflow-hidden
               "
             >
-              {/* Background gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-transparent" />
+              {/* Background tint */}
+              <div className="absolute inset-0 bg-primary/10" />
 
               <CardContent className="relative z-10 flex flex-col items-center p-12 text-center">
                 {/* Icon */}
@@ -192,3 +193,4 @@ export default function FaqSection() {
     </section>
   );
 }
+
