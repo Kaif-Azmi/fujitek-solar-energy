@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { Button, Alert, AlertDescription } from "@/components/ui";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 function AdminLoginContent() {
   const router = useRouter();
@@ -111,65 +112,67 @@ function AdminLoginContent() {
 
   return (
     <main className="min-h-screen bg-surface flex items-center justify-center px-6 py-section">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md rounded-xl border border-border bg-background p-8 shadow-sm space-y-5"
-      >
-        <h1 className="text-center text-2xl text-strong text-foreground">
-          Admin Login
-        </h1>
+      <ScrollReveal>
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-md rounded-xl border border-border bg-background p-8 shadow-sm space-y-5"
+        >
+          <h1 className="text-center text-2xl text-strong text-foreground">
+            Admin Login
+          </h1>
 
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-        <div>
-          <label htmlFor="admin-email" className="mb-1 block text-sm font-medium text-foreground">
-            Email
-          </label>
-          <input
-            id="admin-email"
-            type="email"
-            autoComplete="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="h-11 w-full rounded-lg border border-border bg-background px-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
-            placeholder="admin@company.com"
-            required
-          />
-        </div>
+          <div>
+            <label htmlFor="admin-email" className="mb-1 block text-sm font-medium text-foreground">
+              Email
+            </label>
+            <input
+              id="admin-email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className="h-11 w-full rounded-lg border border-border bg-background px-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
+              placeholder="admin@company.com"
+              required
+            />
+          </div>
 
-        <div>
-          <label htmlFor="admin-password" className="mb-1 block text-sm font-medium text-foreground">
-            Password
-          </label>
-          <input
-            id="admin-password"
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            className="h-11 w-full rounded-lg border border-border bg-background px-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
-            placeholder="Enter admin password"
-            required
-            minLength={12}
-          />
-        </div>
+          <div>
+            <label htmlFor="admin-password" className="mb-1 block text-sm font-medium text-foreground">
+              Password
+            </label>
+            <input
+              id="admin-password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="h-11 w-full rounded-lg border border-border bg-background px-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
+              placeholder="Enter admin password"
+              required
+              minLength={12}
+            />
+          </div>
 
-        <Button type="submit" size="lg" className="h-11 w-full" disabled={isSubmitting || !csrfToken}>
-          {isSubmitting ? "Signing in..." : "Sign In"}
-        </Button>
+          <Button type="submit" size="lg" className="h-11 w-full" disabled={isSubmitting || !csrfToken}>
+            {isSubmitting ? "Signing in..." : "Sign In"}
+          </Button>
 
-        <p className="text-center text-sm text-secondary">
-          Return to{" "}
-          <Link href="/" className="text-primary underline-offset-4 hover:underline">
-            homepage
-          </Link>
-          .
-        </p>
-      </form>
+          <p className="text-center text-sm text-secondary">
+            Return to{" "}
+            <Link href="/" className="text-primary underline-offset-4 hover:underline">
+              homepage
+            </Link>
+            .
+          </p>
+        </form>
+      </ScrollReveal>
     </main>
   );
 }

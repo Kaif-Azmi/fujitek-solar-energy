@@ -12,6 +12,7 @@ import ProductForm, {
   type ProductStatus,
 } from "@/components/admin/ProductForm";
 import StatusToggle from "@/components/admin/StatusToggle";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 type ProductItem = {
   id: string;
@@ -254,36 +255,41 @@ export default function ProductsAdminPage() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Product Management</h1>
-        <p className="text-sm text-slate-600">
-          Add, edit, activate, and manage products with Cloudinary-backed images.
-        </p>
-      </div>
+      <ScrollReveal>
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Product Management</h1>
+          <p className="text-sm text-slate-600">
+            Add, edit, activate, and manage products with Cloudinary-backed images.
+          </p>
+        </div>
+      </ScrollReveal>
 
-      <AdminCard>
-        <ProductForm
-          value={form}
-          errors={errors}
-          loading={saving}
-          uploading={uploading}
-          mode={editingId ? "edit" : "create"}
-          onChange={setForm}
-          onSubmit={editingId ? saveEdit : createProduct}
-          onUploadingChange={setUploading}
-          onCancelEdit={
-            editingId
-              ? () => {
-                  setEditingId(null);
-                  setForm(EMPTY_FORM);
-                  setErrors({});
-                }
-              : undefined
-          }
-        />
-      </AdminCard>
+      <ScrollReveal delay={0.04}>
+        <AdminCard>
+          <ProductForm
+            value={form}
+            errors={errors}
+            loading={saving}
+            uploading={uploading}
+            mode={editingId ? "edit" : "create"}
+            onChange={setForm}
+            onSubmit={editingId ? saveEdit : createProduct}
+            onUploadingChange={setUploading}
+            onCancelEdit={
+              editingId
+                ? () => {
+                    setEditingId(null);
+                    setForm(EMPTY_FORM);
+                    setErrors({});
+                  }
+                : undefined
+            }
+          />
+        </AdminCard>
+      </ScrollReveal>
 
-      <AdminCard>
+      <ScrollReveal delay={0.08}>
+        <AdminCard>
         <div className="mb-4 grid grid-cols-1 gap-3 md:grid-cols-[1fr_auto_auto]">
           <div className="relative w-full">
             <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
@@ -401,7 +407,8 @@ export default function ProductsAdminPage() {
             ))}
           </div>
         )}
-      </AdminCard>
+        </AdminCard>
+      </ScrollReveal>
 
       <ConfirmDeleteModal
         open={!!deleteTarget}

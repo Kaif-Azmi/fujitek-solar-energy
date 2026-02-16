@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 interface Banner {
   _id?: string;
@@ -56,17 +57,20 @@ export default function BannersPage() {
 
   return (
     <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl text-strong">Banners</h1>
-        <p className="text-slate-500 mt-1">Manage homepage promotional banners.</p>
-      </div>
+      <ScrollReveal>
+        <div className="mb-6">
+          <h1 className="text-3xl text-strong">Banners</h1>
+          <p className="text-slate-500 mt-1">Manage homepage promotional banners.</p>
+        </div>
+      </ScrollReveal>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Add New Banner</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3 mb-4">
+      <ScrollReveal delay={0.04}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Add New Banner</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3 mb-4">
             <input
               value={addForm.title}
               onChange={(e) => setAddForm((f) => ({ ...f, title: e.target.value }))}
@@ -169,14 +173,16 @@ export default function BannersPage() {
                 Reset
               </button>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Existing Banners</CardTitle>
-        </CardHeader>
-        <CardContent>
+            </div>
+          </CardContent>
+        </Card>
+      </ScrollReveal>
+      <ScrollReveal delay={0.08}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Existing Banners</CardTitle>
+          </CardHeader>
+          <CardContent>
           {loading && <p className="text-slate-600">Loading banners...</p>}
           {error && <p className="text-red-600">{error}</p>}
 
@@ -329,8 +335,9 @@ export default function BannersPage() {
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </ScrollReveal>
     </div>
   );
 }

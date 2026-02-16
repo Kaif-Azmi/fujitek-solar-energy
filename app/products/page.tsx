@@ -4,6 +4,7 @@ import ProductCard from "@/components/ProductCard";
 import HeroSection from "@/components/HeroSection";
 import FinalCTA from "@/components/FinalCTA";
 import { InfiniteGrid } from "@/components/ui/infinite-grid";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import type { Metadata } from "next";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 import { getDb } from "@/lib/mongodb";
@@ -60,52 +61,59 @@ export default async function ProductsPage() {
         <InfiniteGrid className="z-0 opacity-35" />
         <div className="relative z-10 mx-auto max-w-6xl px-6 py-section">
           {products.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-border bg-background p-10 text-center">
-              <p className="text-lg font-semibold text-foreground">No active products available</p>
-              <p className="mt-2 text-sm text-secondary">
-                Please check back soon for updated product listings.
-              </p>
-            </div>
+            <ScrollReveal>
+              <div className="rounded-2xl border border-dashed border-border bg-background p-10 text-center">
+                <p className="text-lg font-semibold text-foreground">No active products available</p>
+                <p className="mt-2 text-sm text-secondary">
+                  Please check back soon for updated product listings.
+                </p>
+              </div>
+            </ScrollReveal>
           ) : (
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  name={product.name}
-                  category={product.category}
-                  price={product.price}
-                  imageUrl={product.imageUrl}
-                />
+                <ScrollReveal key={product.id}>
+                  <ProductCard
+                    name={product.name}
+                    category={product.category}
+                    price={product.price}
+                    imageUrl={product.imageUrl}
+                  />
+                </ScrollReveal>
               ))}
             </div>
           )}
 
-          <div className="mt-16 text-center">
-            <p className="mb-4 text-secondary">
-              Need help choosing components? Explore our{" "}
-              <Link
-                href="/service"
-                className="text-primary underline-offset-4 hover:underline"
-              >
-                solar installation and maintenance services
-              </Link>{" "}
-              or speak with our team.
-            </p>
+          <ScrollReveal delay={0.08}>
+            <div className="mt-16 text-center">
+              <p className="mb-4 text-secondary">
+                Need help choosing components? Explore our{" "}
+                <Link
+                  href="/service"
+                  className="text-primary underline-offset-4 hover:underline"
+                >
+                  solar installation and maintenance services
+                </Link>{" "}
+                or speak with our team.
+              </p>
 
-            <Link href="/contact">
-              <Button variant="default" size="lg">
-                Talk to a Solar Consultant
-              </Button>
-            </Link>
-          </div>
+              <Link href="/contact">
+                <Button variant="default" size="lg">
+                  Talk to a Solar Consultant
+                </Button>
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
-      <FinalCTA
-        heading="Ready to Go Solar?"
-        supportingText="Get expert guidance on the right panels, inverters, batteries, and EV charging solutions for your needs."
-        ctaLabel="Contact Us"
-        ctaHref="/contact"
-        ariaLabel="Products page call to action"
-      />
+      <ScrollReveal delay={0.12}>
+        <FinalCTA
+          heading="Ready to Go Solar?"
+          supportingText="Get expert guidance on the right panels, inverters, batteries, and EV charging solutions for your needs."
+          ctaLabel="Contact Us"
+          ctaHref="/contact"
+          ariaLabel="Products page call to action"
+        />
+      </ScrollReveal>
       </section>
     </div>
   );

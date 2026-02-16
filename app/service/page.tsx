@@ -10,6 +10,7 @@ import {
   Handshake,
 } from '@/components/ui'
 import { InfiniteGrid } from "@/components/ui/infinite-grid";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import FinalCTA from "@/components/FinalCTA";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 
@@ -61,13 +62,6 @@ export default function ServicesPage() {
     },
   ]
 
-  const highlights = [
-    'Certified and experienced solar professionals',
-    'High-quality components with proven reliability',
-    'Transparent pricing with no hidden charges',
-    'Strong warranty and dependable after-sales support',
-  ]
-
   return (
     <div className="min-h-screen bg-surface">
 
@@ -76,25 +70,31 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-primary/10" />
 
         <div className="relative max-w-6xl mx-auto px-6 py-28 text-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-4">
-            Our Expertise
-          </p>
+          <ScrollReveal delay={0.02}>
+            <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-4">
+              Our Expertise
+            </p>
+          </ScrollReveal>
 
-          <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight">
-            End-to-End Solar Services
-            <span className="block text-primary">
-              Built for Long-Term Trust
-            </span>
-          </h1>
+          <ScrollReveal delay={0.08}>
+            <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight">
+              End-to-End Solar Services
+              <span className="block text-primary">
+                Built for Long-Term Trust
+              </span>
+            </h1>
+          </ScrollReveal>
 
-          <p className="text-lg text-secondary max-w-2xl mx-auto">
-            From system design to lifetime support, Fujitek Solar Energy delivers
-            performance you can rely on. Pair these services with our{" "}
-            <Link href="/products" className="text-primary underline-offset-4 hover:underline">
-              solar products and inverter solutions
-            </Link>
-            .
-          </p>
+          <ScrollReveal delay={0.14}>
+            <p className="text-lg text-secondary max-w-2xl mx-auto">
+              From system design to lifetime support, Fujitek Solar Energy delivers
+              performance you can rely on. Pair these services with our{" "}
+              <Link href="/products" className="text-primary underline-offset-4 hover:underline">
+                solar products and inverter solutions
+              </Link>
+              .
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -104,124 +104,70 @@ export default function ServicesPage() {
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-section">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {services.map((service, index) => (
-              <Card
-                key={index}
-                className="
-                  group relative h-full bg-background
-                  border border-border
-                  transition-all duration-300 ease-out
-                  hover:-translate-y-1 hover:shadow-2xl
-                  hover:border-primary/40
-                "
-              >
-                <CardContent className="p-8 flex flex-col gap-5">
+              <ScrollReveal key={`${service.title}-${index}`} delay={index * 0.06} className="h-full">
+                <Card
+                  className="
+                    group relative h-full bg-background
+                    border border-border
+                    transition-all duration-300 ease-out
+                    hover:-translate-y-1 hover:shadow-2xl
+                    hover:border-primary/40
+                  "
+                >
+                  <CardContent className="p-8 flex flex-col gap-5">
 
-                  {/* ICON */}
-                  <div
-                    className="
-                      relative flex h-14 w-14 items-center justify-center
-                      rounded-xl bg-primary/10 text-primary
-                      transition-all duration-300
-
-                      group-hover:bg-primary
-                      group-hover:text-white
-                      group-hover:scale-110
-                    "
-                  >
-                    {/* subtle glow ring */}
-                    <span
+                    {/* ICON */}
+                    <div
                       className="
-                        absolute inset-0 rounded-xl
-                        bg-primary/20 opacity-0 blur-md
-                        transition-opacity duration-300
-                        group-hover:opacity-100
+                        relative flex h-14 w-14 items-center justify-center
+                        rounded-xl bg-primary/10 text-primary
+                        transition-all duration-300
+
+                        group-hover:bg-primary
+                        group-hover:text-white
+                        group-hover:scale-110
                       "
-                    />
+                    >
+                      {/* subtle glow ring */}
+                      <span
+                        className="
+                          absolute inset-0 rounded-xl
+                          bg-primary/20 opacity-0 blur-md
+                          transition-opacity duration-300
+                          group-hover:opacity-100
+                        "
+                      />
 
-                    {/* actual icon */}
-                    <span className="relative">
-                      {service.icon}
-                    </span>
-                  </div>
+                      {/* actual icon */}
+                      <span className="relative">
+                        {service.icon}
+                      </span>
+                    </div>
 
-                  <CardTitle className="text-lg font-semibold text-foreground">
-                    {service.title}
-                  </CardTitle>
+                    <CardTitle className="text-lg font-semibold text-foreground">
+                      {service.title}
+                    </CardTitle>
 
-                  <p className="text-secondary leading-relaxed">
-                    {service.description}
-                  </p>
+                    <p className="text-secondary leading-relaxed">
+                      {service.description}
+                    </p>
 
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </ScrollReveal>
             ))}
           </div>
         </div>
-        <FinalCTA
-        heading="Power Your Home or Business with Confidence"
-        supportingText="From system design to lifetime support, our service team is ready to build a solar plan that fits your goals."
-        ctaLabel="Get Free Consultation"
-        ctaHref="/contact"
-        ariaLabel="Services page call to action"
-      />
+        <ScrollReveal delay={0.1}>
+          <FinalCTA
+            heading="Power Your Home or Business with Confidence"
+            supportingText="From system design to lifetime support, our service team is ready to build a solar plan that fits your goals."
+            ctaLabel="Get Free Consultation"
+            ctaHref="/contact"
+            ariaLabel="Services page call to action"
+          />
+        </ScrollReveal>
       </section>
-
-
-      {/* ================= TRUST ================= */}
-      {/* <section className="bg-background">
-        <div className="max-w-6xl mx-auto px-6 py-24">
-          <Card className="bg-primary/5 border border-border shadow-sm">
-            <CardContent className="p-12 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
-
-              <div>
-                <h2 className="text-2xl text-strong text-foreground mb-4">
-                  Why Choose Fujitek Solar Services?
-                </h2>
-
-                <p className="text-secondary mb-8">
-                  We focus on technical excellence, safety, and long-term value —
-                  not just installations.
-                </p>
-
-                <ul className="space-y-5">
-                  {highlights.map((item, i) => (
-                    <li key={i} className="flex items-start gap-4">
-                      <span
-                        className="
-                          flex h-7 w-7 shrink-0 items-center justify-center
-                          rounded-full bg-success-bg text-success
-                          text-sm font-bold
-                        "
-                      >
-                        ✓
-                      </span>
-                      <span className="text-secondary">
-                        {item}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex flex-col items-center text-center gap-5">
-                <p className="text-secondary max-w-sm">
-                  Speak with our experts and get a customised solar plan built
-                  around your energy needs.
-                </p>
-
-                <Link href="/contact">
-                  <Button size="lg">
-                    Get a Free Consultation
-                  </Button>
-                </Link>
-              </div>
-
-            </CardContent>
-          </Card>
-        </div>
-      </section> */}
-
-
     </div>
   )
 }

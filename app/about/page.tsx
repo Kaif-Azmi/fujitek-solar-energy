@@ -18,7 +18,7 @@ import HeroSection from "@/components/HeroSection";
 import FinalCTA from "@/components/FinalCTA";
 import { InfiniteGrid } from "@/components/ui/infinite-grid";
 import { NumberTicker } from "@/components/ui/number-ticker";
-import { BlurFade } from "@/components/ui/blur-fade";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { Highlighter } from "@/components/ui/highlighter";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 
@@ -116,26 +116,30 @@ export default function About() {
 
         {/* ================= MISSION ================= */}
         <section className="mb-section grid grid-cols-1 items-center gap-12 md:grid-cols-2">
-          <Card className="border-border bg-background shadow-sm">
-            <CardContent className="p-8">
-              <div className="mb-4 h-1 w-16 rounded-full bg-primary" />
-              <h2 className="mb-4 text-3xl text-strong text-foreground">
-                <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
-                  Our Mission
-                </Highlighter>
-              </h2>
-              <p className="mb-4 leading-relaxed text-secondary">
-                At Fujitek Solar Energy, we are committed to making renewable
-                energy accessible and affordable for everyone.
-              </p>
-              <p className="leading-relaxed text-secondary">
-                We help businesses and homeowners transition to clean, reliable,
-                and future-ready solar power systems.
-              </p>
-            </CardContent>
-          </Card>
+          <ScrollReveal>
+            <Card className="border-border bg-background shadow-sm">
+              <CardContent className="p-8">
+                <div className="mb-4 h-1 w-16 rounded-full bg-primary" />
+                <h2 className="mb-4 text-3xl text-strong text-foreground">
+                  <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
+                    Our Mission
+                  </Highlighter>
+                </h2>
+                <p className="mb-4 leading-relaxed text-secondary">
+                  At Fujitek Solar Energy, we are committed to making renewable
+                  energy accessible and affordable for everyone.
+                </p>
+                <p className="leading-relaxed text-secondary">
+                  We help businesses and homeowners transition to clean, reliable,
+                  and future-ready solar power systems.
+                </p>
+              </CardContent>
+            </Card>
+          </ScrollReveal>
 
-          <MissionLottie />
+          <ScrollReveal delay={0.08}>
+            <MissionLottie />
+          </ScrollReveal>
         </section>
 
         {/* ================= JOURNEY ================= */}
@@ -219,7 +223,7 @@ export default function About() {
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:auto-rows-[170px] md:grid-cols-4">
-            <BlurFade delay={0.05} className="md:col-span-2 md:row-span-2">
+            <ScrollReveal delay={0.05} className="md:col-span-2 md:row-span-2">
             <Card className="group relative h-full overflow-hidden border-primary/35 bg-primary transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(15,23,42,0.32)]">
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/15 to-transparent" />
               <CardContent className="relative flex h-full flex-col justify-between p-8">
@@ -237,9 +241,9 @@ export default function About() {
                 </p>
               </CardContent>
             </Card>
-            </BlurFade>
+            </ScrollReveal>
 
-            <BlurFade delay={0.12} className="md:col-span-2">
+            <ScrollReveal delay={0.12} className="md:col-span-2">
             <Card className="group relative h-full overflow-hidden border-primary/25 bg-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(14,116,144,0.14)]">
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/18 via-accent/8 to-transparent" />
               <CardContent className="relative p-7">
@@ -255,9 +259,9 @@ export default function About() {
                 </p>
               </CardContent>
             </Card>
-            </BlurFade>
+            </ScrollReveal>
 
-            <BlurFade delay={0.18} className="md:col-span-2">
+            <ScrollReveal delay={0.18} className="md:col-span-2">
             <Card className="group relative h-full overflow-hidden border-accent/35 bg-accent/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(13,148,136,0.15)] md:col-span-2">
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/35 via-accent/15 to-transparent" />
               <CardContent className="relative p-7">
@@ -273,7 +277,7 @@ export default function About() {
                 </p>
               </CardContent>
             </Card>
-            </BlurFade>
+            </ScrollReveal>
           </div>
         </section>
 
@@ -287,36 +291,40 @@ export default function About() {
           </h2>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {values.map(({ icon: Icon, title, description }) => (
-              <Card key={title} className="transition hover:-translate-y-1 hover:shadow-lg">
-                <CardContent className="p-8 text-center">
-                  <div
-                    className={`
-                      mb-4 mx-auto flex h-14 w-14 items-center justify-center rounded-full
-                      ${title === "Sustainability" && "bg-primary/15"}
-                      ${title === "Quality" && "bg-accent/20"}
-                      ${title === "Integrity" && "bg-navy/15"}
-                      ${title === "Innovation" && "bg-primary/10"}
-                    `}
-                  >
-                    <Icon className="h-7 w-7 text-primary" />
-                  </div>
-                  <CardTitle className="mb-2">{title}</CardTitle>
-                  <p className="text-sm text-secondary">{description}</p>
-                </CardContent>
-              </Card>
+            {values.map(({ icon: Icon, title, description }, index) => (
+              <ScrollReveal key={title} delay={index * 0.06}>
+                <Card className="transition hover:-translate-y-1 hover:shadow-lg">
+                  <CardContent className="p-8 text-center">
+                    <div
+                      className={`
+                        mb-4 mx-auto flex h-14 w-14 items-center justify-center rounded-full
+                        ${title === "Sustainability" && "bg-primary/15"}
+                        ${title === "Quality" && "bg-accent/20"}
+                        ${title === "Integrity" && "bg-navy/15"}
+                        ${title === "Innovation" && "bg-primary/10"}
+                      `}
+                    >
+                      <Icon className="h-7 w-7 text-primary" />
+                    </div>
+                    <CardTitle className="mb-2">{title}</CardTitle>
+                    <p className="text-sm text-secondary">{description}</p>
+                  </CardContent>
+                </Card>
+              </ScrollReveal>
             ))}
           </div>
         </section>
 
         </div>
-      <FinalCTA
-        heading="Join the Solar Revolution"
-        supportingText="Let’s build a cleaner, smarter, and more sustainable future together with reliable solar systems and expert support."
-        ctaLabel="Get Started"
-        ctaHref="/contact"
-        ariaLabel="About page call to action"
-      />
+      <ScrollReveal delay={0.12}>
+        <FinalCTA
+          heading="Join the Solar Revolution"
+          supportingText="Let’s build a cleaner, smarter, and more sustainable future together with reliable solar systems and expert support."
+          ctaLabel="Get Started"
+          ctaHref="/contact"
+          ariaLabel="About page call to action"
+        />
+      </ScrollReveal>
       </section>
 
     </div>

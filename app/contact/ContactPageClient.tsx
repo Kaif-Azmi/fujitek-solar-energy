@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
 import { InfiniteGrid } from "@/components/ui/infinite-grid";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import {
   Button,
   Input,
@@ -59,7 +60,7 @@ export default function Contact() {
         <InfiniteGrid className="z-0 opacity-30" />
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
           <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-5">
-            <div className="order-1 md:order-2 md:col-span-3">
+            <ScrollReveal className="order-1 md:order-2 md:col-span-3">
               {submitted && (
                 <Alert variant="success" className="mb-6">
                   <AlertDescription>
@@ -211,9 +212,9 @@ export default function Contact() {
                   </form>
                 </CardContent>
               </Card>
-            </div>
+            </ScrollReveal>
 
-            <div className="order-2 md:order-1 md:col-span-2">
+            <ScrollReveal delay={0.08} className="order-2 md:order-1 md:col-span-2">
               <h2 className="text-2xl font-extrabold text-foreground md:text-3xl">Talk to Our Solar Team</h2>
 
               <p className="mt-6 max-w-md text-secondary">
@@ -259,7 +260,7 @@ export default function Contact() {
                   </a>
                 ))}
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
