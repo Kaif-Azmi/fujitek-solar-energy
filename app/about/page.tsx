@@ -151,7 +151,7 @@ export default function About() {
           </h2>
 
           <div className="relative">
-            <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-navy/30 md:block" />
+            <div className="absolute left-5 top-0 h-full w-px bg-navy/30 md:left-1/2 md:-translate-x-1/2" />
 
             <div className="space-y-20">
               {JOURNEY.map((item, index) => {
@@ -161,18 +161,18 @@ export default function About() {
                 return (
                   <div
                     key={item.year}
-                    className="relative grid grid-cols-1 gap-10 md:grid-cols-2"
+                    className="relative grid grid-cols-1 gap-8 pl-12 md:grid-cols-[1fr_auto_1fr] md:items-start md:gap-6 md:pl-0"
                   >
                     <div
                       className={`${
                         isLeft
-                          ? "md:pr-20 md:text-right"
-                          : "md:pl-20 md:col-start-2"
+                          ? "md:col-start-1 md:text-right md:pr-6"
+                          : "md:col-start-3 md:pl-6"
                       }`}
                     >
                       <Card
                         className={`
-                          inline-block max-w-md
+                          w-full
                           ${isLeft ? "bg-background/90" : "bg-surface"}
                           border-border/60
                           transition-all duration-300
@@ -194,7 +194,15 @@ export default function About() {
                       </Card>
                     </div>
 
-                    <div className="absolute left-1/2 top-6 hidden -translate-x-1/2 md:flex">
+                    <div className="absolute left-0 top-6 flex md:hidden">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-background ring-2 ring-primary/30 shadow-md">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white">
+                          <Icon className="h-3.5 w-3.5" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="hidden md:col-start-2 md:flex md:justify-center md:pt-5">
                       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-background ring-2 ring-primary/30 shadow-md">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
                           <Icon className="h-5 w-5" />

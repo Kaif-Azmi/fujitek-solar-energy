@@ -69,15 +69,15 @@ export default function ServicesPage() {
       <section className="relative overflow-hidden bg-primary/5">
         <div className="absolute inset-0 bg-primary/10" />
 
-        <div className="relative max-w-6xl mx-auto px-6 py-28 text-center">
+        <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 sm:py-28">
           <ScrollReveal delay={0.02}>
-            <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-4">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary sm:mb-4 sm:text-sm">
               Our Expertise
             </p>
           </ScrollReveal>
 
           <ScrollReveal delay={0.08}>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 leading-tight">
+            <h1 className="mb-5 text-3xl font-extrabold leading-tight text-foreground sm:mb-6 sm:text-4xl md:text-5xl">
               End-to-End Solar Services
               <span className="block text-primary">
                 Built for Long-Term Trust
@@ -86,7 +86,7 @@ export default function ServicesPage() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.14}>
-            <p className="text-lg text-secondary max-w-2xl mx-auto">
+            <p className="mx-auto max-w-2xl text-base text-secondary sm:text-lg">
               From system design to lifetime support, Fujitek Solar Energy delivers
               performance you can rely on. Pair these services with our{" "}
               <Link href="/products" className="text-primary underline-offset-4 hover:underline">
@@ -101,8 +101,8 @@ export default function ServicesPage() {
       {/* ================= SERVICES ================= */}
       <section aria-label='services' className="relative overflow-hidden">
         <InfiniteGrid className="z-0 opacity-30" />
-        <div className="relative z-10 max-w-6xl mx-auto px-6 py-section">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-section sm:px-6">
+          <div className="grid grid-cols-1 gap-5 sm:gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
             {services.map((service, index) => (
               <ScrollReveal key={`${service.title}-${index}`} delay={index * 0.06} className="h-full">
                 <Card
@@ -114,14 +114,15 @@ export default function ServicesPage() {
                     hover:border-primary/40
                   "
                 >
-                  <CardContent className="p-8 flex flex-col gap-5">
+                  <CardContent className="flex flex-col gap-4 p-5 sm:gap-5 sm:p-8">
 
                     {/* ICON */}
                     <div
                       className="
-                        relative flex h-14 w-14 items-center justify-center
+                        relative flex h-12 w-12 items-center justify-center
                         rounded-xl bg-primary/10 text-primary
                         transition-all duration-300
+                        sm:h-14 sm:w-14
 
                         group-hover:bg-primary
                         group-hover:text-white
@@ -144,11 +145,11 @@ export default function ServicesPage() {
                       </span>
                     </div>
 
-                    <CardTitle className="text-lg font-semibold text-foreground">
+                    <CardTitle className="text-base font-semibold text-foreground sm:text-lg">
                       {service.title}
                     </CardTitle>
 
-                    <p className="text-secondary leading-relaxed">
+                    <p className="text-sm leading-relaxed text-secondary sm:text-base">
                       {service.description}
                     </p>
 

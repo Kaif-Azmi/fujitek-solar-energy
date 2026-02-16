@@ -11,9 +11,13 @@ const QUICK_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-const PHONE_NUMBER = "+919886989292";
+const PHONE_NUMBER = "+918447097751";
+const PHONE_NUMBER_DISPLAY = "+91 84470 97751";
 const EMAIL = "info@fujiteksolar.com";
-const WHATSAPP_LINK = "https://wa.me/918887852321";
+const WHATSAPP_MESSAGE = encodeURIComponent(
+  "Hi Fujitek Solar Energy, I am interested in your solar solutions. Please share details."
+);
+const WHATSAPP_LINK = `https://wa.me/918447097751?text=${WHATSAPP_MESSAGE}`;
 
 export default function Footer() {
   return (
@@ -66,7 +70,7 @@ export default function Footer() {
                 className="flex w-fit items-center gap-2 text-sm text-white/85 transition hover:text-accent"
               >
                 <Phone className="h-4 w-4" />
-                {PHONE_NUMBER}
+                {PHONE_NUMBER_DISPLAY}
               </a>
 
               <a

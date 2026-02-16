@@ -126,7 +126,7 @@ export default function BannerHero({
         )}
 
         {/* Contrast overlay */}
-        <div className="absolute inset-0 bg-secondary/50" />
+        <div className="absolute inset-0 bg-secondary/20" />
 
         {/* Content */}
         <div className="relative z-10 flex h-full items-center">

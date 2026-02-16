@@ -16,9 +16,15 @@ import {
   Alert,
   AlertDescription,
 } from "@/components/ui";
-import { Phone, Mail, MapPin, Facebook, Instagram, X } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, MessageCircle, X } from "lucide-react";
 
 export default function Contact() {
+  const contactNumber = "+918447097751";
+  const contactNumberDisplay = "+91 84470 97751";
+  const whatsappMessage = encodeURIComponent(
+    "Hi Fujitek Solar Energy, I am interested in your solar solutions. Please share details."
+  );
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -231,18 +237,38 @@ export default function Contact() {
 
               <div className="my-8 space-y-6">
                 {[
-                  { icon: Phone, text: "+91 98869 89292" },
+                  { icon: Phone, text: contactNumberDisplay, href: `tel:${contactNumber}` },
+                  {
+                    icon: MessageCircle,
+                    text: `WhatsApp: ${contactNumberDisplay}`,
+                    href: `https://wa.me/${contactNumber.replace("+", "")}?text=${whatsappMessage}`,
+                  },
                   { icon: Mail, text: "contact@yourdomain.com" },
                   { icon: MapPin, text: "Office address goes here" },
-                ].map(({ icon: Icon, text }) => (
+                ].map(({ icon: Icon, text, href }) => (
                   <div key={text} className="flex items-center gap-4">
                     <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/15 text-primary">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <p className="text-sm text-foreground">{text}</p>
+                    {href ? (
+                      <a
+                        href={href}
+                        target={href.startsWith("https://") ? "_blank" : undefined}
+                        rel={href.startsWith("https://") ? "noopener noreferrer" : undefined}
+                        className="text-sm text-foreground underline-offset-4 hover:text-primary hover:underline"
+                      >
+                        {text}
+                      </a>
+                    ) : (
+                      <p className="text-sm text-foreground">{text}</p>
+                    )}
                   </div>
                 ))}
               </div>
+
+              <p className="max-w-md rounded-lg border border-primary/25 bg-primary/10 px-4 py-3 text-sm text-secondary">
+                Prefer WhatsApp? Message us on <span className="font-semibold text-foreground">{contactNumberDisplay}</span> and our team will reply with consultation details.
+              </p>
 
               <div className="mt-8 flex gap-3">
                 {[
