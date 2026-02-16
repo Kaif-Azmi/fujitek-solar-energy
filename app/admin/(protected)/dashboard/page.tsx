@@ -1,14 +1,14 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { ADMIN_AUTH_COOKIE, verifyAdminToken } from "@/lib/admin-auth";
+import { ADMIN_AUTH_COOKIE, verifyAdminSessionToken } from "@/lib/admin-auth";
 import AdminCard from "@/components/admin/AdminCard";
 
 export default async function AdminDashboardPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get(ADMIN_AUTH_COOKIE)?.value;
-  const isAuthorized = await verifyAdminToken(token);
+  const session = await verifyAdminSessionToken(token);
 
-  if (!isAuthorized) {
+  if (!session) {
     redirect("/admin/login");
   }
 

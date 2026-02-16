@@ -228,8 +228,6 @@ export default function About() {
         </section>
 
         </div>
-      </section>
-
       <FinalCTA
         heading="Join the Solar Revolution"
         supportingText="Let’s build a cleaner, smarter, and more sustainable future together with reliable solar systems and expert support."
@@ -237,6 +235,8 @@ export default function About() {
         ctaHref="/contact"
         ariaLabel="About page call to action"
       />
+      </section>
+
     </div>
   );
 }

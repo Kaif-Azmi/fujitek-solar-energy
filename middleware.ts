@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { ADMIN_AUTH_COOKIE, verifyAdminToken } from "@/lib/admin-auth";
+import { ADMIN_AUTH_COOKIE, verifyAdminSessionToken } from "@/lib/admin-auth";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -10,7 +10,8 @@ export async function middleware(request: NextRequest) {
   }
 
   const token = request.cookies.get(ADMIN_AUTH_COOKIE)?.value;
-  const isAuthorized = await verifyAdminToken(token);
+  const session = await verifyAdminSessionToken(token);
+  const isAuthorized = Boolean(session);
 
   if (pathname === "/admin/login") {
     if (isAuthorized) {

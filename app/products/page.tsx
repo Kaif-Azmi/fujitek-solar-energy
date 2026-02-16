@@ -96,8 +96,6 @@ export default async function ProductsPage() {
             </Link>
           </div>
         </div>
-      </section>
-
       <FinalCTA
         heading="Ready to Go Solar?"
         supportingText="Get expert guidance on the right panels, inverters, batteries, and EV charging solutions for your needs."
@@ -105,6 +103,7 @@ export default async function ProductsPage() {
         ctaHref="/contact"
         ariaLabel="Products page call to action"
       />
+      </section>
     </div>
   );
 }

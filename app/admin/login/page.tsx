@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Alert, AlertDescription } from "@/components/ui";
 
 export default function AdminLoginPage() {
@@ -11,12 +11,48 @@ export default function AdminLoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [csrfToken, setCsrfToken] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadCsrfToken() {
+      try {
+        const response = await fetch("/api/admin/csrf", {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store",
+        });
+
+        const data = (await response.json()) as { csrfToken?: string; message?: string };
+
+        if (!response.ok || !data.csrfToken) {
+          throw new Error(data.message || "Failed to initialize login session.");
+        }
+
+        if (mounted) setCsrfToken(data.csrfToken);
+      } catch {
+        if (mounted) setError("Failed to initialize secure login. Refresh the page.");
+      }
+    }
+
+    loadCsrfToken();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
+
+    if (!csrfToken) {
+      setError("Secure login token missing. Refresh the page and try again.");
+      return;
+    }
 
     if (!email.trim()) {
       setError("Email is required.");
@@ -38,16 +74,25 @@ export default function AdminLoginPage() {
 
       const response = await fetch("/api/admin/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": csrfToken,
+        },
         body: JSON.stringify({
           email: email.trim(),
           password,
         }),
       });
 
-      const data = (await response.json()) as { message?: string };
+      const data = (await response.json()) as { message?: string; retryAfterSeconds?: number };
 
       if (!response.ok) {
+        if (response.status === 429 && data.retryAfterSeconds) {
+          setError(`Too many attempts. Try again in ${data.retryAfterSeconds} seconds.`);
+          return;
+        }
+
         setError(data.message || "Login failed.");
         return;
       }
@@ -89,7 +134,7 @@ export default function AdminLoginPage() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             className="h-11 w-full rounded-lg border border-border bg-background px-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
-            placeholder="admin@fujitek.local"
+            placeholder="admin@company.com"
             required
           />
         </div>
@@ -111,7 +156,7 @@ export default function AdminLoginPage() {
           />
         </div>
 
-        <Button type="submit" size="lg" className="h-11 w-full" disabled={isSubmitting}>
+        <Button type="submit" size="lg" className="h-11 w-full" disabled={isSubmitting || !csrfToken}>
           {isSubmitting ? "Signing in..." : "Sign In"}
         </Button>
 

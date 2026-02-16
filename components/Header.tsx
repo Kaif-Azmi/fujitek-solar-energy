@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Phone } from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "home", href: "/", label: "Home" },
@@ -16,6 +17,7 @@ const NAV_ITEMS = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const PHONE_NUMBER = "+919886989292";
 
   const mobileLink =
     "block rounded-lg px-4 py-3 text-base font-medium text-foreground transition no-underline hover:bg-hover hover:text-primary";
@@ -73,6 +75,15 @@ export default function Header() {
 
         {/* Right actions */}
         <div className="flex items-center gap-3">
+          {/* Call */}
+          <a
+            href={`tel:${PHONE_NUMBER}`}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-primary transition hover:bg-hover hover:text-primary-hover no-underline"
+            aria-label="Call Fujitek Solar Energy"
+          >
+            <Phone className="h-4.5 w-4.5" />
+          </a>
+
           {/* WhatsApp */}
           <a
             href="https://wa.me/918887852321"

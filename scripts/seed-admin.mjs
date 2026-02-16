@@ -1,20 +1,48 @@
-// Copyright (c) 2026 Kaif Azmi
-// 
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
+import { MongoClient } from "mongodb";
+import bcrypt from "bcryptjs";
 
-import { createUser } from './lib/auth'; // adjust path
+const uri = process.env.MONGODB_URI;
+const email = (process.env.ADMIN_SEED_EMAIL || "admin@fujitek.local").trim().toLowerCase();
+const password = process.env.ADMIN_SEED_PASSWORD || "admin12345";
+const name = process.env.ADMIN_SEED_NAME || "Admin";
 
-(async () => {
-  try {
-    await createUser({
-      name: "Admin",
-      email: "kaifazmi211@gmail.com",
-      password: "admin123"
-    });
-    console.log("Admin seeded");
-  } catch (err) {
-    console.error("Seed failed:", err);
-  }
-  process.exit();
-})();
+if (!uri) throw new Error("MONGODB_URI is required");
+if (password.length < 8) throw new Error("ADMIN_SEED_PASSWORD must be at least 8 characters");
+
+const client = new MongoClient(uri);
+
+try {
+  await client.connect();
+
+  const safe = uri.replace(/^mongodb(\+srv)?:\/\//i, "https://");
+  const dbName = new URL(safe).pathname.split("/").filter(Boolean)[0];
+  if (!dbName) throw new Error("Database name missing in MONGODB_URI path");
+
+  const db = client.db(dbName);
+  const passwordHash = await bcrypt.hash(password, 12);
+  const now = new Date();
+
+  await db.collection("admins").updateOne(
+    { email },
+    {
+      $set: {
+        email,
+        name,
+        passwordHash,
+        role: "super_admin",
+        isActive: true,
+        updatedAt: now,
+      },
+      $setOnInsert: {
+        createdAt: now,
+      },
+    },
+    { upsert: true },
+  );
+
+  await db.collection("admins").createIndex({ email: 1 }, { unique: true });
+
+  console.log(`Admin seeded: ${email}`);
+} finally {
+  await client.close();
+}

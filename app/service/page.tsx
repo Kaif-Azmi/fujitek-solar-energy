@@ -157,11 +157,18 @@ export default function ServicesPage() {
             ))}
           </div>
         </div>
+        <FinalCTA
+        heading="Power Your Home or Business with Confidence"
+        supportingText="From system design to lifetime support, our service team is ready to build a solar plan that fits your goals."
+        ctaLabel="Get Free Consultation"
+        ctaHref="/contact"
+        ariaLabel="Services page call to action"
+      />
       </section>
 
 
       {/* ================= TRUST ================= */}
-      <section className="bg-background">
+      {/* <section className="bg-background">
         <div className="max-w-6xl mx-auto px-6 py-24">
           <Card className="bg-primary/5 border border-border shadow-sm">
             <CardContent className="p-12 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
@@ -212,15 +219,8 @@ export default function ServicesPage() {
             </CardContent>
           </Card>
         </div>
-      </section>
+      </section> */}
 
-      <FinalCTA
-        heading="Power Your Home or Business with Confidence"
-        supportingText="From system design to lifetime support, our service team is ready to build a solar plan that fits your goals."
-        ctaLabel="Get Free Consultation"
-        ctaHref="/contact"
-        ariaLabel="Services page call to action"
-      />
 
     </div>
   )
