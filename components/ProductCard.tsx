@@ -1,4 +1,5 @@
-import { IndianRupee } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, IndianRupee } from "lucide-react";
 import Image from "next/image";
 import { getOptimizedCloudinaryUrl } from "@/lib/image";
 
@@ -18,45 +19,51 @@ const CATEGORY_LABELS: Record<ProductCardProps["category"], string> = {
 
 export default function ProductCard({ name, category, price, imageUrl }: ProductCardProps) {
   return (
-    <article>
-      <div className="group relative overflow-hidden rounded-2xl border border-border/70 bg-background shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/10">
-        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
-          <div className="absolute -left-24 -top-24 h-56 w-56 rounded-full bg-accent/20 blur-2xl" />
-          <div className="absolute -right-24 -bottom-28 h-64 w-64 rounded-full bg-primary/15 blur-2xl" />
-          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent" />
-        </div>
+    <article className="group h-full">
+      <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-border/70 bg-background shadow-[0_6px_20px_rgba(15,23,42,0.06)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_20px_40px_rgba(15,23,42,0.12)]">
+        <div className="relative border-b border-border/60 bg-gradient-to-b from-primary/[0.08] to-background">
+          <div className="absolute right-3 top-3 z-20 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
+            {CATEGORY_LABELS[category]}
+          </div>
 
-        <div className="relative border-b border-border/60 bg-primary/5 p-4 sm:p-6">
-          <div className="grid aspect-[4/3] w-full place-items-center [perspective:900px] sm:aspect-[16/11]">
+          <div className="relative aspect-square w-full overflow-hidden">
             <Image
-              src={getOptimizedCloudinaryUrl(imageUrl, { width: 960, quality: 72, crop: "fit" })}
+              src={getOptimizedCloudinaryUrl(imageUrl, { width: 1024, quality: 76, crop: "fit" })}
               alt={name}
-              fill
-              sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
-              className="object-contain transition-transform duration-300 ease-out will-change-transform motion-reduce:transform-none group-hover:scale-[1.05] md:group-hover:[transform:rotateX(10deg)_rotateY(-14deg)_translateZ(26px)_scale(1.03)]"
+              width={1024}
+              height={1024}
+              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 28vw"
+              className="h-full w-full object-contain transition-transform duration-300 ease-out group-hover:scale-[1.03]"
             />
           </div>
         </div>
 
-        <div className="relative space-y-3 p-4 sm:p-5">
-          <div className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 md:group-hover:[transform:translateZ(14px)] motion-reduce:transform-none">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/90">
-              {CATEGORY_LABELS[category]}
-            </p>
-          </div>
-
-          <h3 className="text-pretty text-base font-semibold leading-snug text-foreground sm:text-lg">
+        <div className="flex flex-1 flex-col px-5 pb-5 pt-7 sm:px-6">
+          <h3 className="line-clamp-2 min-h-[3.5rem] text-lg font-semibold leading-snug text-foreground">
             {name}
           </h3>
 
-          <div className="flex items-baseline gap-2 text-foreground">
-            <span className="text-lg font-bold tabular-nums sm:text-xl">
-              ₹ {price.toLocaleString("en-IN")}
-            </span>
-            <IndianRupee className="sr-only" aria-hidden />
+          <div className="mt-4 flex items-center gap-2 text-foreground">
+            <IndianRupee className="h-5 w-5 text-primary" aria-hidden />
+            <p className="text-2xl font-bold tracking-tight tabular-nums">
+              {price.toLocaleString("en-IN")}
+            </p>
+          </div>
+
+          <div className="mt-5 flex items-center justify-between border-t border-border/70 pt-4">
+            <p className="text-sm text-secondary">Installation-ready hardware</p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/15"
+            >
+              Get Quote
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+            </Link>
           </div>
         </div>
       </div>
     </article>
   );
 }
+
+
