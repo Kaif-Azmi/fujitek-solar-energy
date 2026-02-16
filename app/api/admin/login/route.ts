@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import bcrypt from "bcryptjs";
 import { getDb } from "@/lib/mongodb";
 import { ADMINS_COLLECTION, type AdminDoc } from "@/models/Admin";
+import { ensureMongoIndexes } from "@/lib/mongodb-indexes";
 import {
   createAdminSessionToken,
   setAdminSessionCookie,
@@ -13,6 +14,7 @@ import {
   recordFailedAdminLogin,
 } from "@/lib/admin-rate-limit";
 import type { WithId, Document } from "mongodb";
+import { isStrongPassword, withNoStore } from "@/lib/security";
 
 type LoginBody = {
   email?: string;
@@ -44,7 +46,7 @@ function getSeedAdminConfig() {
 
   if (!email || !password) return null;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
-  if (password.length < 8) return null;
+  if (!isStrongPassword(password)) return null;
 
   return { email, password, name };
 }
@@ -123,7 +125,7 @@ export const runtime = "nodejs";
 export async function POST(request: NextRequest) {
   const csrfOk = await verifyLoginCsrf(request);
   if (!csrfOk) {
-    return NextResponse.json({ message: "Invalid CSRF token." }, { status: 403 });
+    return withNoStore(NextResponse.json({ message: "Invalid CSRF token." }, { status: 403 }));
   }
 
   let body: LoginBody;
@@ -131,29 +133,37 @@ export async function POST(request: NextRequest) {
   try {
     body = (await request.json()) as LoginBody;
   } catch {
-    return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
+    return withNoStore(NextResponse.json({ message: "Invalid request body." }, { status: 400 }));
   }
 
   const email = String(body.email ?? "").trim().toLowerCase();
   const password = String(body.password ?? "");
 
   if (!email || !password) {
-    return NextResponse.json({ message: "Email and password are required." }, { status: 400 });
+    return withNoStore(NextResponse.json({ message: "Email and password are required." }, { status: 400 }));
   }
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ message: "Enter a valid email address." }, { status: 400 });
+    return withNoStore(NextResponse.json({ message: "Enter a valid email address." }, { status: 400 }));
   }
 
-  if (password.length < 8) {
-    return NextResponse.json({ message: "Password must be at least 8 characters." }, { status: 400 });
+  if (!isStrongPassword(password)) {
+    return withNoStore(
+      NextResponse.json(
+        {
+          message:
+            "Password must be at least 12 characters and include uppercase, lowercase, number, and special character.",
+        },
+        { status: 400 },
+      ),
+    );
   }
 
   const rateLimitKey = buildRateLimitKey(request, email);
   const rateLimit = checkAdminLoginRateLimit(rateLimitKey);
 
   if (!rateLimit.allowed) {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       {
         message: "Too many failed login attempts. Please try again later.",
         retryAfterSeconds: rateLimit.retryAfterSeconds,
@@ -162,13 +172,12 @@ export async function POST(request: NextRequest) {
         status: 429,
         headers: { "Retry-After": String(rateLimit.retryAfterSeconds) },
       },
-    );
+    ));
   }
 
   const db = await getDb();
 
-  // Ensure baseline index and normalize first-run behavior.
-  await db.collection<AdminDoc>(ADMINS_COLLECTION).createIndex({ email: 1 }, { unique: true });
+  await ensureMongoIndexes();
 
   let admin = await findAdminByEmail(db, email);
   if (!admin) {
@@ -181,13 +190,13 @@ export async function POST(request: NextRequest) {
 
   if (!admin) {
     recordFailedAdminLogin(rateLimitKey);
-    return NextResponse.json({ message: "Invalid email or password." }, { status: 401 });
+    return withNoStore(NextResponse.json({ message: "Invalid email or password." }, { status: 401 }));
   }
 
   const passwordOk = await bcrypt.compare(password, admin.passwordHash);
   if (!passwordOk) {
     recordFailedAdminLogin(rateLimitKey);
-    return NextResponse.json({ message: "Invalid email or password." }, { status: 401 });
+    return withNoStore(NextResponse.json({ message: "Invalid email or password." }, { status: 401 }));
   }
 
   clearAdminLoginRateLimit(rateLimitKey);
@@ -196,6 +205,7 @@ export async function POST(request: NextRequest) {
   const response = NextResponse.json({ ok: true });
 
   setAdminSessionCookie(response, token);
+  withNoStore(response);
 
   await db.collection<AdminDoc>(ADMINS_COLLECTION).updateOne(
     { _id: admin._id },

@@ -10,12 +10,56 @@ import InfiniteServicesMarquee from "../components/InfiniteServicesMarquee";
 import SolarBenefits from '@/components/SolarBenefits';
 import type { Metadata } from "next";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
+import { getDb } from "@/lib/mongodb";
+
+type HomeBanner = {
+  _id?: string;
+  id?: string;
+  title: string;
+  subtitle?: string;
+  ctaText?: string;
+  imageUrl?: string;
+  status: string;
+};
 
 export const metadata: Metadata = buildPageMetadata(pageSeo.home);
-export default function Home() {
+export const revalidate = 300;
+
+async function getHomeBanners(): Promise<HomeBanner[]> {
+  const db = await getDb();
+  const docs = await db
+    .collection<{
+      _id: unknown;
+      title: string;
+      subtitle?: string;
+      ctaText?: string;
+      imageUrl?: string;
+      status?: string;
+      isActive?: boolean;
+    }>("banners")
+    .find(
+      { $or: [{ status: "Active" }, { isActive: true }] },
+      { projection: { title: 1, subtitle: 1, ctaText: 1, imageUrl: 1, status: 1, isActive: 1 } },
+    )
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .toArray();
+
+  return docs.map((doc) => ({
+    _id: String(doc._id),
+    title: doc.title,
+    subtitle: doc.subtitle,
+    ctaText: doc.ctaText,
+    imageUrl: doc.imageUrl,
+    status: doc.status || (doc.isActive ? "Active" : "Inactive"),
+  }));
+}
+
+export default async function Home() {
+  const banners = await getHomeBanners();
   return (
     <div className="w-full">
-      <BannerHero />
+      <BannerHero initialBanners={banners} />
 
       {/* WHY CHOOSE US */}
       <section className="bg-surface-elevated" aria-label="Why choose us">

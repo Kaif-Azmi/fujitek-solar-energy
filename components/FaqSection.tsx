@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, Button } from "./ui";
+import { Highlighter } from "@/components/ui/highlighter";
 
 interface FaqItem {
   question: string;
@@ -53,7 +54,15 @@ export default function FaqSection() {
               </span>
 
               <h2 className="mt-5 text-3xl text-strong tracking-tight text-foreground md:text-4xl">
-                Frequently Asked Questions About Solar and Inverter Services
+                <Highlighter
+                  action="underline"
+                  color="var(--accent)"
+                  strokeWidth={2}
+                  animationDuration={700}
+                  iterations={1}
+                >
+                  Frequently Asked Questions About Solar and Inverter Services
+                </Highlighter>
               </h2>
 
               <p className="mt-4 text-secondary">

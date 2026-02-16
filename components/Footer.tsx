@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Mail, Phone, Twitter } from "lucide-react";
+import { DottedMap } from "@/components/ui/dotted-map";
 
 const QUICK_LINKS = [
   { href: "/", label: "Home" },
@@ -17,6 +18,9 @@ const WHATSAPP_LINK = "https://wa.me/918887852321";
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-[#163f6d] text-white">
+      <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden>
+        <DottedMap className="h-full w-full text-accent" />
+      </div>
       <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-6 py-14 sm:py-16">

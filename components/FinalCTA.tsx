@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Highlighter } from "@/components/ui/highlighter";
 
 interface FinalCTAProps {
   heading?: string;
@@ -40,7 +41,15 @@ export default function FinalCTA({
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="flex flex-col justify-center">
             <h2 className="text-3xl font-extrabold leading-tight md:text-4xl">
-              {heading}
+              <Highlighter
+                action="underline"
+                color="var(--accent)"
+                strokeWidth={2}
+                animationDuration={700}
+                iterations={1}
+              >
+                {heading}
+              </Highlighter>
             </h2>
             <p className="mt-4 max-w-xl text-base text-white/90 md:text-lg">
               {supportingText}

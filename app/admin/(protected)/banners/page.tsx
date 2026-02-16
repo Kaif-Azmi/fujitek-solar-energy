@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 
 interface Banner {
@@ -38,8 +39,9 @@ export default function BannersPage() {
         const res = await fetch('/api/banners');
         if (!res.ok) throw new Error(`Status ${res.status}`);
         const data = await res.json();
+        const rows = Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
         if (!mounted) return;
-        setBanners(Array.isArray(data) ? data : []);
+        setBanners(Array.isArray(rows) ? rows : []);
       } catch (err) {
         console.error('Failed to load banners', err);
         setError('Failed to load banners');
@@ -187,8 +189,14 @@ export default function BannersPage() {
               <div key={b._id ?? b.title} className="border rounded overflow-hidden bg-white">
                 <div className="w-full h-44 bg-white flex items-center justify-center overflow-hidden relative">
                   {b.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={b.imageUrl} alt={b.title} className="w-full h-full object-cover" />
+                    <Image
+                      src={b.imageUrl}
+                      alt={b.title}
+                      width={640}
+                      height={320}
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <div className="text-slate-500">No image</div>
                   )}

@@ -9,6 +9,7 @@ import {
   Sun,
   ShieldCheck,
 } from 'lucide-react';
+import { Highlighter } from "@/components/ui/highlighter";
 
 export default function SolarBenefitsBento() {
   return (
@@ -21,7 +22,15 @@ export default function SolarBenefitsBento() {
           </span>
 
           <h2 className="mt-4 text-4xl font-extrabold leading-tight text-foreground">
-            Benefits of Switching to Solar Energy
+            <Highlighter
+              action="underline"
+              color="var(--accent)"
+              strokeWidth={2}
+              animationDuration={700}
+              iterations={1}
+            >
+              Benefits of Switching to Solar Energy
+            </Highlighter>
           </h2>
 
           <p className="mt-4 text-lg text-secondary">

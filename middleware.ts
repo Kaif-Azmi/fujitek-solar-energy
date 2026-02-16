@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { ADMIN_AUTH_COOKIE, verifyAdminSessionToken } from "@/lib/admin-auth";
+import { validateRequiredEnv } from "@/lib/env";
 
 export async function middleware(request: NextRequest) {
+  validateRequiredEnv();
   const { pathname } = request.nextUrl;
 
   if (!pathname.startsWith("/admin")) {

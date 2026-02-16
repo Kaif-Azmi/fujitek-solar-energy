@@ -17,6 +17,9 @@ import MissionLottie from "@/components/MissionLottie";
 import HeroSection from "@/components/HeroSection";
 import FinalCTA from "@/components/FinalCTA";
 import { InfiniteGrid } from "@/components/ui/infinite-grid";
+import { NumberTicker } from "@/components/ui/number-ticker";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { Highlighter } from "@/components/ui/highlighter";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata(pageSeo.about);
@@ -55,9 +58,24 @@ const JOURNEY = [
 
 export default function About() {
   const stats = [
-    { value: "500+", label: "Projects Completed" },
-    { value: "10K+", label: "Happy Customers" },
-    { value: "5MWh", label: "Energy Generated" },
+    {
+      value: 500,
+      suffix: "+",
+      label: "Projects Completed",
+      detail: "Across residential, commercial, and institutional sites.",
+    },
+    {
+      value: 10,
+      suffix: "K+",
+      label: "Happy Customers",
+      detail: "Supported by responsive service and long-term maintenance.",
+    },
+    {
+      value: 5,
+      suffix: "MWh",
+      label: "Energy Generated",
+      detail: "Clean energy output enabled through reliable solar systems.",
+    },
   ];
 
   const values = [
@@ -102,7 +120,9 @@ export default function About() {
             <CardContent className="p-8">
               <div className="mb-4 h-1 w-16 rounded-full bg-primary" />
               <h2 className="mb-4 text-3xl text-strong text-foreground">
-                Our Mission
+                <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
+                  Our Mission
+                </Highlighter>
               </h2>
               <p className="mb-4 leading-relaxed text-secondary">
                 At Fujitek Solar Energy, we are committed to making renewable
@@ -121,7 +141,9 @@ export default function About() {
         {/* ================= JOURNEY ================= */}
         <section className="mb-section relative">
           <h2 className="mb-20 text-center text-3xl text-strong text-foreground">
-            Our Journey
+            <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
+              Our Journey
+            </Highlighter>
           </h2>
 
           <div className="relative">
@@ -183,25 +205,85 @@ export default function About() {
         </section>
 
         {/* ================= STATS ================= */}
-        <section className="mb-section grid grid-cols-1 gap-8 md:grid-cols-3">
-          {stats.map((stat) => (
-            <Card key={stat.label} className="bg-navy border-navy-muted">
-              <CardContent className="p-8 text-center">
-                <p className="mb-2 text-4xl font-extrabold text-accent">
-                  {stat.value}
-                </p>
-                <p className="text-sm uppercase tracking-wide --text-primary">
-                  {stat.label}
+        <section className="mb-section">
+          <div className="mb-8 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              Impact Snapshot
+            </p>
+            <h2 className="mt-3 text-3xl text-strong text-foreground">
+              Real-World{" "}
+              <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
+                Solar Outcomes
+              </Highlighter>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:auto-rows-[170px] md:grid-cols-4">
+            <BlurFade delay={0.05} className="md:col-span-2 md:row-span-2">
+            <Card className="group relative h-full overflow-hidden border-primary/35 bg-primary transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(15,23,42,0.32)]">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/15 to-transparent" />
+              <CardContent className="relative flex h-full flex-col justify-between p-8">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
+                    {stats[0].label}
+                  </p>
+                  <p className="mt-4 text-5xl font-extrabold leading-none text-accent sm:text-6xl">
+                    <NumberTicker value={stats[0].value} className="text-accent dark:text-accent" />
+                    <span>{stats[0].suffix}</span>
+                  </p>
+                </div>
+                <p className="max-w-sm text-sm leading-relaxed text-white/85">
+                  {stats[0].detail}
                 </p>
               </CardContent>
             </Card>
-          ))}
+            </BlurFade>
+
+            <BlurFade delay={0.12} className="md:col-span-2">
+            <Card className="group relative h-full overflow-hidden border-primary/25 bg-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(14,116,144,0.14)]">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/18 via-accent/8 to-transparent" />
+              <CardContent className="relative p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+                  {stats[1].label}
+                </p>
+                <p className="mt-3 text-4xl font-extrabold leading-none text-primary">
+                  <NumberTicker value={stats[1].value} className="text-primary dark:text-primary" />
+                  <span>{stats[1].suffix}</span>
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-primary/80">
+                  {stats[1].detail}
+                </p>
+              </CardContent>
+            </Card>
+            </BlurFade>
+
+            <BlurFade delay={0.18} className="md:col-span-2">
+            <Card className="group relative h-full overflow-hidden border-accent/35 bg-accent/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(13,148,136,0.15)] md:col-span-2">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/35 via-accent/15 to-transparent" />
+              <CardContent className="relative p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+                  {stats[2].label}
+                </p>
+                <p className="mt-3 text-4xl font-extrabold leading-none text-primary">
+                  <NumberTicker value={stats[2].value} className="text-primary dark:text-primary" />
+                  <span className="ml-1">{stats[2].suffix}</span>
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-primary/80">
+                  {stats[2].detail}
+                </p>
+              </CardContent>
+            </Card>
+            </BlurFade>
+          </div>
         </section>
 
         {/* ================= VALUES ================= */}
         <section className="mb-section">
           <h2 className="mb-12 text-center text-3xl text-strong text-foreground">
-            Our Core Values
+            Our{" "}
+            <Highlighter action="underline" color="var(--primary)" strokeWidth={2} animationDuration={700} iterations={1}>
+              Core Values
+            </Highlighter>
           </h2>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">

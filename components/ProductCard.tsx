@@ -1,4 +1,6 @@
 import { IndianRupee } from "lucide-react";
+import Image from "next/image";
+import { getOptimizedCloudinaryUrl } from "@/lib/image";
 
 export interface ProductCardProps {
   name: string;
@@ -26,12 +28,12 @@ export default function ProductCard({ name, category, price, imageUrl }: Product
 
         <div className="relative border-b border-border/60 bg-primary/5 p-4 sm:p-6">
           <div className="grid aspect-[4/3] w-full place-items-center [perspective:900px] sm:aspect-[16/11]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={imageUrl}
+            <Image
+              src={getOptimizedCloudinaryUrl(imageUrl, { width: 960, quality: 72, crop: "fit" })}
               alt={name}
-              className="h-full w-full object-contain transition-transform duration-300 ease-out will-change-transform motion-reduce:transform-none group-hover:scale-[1.05] md:group-hover:[transform:rotateX(10deg)_rotateY(-14deg)_translateZ(26px)_scale(1.03)]"
-              loading="lazy"
+              fill
+              sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
+              className="object-contain transition-transform duration-300 ease-out will-change-transform motion-reduce:transform-none group-hover:scale-[1.05] md:group-hover:[transform:rotateX(10deg)_rotateY(-14deg)_translateZ(26px)_scale(1.03)]"
             />
           </div>
         </div>

@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 import { getDb } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
+import { getOptimizedCloudinaryUrl } from "@/lib/image";
 
 type ProductCategory = "Panel" | "Inverter" | "Battery" | "EV Charger";
 
@@ -23,13 +24,15 @@ type ProductDoc = {
 };
 
 export const metadata: Metadata = buildPageMetadata(pageSeo.products);
+export const revalidate = 300;
 
 async function getActiveProducts() {
   const db = await getDb();
   const docs = await db
     .collection<ProductDoc>("admin_products")
-    .find({ status: "active" })
+    .find({ status: "active" }, { projection: { name: 1, category: 1, price: 1, imageUrl: 1 } })
     .sort({ createdAt: -1 })
+    .limit(120)
     .toArray();
 
   return docs.map((doc) => ({
@@ -37,7 +40,7 @@ async function getActiveProducts() {
     name: doc.name,
     category: doc.category,
     price: doc.price,
-    imageUrl: doc.imageUrl,
+    imageUrl: getOptimizedCloudinaryUrl(doc.imageUrl, { width: 960, quality: 72, crop: "fit" }),
   }));
 }
 

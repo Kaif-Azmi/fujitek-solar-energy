@@ -2,7 +2,7 @@
 
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
-const LOTTIE_URL = 'https://lottie.host/829ae003-4864-40fc-a986-63cf93595e64/Ne3gRHBLbt.lottie';
+const LOTTIE_URL = 'https://lottie.host/601b9405-cdb6-49ab-906d-23e841f30434/w7AV9BOh7E.lottie';
 
 export default function MissionLottie() {
   return (

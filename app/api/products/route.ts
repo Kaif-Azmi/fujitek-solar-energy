@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getDb } from "@/lib/mongodb";
+import { ensureMongoIndexes } from "@/lib/mongodb-indexes";
 import { requireAdminRequest } from "@/lib/admin-route-auth";
+import { withNoStore, withPublicCache } from "@/lib/security";
 
 export const runtime = "nodejs";
 
@@ -17,6 +19,17 @@ type CreateBody = Partial<{
   status: Status;
 }>;
 
+type ProductDoc = {
+  _id: unknown;
+  name: string;
+  category: Category;
+  price: number;
+  imageUrl: string;
+  publicId: string;
+  status: Status;
+  createdAt: Date;
+};
+
 function isValidCategory(value: string): value is Category {
   return CATEGORIES.includes(value as Category);
 }
@@ -27,29 +40,39 @@ function parsePrice(input: unknown) {
   return value;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    await ensureMongoIndexes();
+    const params = request.nextUrl.searchParams;
+    const page = Math.max(Number(params.get("page") || "1"), 1);
+    const limit = Math.min(Math.max(Number(params.get("limit") || "24"), 1), 100);
+    const skip = (page - 1) * limit;
+
     const db = await getDb();
     const docs = await db
-      .collection("admin_products")
-      .find({ status: "active" })
+      .collection<ProductDoc>("admin_products")
+      .find({ status: "active" }, { projection: { name: 1, category: 1, price: 1, imageUrl: 1 } })
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .toArray();
 
-    return NextResponse.json(
-      docs.map((doc: any) => ({
+    return withPublicCache(NextResponse.json({
+      page,
+      limit,
+      items: docs.map((doc) => ({
         id: String(doc._id),
         name: doc.name,
         category: doc.category,
         price: doc.price,
         imageUrl: doc.imageUrl,
-      }))
-    );
+      })),
+    }), 300);
   } catch (error) {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { message: error instanceof Error ? error.message : "Failed to load products." },
       { status: 500 }
-    );
+    ));
   }
 }
 
@@ -62,7 +85,7 @@ export async function POST(request: NextRequest) {
     try {
       body = (await request.json()) as CreateBody;
     } catch {
-      return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "Invalid request body." }, { status: 400 }));
     }
 
     const errors: Record<string, string> = {};
@@ -83,10 +106,11 @@ export async function POST(request: NextRequest) {
     if (!publicId) errors.publicId = "publicId is required.";
 
     if (Object.keys(errors).length > 0) {
-      return NextResponse.json({ message: "Validation failed.", errors }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "Validation failed.", errors }, { status: 400 }));
     }
 
     const now = new Date();
+    await ensureMongoIndexes();
     const db = await getDb();
     const result = await db.collection("admin_products").insertOne({
       name,
@@ -98,7 +122,7 @@ export async function POST(request: NextRequest) {
       createdAt: now,
     });
 
-    return NextResponse.json({
+    return withNoStore(NextResponse.json({
       id: result.insertedId.toString(),
       name,
       category,
@@ -107,11 +131,11 @@ export async function POST(request: NextRequest) {
       publicId,
       status,
       createdAt: now,
-    });
+    }));
   } catch (error) {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { message: error instanceof Error ? error.message : "Failed to create product." },
       { status: 500 }
-    );
+    ));
   }
 }

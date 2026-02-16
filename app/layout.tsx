@@ -4,6 +4,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { siteSeo } from "@/lib/seo";
+import { validateRequiredEnv } from "@/lib/env";
+
+validateRequiredEnv();
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +26,11 @@ export const metadata: Metadata = {
   description: siteSeo.description,
   keywords: siteSeo.keywords,
   metadataBase: new URL(siteSeo.url),
+  icons: {
+    icon: "/fujitek-logo-tab.svg",
+    shortcut: "/fujitek-logo-tab.svg",
+    apple: "/fujitek-logo-tab.svg",
+  },
   openGraph: {
     title: `${siteSeo.name} | Solar & Inverter Solutions`,
     description: siteSeo.description,
@@ -52,3 +60,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

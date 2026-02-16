@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ImageIcon, PackageOpen, Pencil, Search } from "lucide-react";
+import Image from "next/image";
 import AdminCard from "@/components/admin/AdminCard";
 import ConfirmDeleteModal from "@/components/admin/ConfirmDeleteModal";
 import ProductForm, {
@@ -26,6 +27,7 @@ type ProductItem = {
 type FormErrors = Partial<Record<keyof ProductFormState, string>>;
 type FilterStatus = "all" | ProductStatus;
 type FilterCategory = "all" | ProductCategory;
+type JsonPayload = { message?: string; [key: string]: unknown };
 
 const EMPTY_FORM: ProductFormState = {
   name: "",
@@ -50,12 +52,12 @@ export default function ProductsAdminPage() {
   const [deleteTarget, setDeleteTarget] = useState<ProductItem | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  async function readJsonSafe(response: Response) {
+  async function readJsonSafe(response: Response): Promise<JsonPayload> {
     const text = await response.text();
     try {
-      return JSON.parse(text) as unknown;
+      return JSON.parse(text) as JsonPayload;
     } catch {
-      return { message: text || "Non-JSON response." } as { message: string };
+      return { message: text || "Non-JSON response." };
     }
   }
 
@@ -66,7 +68,7 @@ export default function ProductsAdminPage() {
         setLoading(true);
         const response = await fetch("/api/admin/products", { cache: "no-store" });
         if (!response.ok) throw new Error("Failed to load products");
-        const data = (await readJsonSafe(response)) as ProductItem[];
+        const data = (await readJsonSafe(response)) as unknown as ProductItem[];
         if (mounted) setProducts(data);
       } catch {
         if (mounted) setProducts([]);
@@ -336,8 +338,14 @@ export default function ProductsAdminPage() {
               >
                 <div className="h-44 bg-slate-100">
                   {item.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover" />
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.name}
+                      width={640}
+                      height={320}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="h-full w-full object-cover"
+                    />
                   ) : (
                     <div className="flex h-full items-center justify-center text-slate-400">
                       <ImageIcon className="h-5 w-5" />

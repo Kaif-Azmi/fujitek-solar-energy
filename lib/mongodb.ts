@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+import { validateRequiredEnv } from "@/lib/env";
 
 const uri = process.env.MONGODB_URI;
 
@@ -15,7 +16,7 @@ function parseDbNameFromUri(connectionString: string): string {
       throw new Error('Database name not found in MONGODB_URI (expect mongodb://user:pass@host/dbname)');
     }
     return dbName;
-  } catch (err) {
+  } catch {
     throw new Error('Failed to parse database name from MONGODB_URI');
   }
 }
@@ -23,14 +24,13 @@ function parseDbNameFromUri(connectionString: string): string {
 let DB_NAME: string | null = null;
 
 declare global {
-  // eslint-disable-next-line no-var
   var __mongoClientPromise: Promise<MongoClient> | undefined;
-  // eslint-disable-next-line no-var
   var __mongoClient: MongoClient | undefined;
 }
 
 function ensureMongoClientPromise() {
   if (globalThis.__mongoClientPromise) return;
+  validateRequiredEnv();
   if (!uri) {
     throw new Error('MONGODB_URI environment variable is required');
   }
@@ -40,7 +40,6 @@ function ensureMongoClientPromise() {
     .connect()
     .then(() => {
       globalThis.__mongoClient = client;
-      console.log('MongoDB: connected');
       client.on('close', () => {
         console.error('MongoDB: connection closed unexpectedly');
       });
@@ -58,7 +57,9 @@ function ensureMongoClientPromise() {
  */
 export async function getMongoClient(): Promise<MongoClient> {
   ensureMongoClientPromise();
-  return await globalThis.__mongoClientPromise;
+  const clientPromise = globalThis.__mongoClientPromise;
+  if (!clientPromise) throw new Error("MongoDB client not initialized.");
+  return await clientPromise;
 }
 
 /**

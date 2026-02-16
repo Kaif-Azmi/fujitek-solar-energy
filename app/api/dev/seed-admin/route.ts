@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { getDb } from "@/lib/mongodb";
 import { ADMINS_COLLECTION, type AdminDoc } from "@/models/Admin";
+import { isStrongPassword } from "@/lib/security";
 
 export const runtime = "nodejs";
 
@@ -20,8 +21,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ message: "Valid email is required." }, { status: 400 });
   }
 
-  if (password.length < 8) {
-    return NextResponse.json({ message: "Password must be at least 8 characters." }, { status: 400 });
+  if (!isStrongPassword(password)) {
+    return NextResponse.json(
+      {
+        message:
+          "Password must be at least 12 characters and include uppercase, lowercase, number, and special character.",
+      },
+      { status: 400 },
+    );
   }
 
   const passwordHash = await bcrypt.hash(password, 12);

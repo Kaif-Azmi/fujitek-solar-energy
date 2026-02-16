@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import cloudinary, { isCloudinaryConfigured } from "@/lib/cloudinary";
 import { requireAdminRequest } from "@/lib/admin-route-auth";
+import { withNoStore } from "@/lib/security";
 
 type DeleteBody = {
   publicId?: string;
@@ -24,13 +25,13 @@ export async function POST(request: NextRequest) {
     try {
       body = (await request.json()) as DeleteBody;
     } catch {
-      return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "Invalid request body." }, { status: 400 }));
     }
 
     const publicId = String(body.publicId || "").trim();
 
     if (!publicId) {
-      return NextResponse.json({ message: "publicId is required." }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "publicId is required." }, { status: 400 }));
     }
 
     const result = await cloudinary.uploader.destroy(publicId, {
@@ -38,14 +39,14 @@ export async function POST(request: NextRequest) {
     });
 
     if (result.result !== "ok" && result.result !== "not found") {
-      return NextResponse.json({ message: "Failed to delete image." }, { status: 500 });
+      return withNoStore(NextResponse.json({ message: "Failed to delete image." }, { status: 500 }));
     }
 
-    return NextResponse.json({ ok: true, result: result.result });
+    return withNoStore(NextResponse.json({ ok: true, result: result.result }));
   } catch (error) {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { message: error instanceof Error ? error.message : "Delete failed." },
       { status: 500 }
-    );
+    ));
   }
 }

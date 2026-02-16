@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Button, Alert, AlertDescription } from "@/components/ui";
 
-export default function AdminLoginPage() {
+function AdminLoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -64,8 +64,10 @@ export default function AdminLoginPage() {
       return;
     }
 
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{12,}$/.test(password)) {
+      setError(
+        "Password must be at least 12 characters and include uppercase, lowercase, number, and special character.",
+      );
       return;
     }
 
@@ -152,7 +154,7 @@ export default function AdminLoginPage() {
             className="h-11 w-full rounded-lg border border-border bg-background px-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
             placeholder="Enter admin password"
             required
-            minLength={8}
+            minLength={12}
           />
         </div>
 
@@ -169,5 +171,13 @@ export default function AdminLoginPage() {
         </p>
       </form>
     </main>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <AdminLoginContent />
+    </Suspense>
   );
 }

@@ -1,8 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { ObjectId } from "mongodb";
 import { getDb } from "@/lib/mongodb";
+import { ensureMongoIndexes } from "@/lib/mongodb-indexes";
 import { requireAdminRequest } from "@/lib/admin-route-auth";
 import cloudinary, { isCloudinaryConfigured } from "@/lib/cloudinary";
+import { withNoStore } from "@/lib/security";
 
 export const runtime = "nodejs";
 
@@ -36,14 +38,22 @@ export async function GET(request: NextRequest) {
     const unauthorized = await requireAdminRequest(request);
     if (unauthorized) return unauthorized;
 
+    await ensureMongoIndexes();
+    const params = request.nextUrl.searchParams;
+    const page = Math.max(Number(params.get("page") || "1"), 1);
+    const limit = Math.min(Math.max(Number(params.get("limit") || "100"), 1), 200);
+    const skip = (page - 1) * limit;
+
     const db = await getDb();
     const docs = await db
       .collection<ProductDoc>("admin_products")
-      .find({})
+      .find({}, { projection: { name: 1, category: 1, price: 1, imageUrl: 1, publicId: 1, status: 1, createdAt: 1 } })
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .toArray();
 
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       docs.map((doc) => ({
         id: doc._id.toString(),
         name: doc.name,
@@ -54,12 +64,12 @@ export async function GET(request: NextRequest) {
         status: doc.status,
         createdAt: doc.createdAt,
       }))
-    );
+    ));
   } catch (error) {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { message: error instanceof Error ? error.message : "Failed to load products." },
       { status: 500 }
-    );
+    ));
   }
 }
 
@@ -80,7 +90,7 @@ export async function POST(request: NextRequest) {
     try {
       body = (await request.json()) as typeof body;
     } catch {
-      return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "Invalid request body." }, { status: 400 }));
     }
 
     const name = String(body.name || "").trim();
@@ -91,13 +101,14 @@ export async function POST(request: NextRequest) {
     const status: Status = body.status === "inactive" ? "inactive" : "active";
 
     if (!name || !isValidCategory(category) || price === null || !imageUrl || !publicId) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { message: "All fields are required and must be valid." },
         { status: 400 }
-      );
+      ));
     }
 
     const now = new Date();
+    await ensureMongoIndexes();
     const db = await getDb();
     const result = await db.collection("admin_products").insertOne({
       name,
@@ -109,7 +120,7 @@ export async function POST(request: NextRequest) {
       createdAt: now,
     });
 
-    return NextResponse.json({
+    return withNoStore(NextResponse.json({
       id: result.insertedId.toString(),
       name,
       category,
@@ -118,12 +129,12 @@ export async function POST(request: NextRequest) {
       publicId,
       status,
       createdAt: now,
-    });
+    }));
   } catch (error) {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { message: error instanceof Error ? error.message : "Failed to create product." },
       { status: 500 }
-    );
+    ));
   }
 }
 
@@ -144,12 +155,12 @@ export async function PATCH(request: NextRequest) {
     try {
       body = (await request.json()) as typeof body;
     } catch {
-      return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "Invalid request body." }, { status: 400 }));
     }
 
     const id = String(body.id || "").trim();
     if (!id || !ObjectId.isValid(id)) {
-      return NextResponse.json({ message: "Invalid product id." }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "Invalid product id." }, { status: 400 }));
     }
 
     const update: Record<string, unknown> = {};
@@ -160,7 +171,7 @@ export async function PATCH(request: NextRequest) {
     if (body.price !== undefined) {
       const price = parsePrice(body.price);
       if (price === null) {
-        return NextResponse.json({ message: "Invalid price." }, { status: 400 });
+        return withNoStore(NextResponse.json({ message: "Invalid price." }, { status: 400 }));
       }
       update.price = price;
     }
@@ -173,12 +184,12 @@ export async function PATCH(request: NextRequest) {
       .collection("admin_products")
       .updateOne({ _id: new ObjectId(id) }, { $set: update });
 
-    return NextResponse.json({ ok: true });
+    return withNoStore(NextResponse.json({ ok: true }));
   } catch (error) {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { message: error instanceof Error ? error.message : "Failed to update product." },
       { status: 500 }
-    );
+    ));
   }
 }
 
@@ -191,13 +202,13 @@ export async function DELETE(request: NextRequest) {
     try {
       body = (await request.json()) as { id?: string };
     } catch {
-      return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "Invalid request body." }, { status: 400 }));
     }
 
     const id = String(body.id || "").trim();
 
     if (!id || !ObjectId.isValid(id)) {
-      return NextResponse.json({ message: "Invalid product id." }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "Invalid product id." }, { status: 400 }));
     }
 
     const db = await getDb();
@@ -206,7 +217,7 @@ export async function DELETE(request: NextRequest) {
       .findOne({ _id: new ObjectId(id) });
 
     if (!existing) {
-      return NextResponse.json({ message: "Product not found." }, { status: 404 });
+      return withNoStore(NextResponse.json({ message: "Product not found." }, { status: 404 }));
     }
 
     if (existing.publicId) {
@@ -220,11 +231,11 @@ export async function DELETE(request: NextRequest) {
     }
 
     await db.collection("admin_products").deleteOne({ _id: new ObjectId(id) });
-    return NextResponse.json({ ok: true });
+    return withNoStore(NextResponse.json({ ok: true }));
   } catch (error) {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { message: error instanceof Error ? error.message : "Failed to delete product." },
       { status: 500 }
-    );
+    ));
   }
 }

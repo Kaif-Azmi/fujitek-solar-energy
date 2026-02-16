@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Briefcase, Factory, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui";
+import { Highlighter } from "@/components/ui/highlighter";
 
 interface Project {
   title: string;
@@ -59,7 +60,15 @@ export default function ProjectsPreview({
               {badgeLabel}
             </span>
             <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-              {heading}
+              <Highlighter
+                action="underline"
+                color="var(--accent)"
+                strokeWidth={2}
+                animationDuration={700}
+                iterations={1}
+              >
+                {heading}
+              </Highlighter>
             </h2>
             <p className="mt-3 text-base leading-relaxed text-secondary">{description}</p>
           </div>

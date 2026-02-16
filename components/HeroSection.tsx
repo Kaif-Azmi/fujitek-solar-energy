@@ -1,5 +1,3 @@
-"use client";
-
 type HeroSectionProps = {
   badge: string;
   title: string;

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from "next/link";
+import { getOptimizedCloudinaryUrl } from "@/lib/image";
 
 interface Banner {
   _id?: string;
@@ -16,6 +17,7 @@ interface Banner {
 }
 
 interface BannerHeroProps {
+  initialBanners?: Banner[];
   ariaLabel?: string;
   fallbackTitle?: string;
   fallbackSubtitle?: string;
@@ -33,13 +35,14 @@ const HERO_DEFAULTS = {
 };
 
 export default function BannerHero({
+  initialBanners = [],
   ariaLabel = HERO_DEFAULTS.ariaLabel,
   fallbackTitle = HERO_DEFAULTS.fallbackTitle,
   fallbackSubtitle = HERO_DEFAULTS.fallbackSubtitle,
   fallbackCtaLabel = HERO_DEFAULTS.fallbackCtaLabel,
   fallbackCtaHref = HERO_DEFAULTS.fallbackCtaHref,
 }: BannerHeroProps) {
-  const [banners, setBanners] = useState<Banner[]>([]);
+  const [banners, setBanners] = useState<Banner[]>(initialBanners);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -48,17 +51,17 @@ export default function BannerHero({
       try {
         const res = await fetch('/api/banners');
         const data = await res.json();
-        setBanners(
-          Array.isArray(data)
-            ? data.filter((b: Banner) => b.status === 'Active')
-            : []
-        );
+        const rows = Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
+        const next = rows
+          ? rows.filter((b: Banner) => b.status === 'Active')
+          : [];
+        if (next.length > 0) setBanners(next);
       } catch {
-        setBanners([]);
+        if (!initialBanners.length) setBanners([]);
       }
     }
     fetchBanners();
-  }, []);
+  }, [initialBanners]);
 
   useEffect(() => {
     if (banners.length <= 1 || isHovered) return;
@@ -111,10 +114,11 @@ export default function BannerHero({
         {/* Background */}
         {banner.imageUrl ? (
           <Image
-            src={banner.imageUrl}
+            src={getOptimizedCloudinaryUrl(banner.imageUrl, { width: 1920, quality: 70, crop: "fill" })}
             alt={`${banner.title} banner image`}
             fill
             priority
+            sizes="100vw"
             className="object-cover"
           />
         ) : (
@@ -137,9 +141,7 @@ export default function BannerHero({
               {/* Heading */}
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
                 Sustainable{" "}
-                <span className="text-accent">
-                  Energy Solutions
-                </span>{" "}
+                <span className="text-accent">Energy Solutions</span>{" "}
                 for Tomorrow
               </h1>
 

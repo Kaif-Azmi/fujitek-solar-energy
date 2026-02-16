@@ -10,6 +10,7 @@ import {
   Handshake,
 } from "./ui";
 import { Button } from "@/components/ui/button";
+import { Highlighter } from "@/components/ui/highlighter";
 
 interface Reason {
   title: string;
@@ -62,7 +63,17 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
             </p>
 
             <h2 className="text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
-              Reliable Solar and Inverter Solutions, Backed by Real Support
+              Reliable{" "}
+              <Highlighter
+                action="underline"
+                color="var(--accent)"
+                strokeWidth={2}
+                animationDuration={700}
+                iterations={1}
+              >
+                Solar and Inverter Solutions
+              </Highlighter>
+              , Backed by Real Support
             </h2>
 
             <p className="mt-4 text-base leading-relaxed text-secondary">
@@ -104,8 +115,8 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
                 alt="Fujitek solar engineer working on inverter installation"
                 width={900}
                 height={680}
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="h-full w-full object-cover"
-                priority
               />
             </div>
 

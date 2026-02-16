@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Headphones, LineChart, Plug, ShieldCheck, Sun, Wrench } from "lucide-react";
 import { Card, CardContent, CardTitle } from "./ui/card";
 import { Button } from "@/components/ui/button";
+import { Highlighter } from "@/components/ui/highlighter";
 
 interface Service {
   title: string;
@@ -55,7 +56,15 @@ export default function ServicesPreview({
               {badgeLabel}
             </span>
             <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-              {heading}
+              <Highlighter
+                action="underline"
+                color="var(--accent)"
+                strokeWidth={2}
+                animationDuration={700}
+                iterations={1}
+              >
+                {heading}
+              </Highlighter>
             </h2>
             <p className="mt-3 text-base leading-relaxed text-secondary">{description}</p>
           </div>
@@ -117,4 +126,3 @@ export default function ServicesPreview({
     </section>
   );
 }
-

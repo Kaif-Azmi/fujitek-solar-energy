@@ -5,9 +5,15 @@ const uri = process.env.MONGODB_URI;
 const email = (process.env.ADMIN_SEED_EMAIL || "admin@fujitek.local").trim().toLowerCase();
 const password = process.env.ADMIN_SEED_PASSWORD || "admin12345";
 const name = process.env.ADMIN_SEED_NAME || "Admin";
+const STRONG_PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\W_]{12,}$/;
 
 if (!uri) throw new Error("MONGODB_URI is required");
-if (password.length < 8) throw new Error("ADMIN_SEED_PASSWORD must be at least 8 characters");
+if (!STRONG_PASSWORD_REGEX.test(password)) {
+  throw new Error(
+    "ADMIN_SEED_PASSWORD must be at least 12 characters and include uppercase, lowercase, number, and special character",
+  );
+}
 
 const client = new MongoClient(uri);
 

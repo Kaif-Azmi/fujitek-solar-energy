@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
+import type { UploadApiResponse } from "cloudinary";
 import cloudinary, { isCloudinaryConfigured } from "@/lib/cloudinary";
 import { requireAdminRequest } from "@/lib/admin-route-auth";
+import { MAX_UPLOAD_FILE_BYTES, withNoStore } from "@/lib/security";
 
 export const runtime = "nodejs";
 
@@ -8,11 +10,12 @@ function errorToMessage(error: unknown) {
   if (error instanceof Error) return error.message;
   if (typeof error === "string") return error;
   if (error && typeof error === "object") {
-    const anyErr = error as any;
+    const anyErr = error as Record<string, unknown>;
+    const nested = anyErr.error as { message?: string } | undefined;
     return (
-      anyErr?.message ||
-      anyErr?.error?.message ||
-      anyErr?.error?.toString?.() ||
+      String(anyErr.message || "") ||
+      nested?.message ||
+      String(anyErr.error || "") ||
       JSON.stringify(anyErr)
     );
   }
@@ -36,12 +39,18 @@ export async function POST(request: NextRequest) {
     const folder = String(formData.get("folder") || "fujitek/admin");
 
     if (!(file instanceof File)) {
-      return NextResponse.json({ message: "Image file is required." }, { status: 400 });
+      return withNoStore(NextResponse.json({ message: "Image file is required." }, { status: 400 }));
+    }
+
+    if (file.size > MAX_UPLOAD_FILE_BYTES) {
+      return withNoStore(
+        NextResponse.json({ message: "File too large. Maximum size is 5MB." }, { status: 413 }),
+      );
     }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const result = await new Promise<any>((resolve, reject) => {
+    const result = await new Promise<UploadApiResponse>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         { folder, resource_type: "image" },
         (error, uploadResult) => {
@@ -54,21 +63,21 @@ export async function POST(request: NextRequest) {
       stream.end(buffer);
     });
 
-    return NextResponse.json({
+    return withNoStore(NextResponse.json({
       secureUrl: result.secure_url,
       publicId: result.public_id,
       width: result.width,
       height: result.height,
-    });
+    }));
   } catch (error) {
     const msg = errorToMessage(error);
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       {
         message: msg.includes("Invalid Signature")
           ? "Cloudinary credentials mismatch (Invalid Signature). Check CLOUDINARY_CLOUD_NAME / CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET."
           : msg,
       },
       { status: 500 }
-    );
+    ));
   }
 }
