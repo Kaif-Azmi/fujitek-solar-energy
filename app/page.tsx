@@ -142,7 +142,7 @@ export default async function Home() {
 
       {/* PROJECTS */}
       <ScrollReveal delay={0.1}>
-        <section className="py-section bg-surface-elevated" aria-label="Projects">
+        <section className="bg-surface-elevated" aria-label="Projects">
           <ProjectsPreview
             projects={[
               {

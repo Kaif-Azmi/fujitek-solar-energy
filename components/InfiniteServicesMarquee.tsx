@@ -11,7 +11,7 @@ const SERVICES = [
 
 export default function InfiniteServicesMarquee() {
   return (
-    <div className="relative w-full overflow-hidden py-16 bg-surface">
+    <div className="relative w-full overflow-hidden bg-surface py-section">
 
       {/* ================= STRIP 1 — PRIMARY ================= */}
       <div className="relative -rotate-2 bg-primary shadow-md">

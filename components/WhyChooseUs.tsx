@@ -49,12 +49,12 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
   const iconByIndex = [Lightning, Wrench, Handshake, Handshake];
 
   return (
-    <section className="relative w-full overflow-hidden bg-background">
+    <section className="relative w-full overflow-hidden bg-background py-section">
       <div className="pointer-events-none absolute inset-0 bg-dot-pattern opacity-50" />
       <div className="pointer-events-none absolute -left-24 top-24 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 bottom-24 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-24">
+      <div className="relative mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:items-center">
           {/* LEFT: COPY + CTA */}
           <div className="max-w-xl">

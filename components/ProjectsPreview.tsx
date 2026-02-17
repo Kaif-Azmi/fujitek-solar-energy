@@ -53,7 +53,7 @@ export default function ProjectsPreview({
     <section className="relative w-full overflow-hidden py-section" aria-label={ariaLabel}>
       <div className="pointer-events-none absolute inset-0 bg-dot-pattern opacity-20" />
 
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto max-w-7xl px-6">
         <header className="mb-12 flex flex-col items-center gap-6 text-center md:mb-14 md:flex-row md:items-end md:justify-between md:text-left">
           <div className="max-w-2xl">
             <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">

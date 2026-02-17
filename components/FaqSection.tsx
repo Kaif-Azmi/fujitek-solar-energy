@@ -43,7 +43,7 @@ const FAQS: FaqItem[] = [
 export default function FaqSection() {
   return (
     <section className="relative w-full bg-surface">
-      <div className="mx-auto max-w-7xl px-6 py-24">
+      <div className="mx-auto max-w-7xl px-6 py-section">
         <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-5">
           {/* ================= LEFT — FAQ ================= */}
           <div className="md:col-span-3">

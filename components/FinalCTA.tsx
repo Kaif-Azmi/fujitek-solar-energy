@@ -36,7 +36,7 @@ export default function FinalCTA({
   ariaLabel = FINAL_CTA_DEFAULTS.ariaLabel,
 }: FinalCTAProps) {
   return (
-    <section className="mt-24 px-8 py-16" aria-label={ariaLabel}>
+    <section className="px-6 py-section" aria-label={ariaLabel}>
       <div className="mx-auto max-w-7xl rounded-2xl bg-primary px-8 py-12 text-white md:px-12 md:py-14">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="flex flex-col justify-center">
