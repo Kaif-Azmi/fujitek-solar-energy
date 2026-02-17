@@ -1,27 +1,67 @@
 'use client';
 
 import {
-  IndianRupee,
-  Landmark,
-  TrendingUp,
+  type LucideIcon,
   BatteryCharging,
+  Landmark,
   Leaf,
-  Sun,
   ShieldCheck,
+  Sun,
+  TrendingUp,
+  Zap,
 } from 'lucide-react';
+import MissionLottie from '@/components/MissionLottie';
 import { Highlighter } from "@/components/ui/highlighter";
+
+type Benefit = {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+};
+
+const BENEFITS: Benefit[] = [
+  {
+    title: "Lower monthly bills",
+    description: "Generate power on-site and reduce dependence on utility rates.",
+    icon: Zap,
+  },
+  {
+    title: "Subsidy support",
+    description: "Leverage central and state incentives to lower setup cost.",
+    icon: Landmark,
+  },
+  {
+    title: "Long-term returns",
+    description: "Reliable production and savings over 25+ years of operation.",
+    icon: TrendingUp,
+  },
+  {
+    title: "Energy resilience",
+    description: "Pair with storage to maintain power during outages and peaks.",
+    icon: BatteryCharging,
+  },
+  {
+    title: "Cleaner footprint",
+    description: "Cut emissions while supporting a sustainable energy mix.",
+    icon: Leaf,
+  },
+  {
+    title: "Low upkeep",
+    description: "Durable systems with straightforward servicing and monitoring.",
+    icon: ShieldCheck,
+  },
+];
 
 export default function SolarBenefitsBento() {
   return (
     <section className="bg-surface py-section">
       <div className="mx-auto max-w-7xl px-6">
-        {/* HEADER */}
-        <div className="mb-16 max-w-3xl">
+        <div className="mb-12 max-w-3xl">
           <span className="inline-flex rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold text-primary">
             Why Go Solar
           </span>
 
-          <h2 className="mt-4 text-4xl font-extrabold leading-tight text-foreground">
+          <h2 className="mt-4 text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
             <Highlighter
               action="underline"
               color="var(--accent)"
@@ -33,104 +73,92 @@ export default function SolarBenefitsBento() {
             </Highlighter>
           </h2>
 
-          <p className="mt-4 text-lg text-secondary">
-            Solar energy is a long-term investment backed by savings, government
-            initiatives, and a sustainable future for India.
+          <p className="mt-3 text-base text-secondary md:text-lg">
+            Practical gains across savings, reliability, and sustainability for homes and businesses.
           </p>
         </div>
 
-        {/* GRID */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {/* A — Big left (desktop only) */}
-          <div className="group md:row-span-2 rounded-3xl border border-transparent bg-primary p-10 text-white shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-strong">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent transition-colors duration-300 group-hover:bg-accent-hover">
-              <IndianRupee className="h-6 w-6 text-primary transition-colors duration-300 group-hover:text-white" />
-            </div>
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
+          <div className="group relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-accent/10 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium md:p-8">
+            <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-accent/20 blur-3xl transition-opacity duration-300 group-hover:opacity-90" />
+            <div className="pointer-events-none absolute -bottom-14 -left-10 h-40 w-40 rounded-full bg-primary/20 blur-3xl transition-opacity duration-300 group-hover:opacity-90" />
 
-            <h3 className="mt-6 text-3xl text-strong text-white">
-              Lower Electricity Bills
-            </h3>
-
-            <p className="mt-4 text-base leading-relaxed text-white/90">
-              Generate your own electricity and significantly reduce monthly
-              power costs. Excess energy can offset future bills through
-              net-metering.
-            </p>
-
-            <div className="mt-6 flex items-baseline gap-3">
-              <span className="text-4xl font-extrabold text-accent">
-                4–6 Years
-              </span>
-              <span className="text-sm text-white/80">
-                Average payback period
+            <div className="relative mb-5 flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/20">
+                  <Sun className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Solar impact preview</p>
+                  <p className="text-xs text-muted">Savings, reliability, and clean-energy value</p>
+                </div>
+              </div>
+              <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary">
+                Live
               </span>
             </div>
+
+            <div className="relative rounded-2xl border border-border/70 bg-background/80 p-3 backdrop-blur-sm">
+              <MissionLottie />
+            </div>
+
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <div className="rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 transition-colors duration-300 group-hover:bg-primary/15">
+                <p className="text-lg font-extrabold text-primary">4-6 yrs</p>
+                <p className="text-xs text-secondary">Typical payback period</p>
+              </div>
+              <div className="rounded-xl border border-accent/35 bg-accent/20 px-4 py-3 transition-colors duration-300 group-hover:bg-accent/25">
+                <p className="text-lg font-extrabold text-primary">25+ yrs</p>
+                <p className="text-xs text-secondary">Long-term output life</p>
+              </div>
+            </div>
           </div>
 
-          {/* B */}
-          <div className="group rounded-3xl border border-transparent bg-primary-muted p-8 text-foreground shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-strong">
-            <Landmark className="h-6 w-6 text-primary transition-colors duration-300 group-hover:text-accent" />
-            <h4 className="mt-4 text-xl font-semibold text-foreground">
-              Government Subsidies
-            </h4>
-            <p className="mt-2 text-sm text-secondary">
-              Central & state subsidies reduce upfront costs significantly.
-            </p>
-          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {BENEFITS.map((benefit, index) => {
+              const Icon = benefit.icon;
+              const isPrimary = index % 2 === 0;
+              return (
+                <article
+                  key={benefit.title}
+                  className={[
+                    "group relative overflow-hidden rounded-2xl border p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium",
+                    isPrimary
+                      ? "border-primary/30 bg-primary text-white hover:border-primary/60"
+                      : "border-accent/40 bg-accent text-primary hover:border-accent",
+                  ].join(" ")}
+                  style={{ transitionDelay: `${index * 35}ms` }}
+                >
+                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <div
+                      className={[
+                        "absolute -right-12 -top-12 h-28 w-28 rounded-full blur-2xl",
+                        isPrimary ? "bg-accent/30" : "bg-primary/25",
+                      ].join(" ")}
+                    />
+                  </div>
 
-          {/* B */}
-          <div className="group rounded-3xl border border-transparent bg-primary-muted p-8 text-foreground shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-strong">
-            <TrendingUp className="h-6 w-6 text-primary transition-colors duration-300 group-hover:text-accent" />
-            <h4 className="mt-4 text-xl font-semibold text-foreground">
-              Long-Term Investment
-            </h4>
-            <p className="mt-2 text-sm text-secondary">
-              Predictable savings for 25+ years with minimal maintenance.
-            </p>
-          </div>
-
-          {/* C */}
-          <div className="group rounded-3xl border border-transparent bg-accent p-8 text-primary shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-strong">
-            <BatteryCharging className="h-6 w-6 text-primary transition-colors duration-300 group-hover:text-white" />
-            <h4 className="mt-4 text-xl font-semibold text-primary">
-              Energy Independence
-            </h4>
-            <p className="mt-2 text-sm text-primary/80">
-              Protection from rising electricity tariffs.
-            </p>
-          </div>
-
-          {/* D */}
-          <div className="group rounded-3xl border border-transparent bg-primary p-8 text-white shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-strong">
-            <Leaf className="h-6 w-6 text-accent transition-colors duration-300 group-hover:text-white" />
-            <h4 className="mt-4 text-xl font-semibold text-white">
-              Clean & Renewable
-            </h4>
-            <p className="mt-2 text-sm text-white/90">
-              Lower carbon footprint and cleaner environment.
-            </p>
-          </div>
-
-          {/* E — Wide only on desktop */}
-          <div className="group md:col-span-2 rounded-3xl border border-transparent bg-accent p-10 text-primary shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-strong">
-            <Sun className="h-6 w-6 text-primary transition-colors duration-300 group-hover:text-white" />
-            <h3 className="mt-4 text-2xl text-strong text-primary">
-              Future-Ready Solution
-            </h3>
-            <p className="mt-2 text-base text-primary/80">
-              Aligned with India’s long-term clean energy roadmap.
-            </p>
-          </div>
-
-          {/* F */}
-          <div className="group rounded-3xl border border-transparent bg-primary-muted p-8 text-foreground shadow-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-strong">
-            <ShieldCheck className="h-6 w-6 text-primary transition-colors duration-300 group-hover:text-accent" />
-            <h4 className="mt-4 text-xl font-semibold text-foreground">
-              Low Maintenance
-            </h4>
-            <p className="mt-2 text-sm text-secondary">
-              Reliable systems with long warranties and minimal upkeep.
-            </p>
+                  <div className="relative">
+                    <div
+                      className={[
+                        "mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-300",
+                        isPrimary
+                          ? "bg-white/15 text-accent group-hover:bg-white group-hover:text-primary"
+                          : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white",
+                      ].join(" ")}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className={["text-base font-semibold", isPrimary ? "text-white" : "text-primary"].join(" ")}>
+                      {benefit.title}
+                    </h3>
+                    <p className={["mt-2 text-sm leading-relaxed", isPrimary ? "text-white/85" : "text-primary/80"].join(" ")}>
+                      {benefit.description}
+                    </p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </div>

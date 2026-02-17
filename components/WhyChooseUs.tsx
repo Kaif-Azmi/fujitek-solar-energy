@@ -62,8 +62,8 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
               Why Choose Fujitek
             </p>
 
-            <h2 className="text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
-              Reliable{" "}
+            <h2 className="text-[1.75rem] font-extrabold leading-[1.2] text-foreground sm:text-3xl md:text-4xl">
+              <span className="block">Reliable</span>
               <Highlighter
                 action="underline"
                 color="var(--accent)"
@@ -73,7 +73,7 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
               >
                 Solar and Inverter Solutions
               </Highlighter>
-              , Backed by Real Support
+              <span className="mt-1 block sm:mt-0">Backed by Real Support</span>
             </h2>
 
             <p className="mt-4 text-base leading-relaxed text-secondary">
@@ -120,60 +120,49 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
               />
             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
               {items.slice(0, 4).map((reason, idx) => {
                 const Icon = iconByIndex[idx] || Handshake;
-                const isPrimary = idx === 0;
+                const isAccent = idx % 2 === 1;
+                const spanClassByIndex = [
+                  "lg:col-span-3",
+                  "lg:col-span-3",
+                  "lg:col-span-2",
+                  "lg:col-span-4",
+                ];
 
                 return (
                   <Card
                     key={reason.title}
                     className={[
-                      "group relative overflow-hidden rounded-2xl border border-border/70 bg-background shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/10",
-                      isPrimary ? "md:row-span-2" : "",
+                      "group relative overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl",
+                      isAccent
+                        ? "border-accent/40 bg-accent/10 hover:border-accent/70 hover:shadow-accent/20"
+                        : "border-primary/25 bg-primary/5 hover:border-primary/50 hover:shadow-primary/20",
+                      spanClassByIndex[idx] || "lg:col-span-3",
                     ].join(" ")}
                   >
                     <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <div className="absolute -left-16 -top-16 h-44 w-44 rounded-full bg-accent/15 blur-2xl" />
-                      <div className="absolute -right-20 -bottom-24 h-56 w-56 rounded-full bg-primary/10 blur-2xl" />
+                      <div className={["absolute -left-16 -top-16 h-44 w-44 rounded-full blur-2xl", isAccent ? "bg-primary/15" : "bg-accent/20"].join(" ")} />
+                      <div className={["absolute -right-20 -bottom-24 h-56 w-56 rounded-full blur-2xl", isAccent ? "bg-accent/15" : "bg-primary/15"].join(" ")} />
                     </div>
 
-                    <CardHeader className="relative flex flex-row items-start gap-4">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
-                        <Icon className="h-5 w-5" />
+                    <CardHeader className="relative flex flex-row items-start gap-3 p-5 pb-3">
+                      <div className={[
+                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors duration-300",
+                        isAccent
+                          ? "bg-accent/20 text-primary group-hover:bg-accent group-hover:text-primary"
+                          : "bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white",
+                      ].join(" ")}>
+                        <Icon className="h-4 w-4" />
                       </div>
-                      <CardTitle className="text-base font-semibold leading-snug text-foreground">
+                      <CardTitle className="text-sm font-semibold leading-snug text-foreground sm:text-base">
                         {reason.title}
                       </CardTitle>
                     </CardHeader>
 
-                    <CardContent className="relative space-y-4 text-sm leading-relaxed text-secondary">
+                    <CardContent className="relative px-5 pb-5 pt-0 text-sm leading-relaxed text-secondary">
                       <p>{reason.description}</p>
-
-                      {isPrimary && (
-                        <>
-                          <ul className="space-y-2 text-sm text-secondary">
-                            <li>• High conversion efficiency with low energy loss</li>
-                            <li>• Adaptive grid handling for voltage fluctuations</li>
-                            <li>• Built-in protection for safe operation</li>
-                          </ul>
-
-                          <div className="grid grid-cols-3 gap-3 rounded-xl bg-primary/5 p-4 text-center">
-                            <div>
-                              <p className="font-semibold text-foreground">High</p>
-                              <p className="text-xs text-muted">Efficiency</p>
-                            </div>
-                            <div>
-                              <p className="font-semibold text-foreground">Stable</p>
-                              <p className="text-xs text-muted">Grid Sync</p>
-                            </div>
-                            <div>
-                              <p className="font-semibold text-foreground">Secure</p>
-                              <p className="text-xs text-muted">Design</p>
-                            </div>
-                          </div>
-                        </>
-                      )}
                     </CardContent>
                   </Card>
                 );
