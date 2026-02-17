@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { Asterisk, Eye, EyeOff, Mail } from "lucide-react";
 import { Button, Alert, AlertDescription } from "@/components/ui";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
@@ -12,6 +13,7 @@ function AdminLoginContent() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -111,15 +113,21 @@ function AdminLoginContent() {
   }
 
   return (
-    <main className="min-h-screen bg-surface flex items-center justify-center px-6 py-section">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-surface px-6 py-section">
+      <div className="pointer-events-none absolute -left-16 top-20 h-52 w-52 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-16 h-56 w-56 rounded-full bg-accent/20 blur-3xl" />
       <ScrollReveal>
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md rounded-xl border border-border bg-background p-8 shadow-sm space-y-5"
+          className="w-full max-w-md space-y-5 rounded-2xl border border-border/70 bg-background/95 p-8 shadow-xl shadow-primary/5 backdrop-blur-sm"
         >
-          <h1 className="text-center text-2xl text-strong text-foreground">
-            Admin Login
-          </h1>
+          <div className="text-center">
+            <p className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+              Secure Area
+            </p>
+            <h1 className="mt-3 text-2xl text-strong text-foreground">Admin Login</h1>
+            <p className="mt-1 text-sm text-secondary">Sign in to manage products, banners, and content.</p>
+          </div>
 
           {error && (
             <Alert variant="destructive">
@@ -131,33 +139,47 @@ function AdminLoginContent() {
             <label htmlFor="admin-email" className="mb-1 block text-sm font-medium text-foreground">
               Email
             </label>
-            <input
-              id="admin-email"
-              type="email"
-              autoComplete="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="h-11 w-full rounded-lg border border-border bg-background px-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
-              placeholder="admin@company.com"
-              required
-            />
+            <div className="relative">
+              <Mail className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted" />
+              <input
+                id="admin-email"
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="h-11 w-full rounded-lg border border-border bg-background pl-9 pr-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
+                placeholder="admin@company.com"
+                required
+              />
+            </div>
           </div>
 
           <div>
             <label htmlFor="admin-password" className="mb-1 block text-sm font-medium text-foreground">
               Password
             </label>
-            <input
-              id="admin-password"
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="h-11 w-full rounded-lg border border-border bg-background px-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
-              placeholder="Enter admin password"
-              required
-              minLength={12}
-            />
+            <div className="relative">
+              <Asterisk className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted" />
+              <input
+                id="admin-password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="h-11 w-full rounded-lg border border-border bg-background pl-9 pr-11 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
+                placeholder="Enter admin password"
+                required
+                minLength={12}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                className="absolute right-2 top-1.5 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted transition hover:bg-hover hover:text-primary"
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </div>
 
           <Button type="submit" size="lg" className="h-11 w-full" disabled={isSubmitting || !csrfToken}>
