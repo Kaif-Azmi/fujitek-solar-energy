@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "explore" | "exploreInverse";
+  variant?: "default" | "secondary" | "outline" | "explore" | "exploreInverse";
   size?: "default" | "lg";
   asChild?: boolean;
 }
@@ -50,6 +50,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       "shadow-sm hover:bg-accent-hover hover:border-accent-hover " +
       "hover:shadow-xl hover:-translate-y-[1px] " +
       "focus-visible:ring-accent/40";
+
+    const secondaryVariantClasses =
+      "bg-muted-bg text-foreground border border-border " +
+      "shadow-sm hover:bg-background hover:border-primary/25 " +
+      "hover:shadow-md focus-visible:ring-primary/30";
+
+    const outlineVariantClasses =
+      "bg-transparent text-foreground border border-border " +
+      "hover:bg-muted-bg hover:border-primary/25 focus-visible:ring-primary/30";
 
     const exploreVariantClasses =
       "relative rounded-full bg-primary text-white border border-primary " +
@@ -119,7 +128,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                   ? exploreVariantClasses
                   : exploreInverseVariantClasses
               )
-            : cn(defaultSizeClasses[size], defaultVariantClasses),
+            : cn(
+                defaultSizeClasses[size],
+                variant === "secondary"
+                  ? secondaryVariantClasses
+                  : variant === "outline"
+                    ? outlineVariantClasses
+                    : defaultVariantClasses
+              ),
           className
         )}
         {...props}

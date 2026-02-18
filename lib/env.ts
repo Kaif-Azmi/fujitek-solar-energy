@@ -1,12 +1,16 @@
 type RequiredEnvKey =
+  | "NODE_ENV"
   | "MONGODB_URI"
+  | "GEMINI_API_KEY"
   | "ADMIN_SESSION_SECRET"
   | "CLOUDINARY_CLOUD_NAME"
   | "CLOUDINARY_API_KEY"
   | "CLOUDINARY_API_SECRET";
 
 const REQUIRED_ENV: RequiredEnvKey[] = [
+  "NODE_ENV",
   "MONGODB_URI",
+  "GEMINI_API_KEY",
   "ADMIN_SESSION_SECRET",
   "CLOUDINARY_CLOUD_NAME",
   "CLOUDINARY_API_KEY",
@@ -30,3 +34,4 @@ export function validateRequiredEnv() {
   validated = true;
 }
 
+validateRequiredEnv();
