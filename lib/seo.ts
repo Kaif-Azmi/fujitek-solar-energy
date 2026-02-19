@@ -7,6 +7,25 @@ type SeoPage = {
   canonicalPath?: string;
 };
 
+type SiteSeo = {
+  name: string;
+  url: string;
+  description: string;
+  keywords: string[];
+  business: {
+    areaServed: string;
+    phone: string;
+    email: string;
+    city: string;
+    country: string;
+  };
+  social: {
+    facebook: string;
+    instagram: string;
+    x: string;
+  };
+};
+
 export const siteSeo = {
   name: "Fujitek Solar Energy",
   url: "https://fujiteksolar.com",
@@ -20,7 +39,19 @@ export const siteSeo = {
     "renewable energy",
     "fujitek solar",
   ],
-};
+  business: {
+    areaServed: "India",
+    phone: "+918447097751",
+    email: "info@fujiteksolar.com",
+    city: "New Delhi",
+    country: "India",
+  },
+  social: {
+    facebook: "https://facebook.com",
+    instagram: "https://instagram.com",
+    x: "https://x.com",
+  },
+} satisfies SiteSeo;
 
 export const pageSeo = {
   home: {

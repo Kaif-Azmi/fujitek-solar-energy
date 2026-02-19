@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import Link from "next/link";
-import { getOptimizedCloudinaryUrl } from "@/lib/image";
+import { getOptimizedCloudinaryUrl } from '@/lib/image';
 
 interface Banner {
   _id?: string;
@@ -18,211 +18,200 @@ interface Banner {
 
 interface BannerHeroProps {
   initialBanners?: Banner[];
-  ariaLabel?: string;
-  fallbackTitle?: string;
-  fallbackSubtitle?: string;
-  fallbackCtaLabel?: string;
-  fallbackCtaHref?: string;
 }
-
-const HERO_DEFAULTS = {
-  ariaLabel: "Solar hero banner",
-  fallbackTitle: "Sustainable Energy Solutions for Homes and Businesses",
-  fallbackSubtitle:
-    "Explore reliable solar panels, inverters, and expert services from Fujitek Solar Energy.",
-  fallbackCtaLabel: "Explore solar products and services",
-  fallbackCtaHref: "/products",
-};
 
 export default function BannerHero({
   initialBanners = [],
-  ariaLabel = HERO_DEFAULTS.ariaLabel,
-  fallbackTitle = HERO_DEFAULTS.fallbackTitle,
-  fallbackSubtitle = HERO_DEFAULTS.fallbackSubtitle,
-  fallbackCtaLabel = HERO_DEFAULTS.fallbackCtaLabel,
-  fallbackCtaHref = HERO_DEFAULTS.fallbackCtaHref,
 }: BannerHeroProps) {
   const [banners, setBanners] = useState<Banner[]>(initialBanners);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  /* ================= Fetch ================= */
   useEffect(() => {
     async function fetchBanners() {
       try {
         const res = await fetch('/api/banners');
         const data = await res.json();
-        const rows = Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
-        const next = rows
-          ? rows.filter((b: Banner) => b.status === 'Active')
+
+        const rows = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.items)
+          ? data.items
           : [];
-        if (next.length > 0) setBanners(next);
+
+        const active = rows.filter((b: Banner) => b.status === 'Active');
+        if (active.length) setBanners(active);
       } catch {
-        if (!initialBanners.length) setBanners([]);
+        // silent fail — fallback to initialBanners
       }
     }
-    fetchBanners();
+
+    if (!initialBanners.length) fetchBanners();
   }, [initialBanners]);
 
+  /* ================= Auto Slide ================= */
   useEffect(() => {
-    if (banners.length <= 1 || isHovered) return;
+    if (banners.length <= 1 || isPaused) return;
 
-    const id = setInterval(
-      () => setCurrentIndex((p) => (p + 1) % banners.length),
-      5000
-    );
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % banners.length);
+    }, 6000);
 
-    return () => clearInterval(id);
-  }, [banners, isHovered]);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [banners, isPaused]);
 
-  /* ================= Skeleton ================= */
-  if (!banners.length) {
-    return (
-      <section className="relative w-full overflow-hidden" aria-label={ariaLabel}>
-        <div className="relative h-[20rem] sm:h-[26rem] lg:h-[34rem] bg-primary">
-          <div className="absolute inset-0 bg-secondary/50" />
-          <div className="relative z-10 flex h-full items-center">
-            <div className="mx-auto w-full max-w-7xl px-6">
-              <div className="max-w-2xl text-white">
-                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
-                  {fallbackTitle}
-                </h1>
-                <p className="mt-6 text-lg text-white/90">{fallbackSubtitle}</p>
-                <div className="mt-10">
-                  <Link href={fallbackCtaHref}>
-                    <Button variant="explore" size="lg">
-                      {fallbackCtaLabel}
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  if (!banners.length) return null;
 
   const banner = banners[currentIndex];
 
-  return (
-    <section className="relative w-full overflow-hidden" aria-label={ariaLabel}>
-      <div
-        className="relative h-[20rem] sm:h-[26rem] lg:h-[34rem]"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        {/* Background */}
-        {banner.imageUrl ? (
-          <Image
-            src={getOptimizedCloudinaryUrl(banner.imageUrl, { width: 1920, quality: 70, crop: "fill" })}
-            alt={`${banner.title} banner image`}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-primary" />
-        )}
-
-        {/* Contrast overlay */}
-        <div className="absolute inset-0 bg-secondary/20" />
-
-        {/* Content */}
-        <div className="relative z-10 flex h-full items-center">
-          <div className="mx-auto w-full max-w-7xl px-6">
-            <div className="max-w-2xl text-white">
-
-              {/* Badge */}
-              <span className="mb-6 inline-flex rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur">
-                Fujitek Solar Energy
-              </span>
-
-              {/* Heading */}
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
-                Sustainable{" "}
-                <span className="text-accent">Energy Solutions</span>{" "}
-                for Tomorrow
-              </h1>
-
-              {/* Subtitle */}
-              {banner.subtitle && (
-                <p className="mt-6 text-lg text-white/90">
-                  {banner.subtitle}
-                </p>
-              )}
-
-              {/* CTA */}
-              {banner.ctaText && (
-                <div className="mt-10">
-                  <Link href="/contact">
-                    <Button variant="explore" size="lg">
-                      {banner.ctaText}
-                    </Button>
-                  </Link>
-                </div>
-              )}
-
+ return (
+  <section
+    className="relative w-full overflow-hidden"
+    aria-roledescription="carousel"
+    aria-label="Featured solar promotions"
+  >
+    <div
+      className="relative min-h-[60vh] sm:min-h-[75vh] lg:min-h-[85vh] w-full"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      {/* ================= Framed Image ================= */}
+      {banner.imageUrl && (
+        <>
+          {/* Mobile/Tablet: keep original crop logic */}
+          <div className="absolute inset-0 lg:hidden">
+            <div className="relative h-full w-full overflow-hidden">
+              <Image
+                src={getOptimizedCloudinaryUrl(banner.imageUrl, {
+                  width: 1920,
+                  quality: 75,
+                  crop: 'fill',
+                })}
+                alt={banner.title}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-[70%_center]"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
             </div>
           </div>
+
+          {/* Desktop: no crop, image wrapper follows image size with rounded corners */}
+          <div className="absolute inset-0 hidden items-center justify-center lg:flex lg:p-[10px]">
+            <div className="relative inline-block overflow-hidden rounded-2xl">
+              <Image
+                src={getOptimizedCloudinaryUrl(banner.imageUrl, {
+                  width: 1920,
+                  quality: 75,
+                  crop: 'fit',
+                })}
+                alt={banner.title}
+                width={1920}
+                height={1080}
+                priority
+                sizes="100vw"
+                className="h-[85vh] w-auto max-w-full object-contain"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-transparent" />
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ================= Content ================= */}
+      <div className="relative z-10 mx-auto flex min-h-[60vh] sm:min-h-[75vh] lg:min-h-[85vh] max-w-7xl items-center px-6 lg:px-12">
+        <div className="max-w-2xl text-white text-center sm:text-left">
+
+          {/* Badge */}
+          <span className="mb-6 inline-flex rounded-full bg-white/10 px-4 py-1.5 text-xs font-medium tracking-wide backdrop-blur-sm ring-1 ring-white/25">
+            Fujitek Solar Energy
+          </span>
+
+          {/* Headline */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-semibold leading-[1.08] tracking-tight">
+            <span className="block text-white/90">
+              Sustainable Energy
+            </span>
+            <span className="block font-bold text-accent">
+              Solutions for Tomorrow
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          {banner.subtitle && (
+            <p className="mt-6 text-lg leading-relaxed text-white/80">
+              {banner.subtitle}
+            </p>
+          )}
+
+          {/* CTA — Original Button System */}
+          {banner.ctaText && (
+            <div className="mt-8 sm:mt-12">
+              <Link href="/contact">
+                <Button variant="explore" size="lg">
+                  {banner.ctaText}
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
-
-        {/* Arrows */}
-        {banners.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={() =>
-                setCurrentIndex((p) => (p - 1 + banners.length) % banners.length)
-              }
-              className="
-                absolute left-6 top-1/2 z-20 -translate-y-1/2
-                flex h-12 w-12 items-center justify-center rounded-full
-                bg-black/40 text-white backdrop-blur
-                transition hover:bg-black/60
-              "
-              aria-label="Previous slide"
-            >
-              ‹
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                setCurrentIndex((p) => (p + 1) % banners.length)
-              }
-              className="
-                absolute right-6 top-1/2 z-20 -translate-y-1/2
-                flex h-12 w-12 items-center justify-center rounded-full
-                bg-black/40 text-white backdrop-blur
-                transition hover:bg-black/60
-              "
-              aria-label="Next slide"
-            >
-              ›
-            </button>
-          </>
-        )}
       </div>
 
-      {/* Dots */}
+      {/* ================= Navigation Arrows ================= */}
       {banners.length > 1 && (
-        <div className="mt-6 flex justify-center gap-2">
-          {banners.map((_, i) => (
-            <button
-              type="button"
-              key={i}
-              onClick={() => setCurrentIndex(i)}
-              className={`h-2 rounded-full transition-all ${
-                i === currentIndex
-                  ? "w-8 bg-primary"
-                  : "w-2 bg-white/40"
-              }`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
+        <>
+          <button
+            type="button"
+            onClick={() =>
+              setCurrentIndex(
+                (prev) => (prev - 1 + banners.length) % banners.length
+              )
+            }
+            className="absolute left-6 sm:left-8 top-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent"
+            aria-label="Previous slide"
+          >
+            ‹
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setCurrentIndex((prev) => (prev + 1) % banners.length)
+            }
+            className="absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent"
+            aria-label="Next slide"
+          >
+            ›
+          </button>
+        </>
       )}
-    </section>
-  );
+    </div>
+
+    {/* ================= Dots ================= */}
+    {banners.length > 1 && (
+      <div className="absolute bottom-6 sm:bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-3">
+        {banners.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => setCurrentIndex(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              i === currentIndex
+                ? 'w-8 bg-white'
+                : 'w-2 bg-white/40 hover:bg-white/70'
+            }`}
+          />
+        ))}
+      </div>
+    )}
+  </section>
+);
+
+
 }
