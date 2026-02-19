@@ -225,7 +225,7 @@ function ProjectionCard({ projection }: ProjectionCardProps) {
         </div>
         <div className="rounded-xl border border-border bg-card p-3">
           <p className="text-xs text-muted">Net Profit</p>
-          <p className="text-xl font-semibold text-accent">{formatINR(projection.netProfit)}</p>
+          <p className="text-xl font-semibold text-primary-deep">{formatINR(projection.netProfit)}</p>
         </div>
       </CardContent>
     </Card>
@@ -374,7 +374,8 @@ export default function AIAssistant() {
       }
 
       if (payload.type === "calculation") {
-        setLeadStage("calculation");
+        const mapped = mapNextStepToLeadStage(payload.nextStep);
+        setLeadStage(mapped ?? "calculation");
         setAwaitingContact(payload.nextStep === "ask_for_contact");
         setMessages((prev) => [
           ...prev,

@@ -1,12 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { guardAIRequest, validateUserInput } from "@/lib/ai-guard";
 import { calculateSolarProjection } from "@/lib/solar-calculator";
-import { formatSchemeInfo, getActiveSchemesByState } from "@/lib/scheme-engine";
 import { getNextLeadStage } from "@/lib/lead-flow";
 import { extractLeadDetails } from "@/lib/lead-extractor";
 import { saveQualifiedLead } from "@/lib/lead-service";
 import { checkPublicRateLimit } from "@/lib/public-rate-limit";
 import { getCachedResponse, setCachedResponse } from "@/lib/ai-cache";
+import { GeminiRequestError, generateResponse } from "@/lib/gemini";
+import { connectDB } from "@/lib/db";
+import SolarSchemeModel from "@/models/SolarScheme";
 
 export const runtime = "nodejs";
 
@@ -225,9 +227,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "suspicious_activity" }, { status: 400 });
     }
 
+    await connectDB();
+
     const finalDetectedBill = detectedBill;
     const extracted = extractLeadDetails(safeMessage);
     const monthlyBillForLead = extracted.monthlyBill ?? finalDetectedBill ?? undefined;
+    const leadStage = getNextLeadStage("initial", safeMessage);
+    const looksLikeStateOnlyMessage =
+      /^[a-z][a-z\s]{1,40}$/i.test(safeMessage) &&
+      safeMessage.trim().split(/\s+/).length <= 3;
+    const subsidyIntent =
+      SCHEME_KEYWORD_REGEX.test(safeMessage) ||
+      (leadStage === "qualification" && looksLikeStateOnlyMessage);
 
     if (extracted.name && extracted.phone && typeof monthlyBillForLead === "number" && monthlyBillForLead > 0) {
       const projection = await calculateSolarProjection({ monthlyBill: monthlyBillForLead, state: extracted.city });
@@ -258,32 +269,57 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    if (SCHEME_KEYWORD_REGEX.test(safeMessage)) {
-      const schemeCacheKey = buildCacheKey("scheme", safeMessage);
-      const cachedScheme = getCachedResponse(schemeCacheKey);
-      if (cachedScheme) {
+    if (subsidyIntent) {
+      const stateMatch = safeMessage.match(
+        /\b(?:in|from|state(?:\s+is)?)\s+([a-z][a-z\s]{1,40})\b/i,
+      );
+      const state = stateMatch?.[1]?.trim() ?? (looksLikeStateOnlyMessage ? safeMessage.trim() : undefined);
+
+      if (!state) {
         return NextResponse.json({
-          type: "scheme_info",
-          data: cachedScheme,
-          nextStep: "ask_for_bill",
+          type: "ai_response",
+          data: "Please share your state so I can check available solar subsidy schemes.",
         });
       }
 
-      const schemes = await getActiveSchemesByState();
-      const formattedSchemes = formatSchemeInfo(schemes);
-      setCachedResponse(schemeCacheKey, formattedSchemes);
+      await connectDB();
+
+      const scheme = await SolarSchemeModel.findOne({
+        state: new RegExp(state, "i"),
+      }).lean();
+
+      if (scheme) {
+        const formatted = [
+          `Solar subsidy details for ${state}:`,
+          `Scheme: ${scheme.name}`,
+          `Description: ${scheme.description}`,
+          `Subsidy per kW: ₹${scheme.subsidyPerKW}`,
+          `Maximum subsidy: ₹${scheme.maxSubsidy}`,
+          `Maximum eligible system size: ${scheme.maxEligibleKW} kW`,
+          `Eligibility: ${scheme.eligibility}`,
+        ].join("\n");
+
+        return NextResponse.json({
+          type: "ai_response",
+          data: formatted,
+        });
+      }
+
+      const aiText = await generateResponse({
+        userMessage: cleanedMessage,
+        leadStage: "subsidy",
+      });
+
       return NextResponse.json({
-        type: "scheme_info",
-        data: formattedSchemes,
-        nextStep: "ask_for_bill",
+        type: "ai_response",
+        data: aiText,
       });
     }
 
-    const leadStage = getNextLeadStage("initial", safeMessage);
     if (
       guardResult.allowed &&
       finalDetectedBill === null &&
-      !SCHEME_KEYWORD_REGEX.test(safeMessage) &&
+      !subsidyIntent &&
       leadStage !== "capture" &&
       leadStage !== "completed"
     ) {
@@ -304,7 +340,6 @@ export async function POST(request: NextRequest) {
       `Current lead stage: ${leadStage}.`,
     ].join(" ");
 
-    let modelResponse: string;
     const faqCacheKey = buildCacheKey("faq", safeMessage);
     const cachedFaqResponse = getCachedResponse(faqCacheKey);
     if (cachedFaqResponse) {
@@ -315,23 +350,31 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    try {
-      modelResponse = await generateGeminiResponseWithTimeout(safeMessage, systemContext);
-      setCachedResponse(faqCacheKey, modelResponse);
-    } catch {
-      return NextResponse.json({
-        type: "ai_response",
-        data: getBillFallbackMessage(),
-        nextStep: "qualification",
-      });
-    }
+    const modelResponse = await generateGeminiResponseWithTimeout(safeMessage, systemContext);
+    setCachedResponse(faqCacheKey, modelResponse);
 
     return NextResponse.json({
       type: "ai_response",
       data: modelResponse,
       nextStep: "qualification",
     });
-  } catch {
-    return NextResponse.json({ error: "internal_error" }, { status: 500 });
+  } catch (error) {
+    if (error instanceof GeminiRequestError) {
+      console.error("[chat] GeminiRequestError", {
+        status: error.status,
+        details: error.bodyPreview,
+      });
+      return NextResponse.json(
+        {
+          error: "gemini_request_failed",
+          status: error.status,
+          details: error.bodyPreview,
+        },
+        { status: 502 },
+      );
+    }
+
+    console.error("[chat] internal error", error);
+    return NextResponse.json({ error: "internal_server_error" }, { status: 500 });
   }
 }

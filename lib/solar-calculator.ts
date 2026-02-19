@@ -50,7 +50,13 @@ export async function calculateSolarProjection(input: SolarProjectionInput): Pro
 
   const estimatedSystemCost = roundTo(systemSizeKW * COST_PER_KW, 2);
 
-  const schemes = await getActiveSchemesByState(input.state);
+  let schemes: SolarScheme[] = [];
+  try {
+    schemes = await getActiveSchemesByState(input.state);
+  } catch (error) {
+    // Keep calculator available even if scheme data source is unavailable.
+    console.error("[solar-calculator] Scheme lookup failed, continuing without subsidy.", error);
+  }
   let highestSubsidy = 0;
 
   for (const schemeDoc of schemes) {
