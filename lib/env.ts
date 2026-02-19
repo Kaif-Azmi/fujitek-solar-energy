@@ -17,12 +17,13 @@ const REQUIRED_ENV: RequiredEnvKey[] = [
   "CLOUDINARY_API_SECRET",
 ];
 
-let validated = false;
+const validatedKeys = new Set<RequiredEnvKey>();
 
-export function validateRequiredEnv() {
-  if (validated) return;
+export function validateRequiredEnv(requiredKeys: RequiredEnvKey[] = REQUIRED_ENV) {
+  const pendingKeys = requiredKeys.filter((key) => !validatedKeys.has(key));
+  if (!pendingKeys.length) return;
 
-  const missing = REQUIRED_ENV.filter((key) => {
+  const missing = pendingKeys.filter((key) => {
     const value = process.env[key];
     return !value || !value.trim();
   });
@@ -31,7 +32,5 @@ export function validateRequiredEnv() {
     throw new Error(`Missing required environment variables: ${missing.join(", ")}`);
   }
 
-  validated = true;
+  pendingKeys.forEach((key) => validatedKeys.add(key));
 }
-
-validateRequiredEnv();

@@ -30,7 +30,7 @@ declare global {
 
 function ensureMongoClientPromise() {
   if (globalThis.__mongoClientPromise) return;
-  validateRequiredEnv();
+  validateRequiredEnv(["NODE_ENV", "MONGODB_URI"]);
   if (!uri) {
     throw new Error('MONGODB_URI environment variable is required');
   }

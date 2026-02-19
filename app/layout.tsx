@@ -5,9 +5,6 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AIAssistant from "../components/AIAssistant";
 import { siteSeo } from "@/lib/seo";
-import { validateRequiredEnv } from "@/lib/env";
-
-validateRequiredEnv();
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
