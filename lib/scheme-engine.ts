@@ -1,12 +1,13 @@
-import type { FilterQuery } from "mongoose";
 import SolarSchemeModel, { type SolarScheme, type SolarSchemeDocument } from "@/models/SolarScheme";
 
 function escapeRegex(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-export async function getActiveSchemesByState(state?: string): Promise<SolarSchemeDocument[]> {
-  const query: FilterQuery<SolarScheme> = {
+export async function getActiveSchemesByState(
+  state?: string
+): Promise<SolarSchemeDocument[]> {
+  const query: Record<string, unknown> = {
     isActive: true,
   };
 
