@@ -244,7 +244,7 @@ export default function Contact() {
                     href: `https://wa.me/${contactNumber.replace("+", "")}?text=${whatsappMessage}`,
                   },
                   { icon: Mail, text: "contact@yourdomain.com" },
-                  { icon: MapPin, text: "Office address goes here" },
+                  { icon: MapPin, text: "A5, Yadav Park, Rohtak Road, Nangloi, Delhi, India, 110041" },
                 ].map(({ icon: Icon, text, href }) => (
                   <div key={text} className="flex items-center gap-4">
                     <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/15 text-primary">

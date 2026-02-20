@@ -45,7 +45,10 @@ export function getLocalBusinessSchema() {
     email: siteSeo.business.email,
     address: {
       "@type": "PostalAddress",
+      streetAddress: siteSeo.business.address,
       addressLocality: siteSeo.business.city,
+      addressRegion: siteSeo.business.state,
+      postalCode: siteSeo.business.postalCode,
       addressCountry: siteSeo.business.country,
     },
     areaServed: {

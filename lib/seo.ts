@@ -16,7 +16,10 @@ type SiteSeo = {
     areaServed: string;
     phone: string;
     email: string;
+    address: string;
     city: string;
+    state: string;
+    postalCode: string;
     country: string;
   };
   social: {
@@ -43,7 +46,10 @@ export const siteSeo = {
     areaServed: "India",
     phone: "+918447097751",
     email: "info@fujiteksolar.com",
-    city: "New Delhi",
+    address: "A5, Yadav Park, Rohtak Road, Nangloi, Delhi, India, 110041",
+    city: "Delhi",
+    state: "Delhi",
+    postalCode: "110041",
     country: "India",
   },
   social: {
