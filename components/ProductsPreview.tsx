@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, BatteryCharging, Car, Sun, Zap } from "lucide-react";
 import { Card, CardContent, CardTitle } from "./ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { Highlighter } from "@/components/ui/highlighter";
 interface Product {
   name: string;
   description: string;
+  imageSrc?: string;
 }
 
 interface ProductsPreviewProps {
@@ -38,6 +40,14 @@ function iconForProductName(name: string) {
   return Sun;
 }
 
+function imageForProductName(name: string) {
+  const n = name.toLowerCase();
+  if (n.includes("panel")) return "/solar_panels.webp";
+  if (n.includes("inverter")) return "/inverters.webp";
+  if (n.includes("batter")) return "/batteries.webp";
+  return "/solar_panels.webp";
+}
+
 export default function ProductsPreview({
   products = [],
   ariaLabel = PRODUCTS_PREVIEW_DEFAULTS.ariaLabel,
@@ -54,14 +64,17 @@ export default function ProductsPreview({
           {
             name: "Solar Panels",
             description: "High-efficiency panels for residential and commercial use.",
+            imageSrc: "/solar_panels.webp",
           },
           {
             name: "Inverters",
             description: "Reliable inverters designed for stable power conversion.",
+            imageSrc: "/inverters.webp",
           },
           {
             name: "Batteries",
             description: "Advanced energy storage for uninterrupted power supply.",
+            imageSrc: "/batteries.webp",
           },
         ];
 
@@ -99,6 +112,7 @@ export default function ProductsPreview({
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {items.map((product, index) => {
             const Icon = iconForProductName(product.name);
+            const imageSrc = product.imageSrc ?? imageForProductName(product.name);
             return (
               <article key={`${product.name}-${index}`}>
                 <Card className="group relative h-full overflow-hidden rounded-2xl border border-border/70 bg-background shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/10">
@@ -114,6 +128,16 @@ export default function ProductsPreview({
                   />
 
                   <CardContent className="relative flex h-full flex-col p-6">
+                    <div className="relative mb-5 aspect-[4/5] overflow-hidden rounded-xl border border-border/60 bg-surface">
+                      <Image
+                        src={imageSrc}
+                        alt={`${product.name} by Fujitek Solar Energy`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                      />
+                    </div>
+
                     <div className="mb-4 flex items-start justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
