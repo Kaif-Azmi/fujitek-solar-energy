@@ -31,7 +31,7 @@ type SiteSeo = {
 
 export const siteSeo = {
   name: "Fujitek Solar Energy",
-  url: "https://fujiteksolar.com",
+  url: "https://www.fujiteksolar.com",
   description:
     "Fujitek Solar Energy provides high-efficiency solar panels, inverters, and end-to-end solar solutions for homes, businesses, and industries across India.",
   keywords: [
