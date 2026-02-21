@@ -73,9 +73,9 @@ export const pageSeo = {
     canonicalPath: "/products",
   },
   services: {
-    title: "Solar Services: Installation, Maintenance and Technical Support",
+    title: "Solar Installation Services in Uttar Pradesh | Fujitek",
     description:
-      "Discover end-to-end solar services from system design and installation to monitoring, maintenance, and expert support.",
+      "Residential and commercial solar, inverter, EV charger installation and maintenance across Lucknow, Noida, Kanpur, and nearby UP cities.",
     canonicalPath: "/service",
   },
   about: {

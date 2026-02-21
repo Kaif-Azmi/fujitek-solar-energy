@@ -1,175 +1,301 @@
-import Link from 'next/link'
+import Link from "next/link";
 import type { Metadata } from "next";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-  Button,
-  Lightning,
-  Wrench,
-  Handshake,
-} from '@/components/ui'
-import { InfiniteGrid } from "@/components/ui/infinite-grid";
-import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { BarChart3, Network, ShieldCheck } from "lucide-react";
+import JsonLd from "@/components/seo/JsonLd";
 import FinalCTA from "@/components/FinalCTA";
-import { buildPageMetadata, pageSeo } from "@/lib/seo";
+import { InfiniteGrid } from "@/components/ui/infinite-grid";
+import Button from "@/components/ui/button";
+import {
+  CTASection,
+  FAQAccordion,
+  ProcessTimeline,
+  ServiceHero,
+  ServiceSection,
+  StickySectionNav,
+  TrustMetricsStrip,
+} from "@/components/services";
+import type { ServiceSectionContent } from "@/app/service/content";
+import {
+  faqs,
+  heroContent,
+  processSteps,
+  sectionNavItems,
+  serviceAreasText,
+  serviceSections,
+  trustMetrics,
+  whyChooseContent,
+} from "@/app/service/content";
+import type { ExpandableDetails } from "@/components/services/types";
+import { buildPageMetadata, pageSeo, siteSeo } from "@/lib/seo";
 
-interface Service {
-  title: string
-  description: string
-  icon: React.ReactNode
+const localBusinessId = `${siteSeo.url}/service#localbusiness`;
+const serviceId = `${siteSeo.url}/service#solar-installation-services`;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": localBusinessId,
+  name: "Fujitek Solar Energy Pvt. Ltd.",
+  url: `${siteSeo.url}/service`,
+  telephone: siteSeo.business.phone,
+  email: siteSeo.business.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: siteSeo.business.address,
+    addressLocality: siteSeo.business.city,
+    addressRegion: siteSeo.business.state,
+    postalCode: siteSeo.business.postalCode,
+    addressCountry: siteSeo.business.country,
+  },
+  areaServed: [
+    { "@type": "City", name: "Lucknow" },
+    { "@type": "City", name: "Noida" },
+    { "@type": "City", name: "Kanpur" },
+    { "@type": "City", name: "Prayagraj" },
+    { "@type": "State", name: "Uttar Pradesh" },
+  ],
+  serviceType: [
+    "Solar Panel Installation",
+    "Solar Inverter Installation",
+    "EV Charger Installation",
+    "Solar Maintenance and Performance Monitoring",
+  ],
+};
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": serviceId,
+  name: "Solar Installation Services in Uttar Pradesh",
+  provider: {
+    "@id": localBusinessId,
+  },
+  areaServed: ["Lucknow", "Noida", "Kanpur", "Prayagraj", "Uttar Pradesh"],
+  description:
+    "Residential and commercial solar panel installation, inverter installation, EV charger installation, and annual maintenance services across Uttar Pradesh.",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Fujitek Solar Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: "On-grid and Off-grid Solar Installation" },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: "Hybrid and On-grid Inverter Installation" },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: "Home and Commercial EV Charger Installation" },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: "Solar AMC and Performance Monitoring" },
+      },
+    ],
+  },
+};
+
+const sectionBackgrounds: Array<"white" | "muted" | "gradient"> = ["white", "muted", "gradient", "white"];
+
+const ctaBySection: Record<string, { title: string; description: string; primaryLabel: string; secondaryLabel: string }> = {
+  "solar-panel-installation": {
+    title: "Planning a New Solar Plant?",
+    description:
+      "Get a site-specific design recommendation with realistic generation, cost factors, and subsidy-ready documentation guidance.",
+    primaryLabel: "Get Solar Quote",
+    secondaryLabel: "Talk to Our Experts",
+  },
+  "solar-maintenance-monitoring": {
+    title: "Want Better Long-Term System Performance?",
+    description:
+      "Get a maintenance-first review with cleaning cadence, performance trend checks, and preventive actions tailored to your site conditions.",
+    primaryLabel: "Book Free Consultation",
+    secondaryLabel: "Talk to Our Experts",
+  },
+};
+
+function mapFeatures(section: ServiceSectionContent) {
+  return section.features.map((feature) => ({
+    ...feature,
+    icon:
+      feature.icon === "grid" ? (
+        <Network className="h-4 w-4" aria-hidden />
+      ) : feature.icon === "chart" ? (
+        <BarChart3 className="h-4 w-4" aria-hidden />
+      ) : (
+        <ShieldCheck className="h-4 w-4" aria-hidden />
+      ),
+  }));
+}
+
+function getExpandableDetails(section: ServiceSectionContent): ExpandableDetails | undefined {
+  const shouldExpand = section.id === "solar-inverter-installation" || section.id === "solar-maintenance-monitoring";
+  if (!shouldExpand) {
+    return undefined;
+  }
+
+  return {
+    summary: section.mainDescription,
+    paragraphs: section.detailParagraphs,
+  };
 }
 
 export const metadata: Metadata = buildPageMetadata(pageSeo.services);
 
 export default function ServicesPage() {
-  const services: Service[] = [
-    {
-      title: 'Solar Installation',
-      description:
-        'Professional installation of solar panels and inverter systems by certified technicians, ensuring safety and long-term performance.',
-      icon: <Lightning />,
-    },
-    {
-      title: 'Energy Consultation',
-      description:
-        'Expert guidance to help you choose the most efficient and cost-effective solar solution for your needs.',
-      icon: <Handshake />,
-    },
-    {
-      title: 'System Design',
-      description:
-        'Custom-designed solar systems optimized for your location, energy usage, and future expansion.',
-      icon: <Wrench />,
-    },
-    {
-      title: 'Maintenance & Cleaning',
-      description:
-        'Scheduled maintenance and cleaning to keep your solar system operating at peak efficiency.',
-      icon: <Wrench />,
-    },
-    {
-      title: 'Performance Monitoring',
-      description:
-        'Real-time system monitoring with detailed insights into energy production and savings.',
-      icon: <Lightning />,
-    },
-    {
-      title: '24/7 Technical Support',
-      description:
-        'Round-the-clock support with quick response times and trained service engineers.',
-      icon: <Handshake />,
-    },
-  ]
-
   return (
-    <div className="min-h-screen bg-surface">
+    <main className="min-h-screen bg-surface pb-24 md:pb-0">
+      <JsonLd data={faqSchema} />
+      <JsonLd data={localBusinessSchema} />
+      <JsonLd data={serviceSchema} />
 
-      {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden bg-primary/5">
-        <div className="absolute inset-0 bg-primary/10" />
-
-        <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 sm:py-28">
-          <ScrollReveal delay={0.02}>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary sm:mb-4 sm:text-sm">
-              Our Expertise
-            </p>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.08}>
-            <h1 className="mb-5 text-3xl font-extrabold leading-tight text-foreground sm:mb-6 sm:text-4xl md:text-5xl">
-              End-to-End Solar Services
-              <span className="block text-primary">
-                Built for Long-Term Trust
-              </span>
-            </h1>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.14}>
-            <p className="mx-auto max-w-2xl text-base text-secondary sm:text-lg">
-              From system design to lifetime support, Fujitek Solar Energy delivers
-              performance you can rely on. Pair these services with our{" "}
-              <Link href="/products" className="text-primary underline-offset-4 hover:underline">
-                solar products and inverter solutions
-              </Link>
-              .
-            </p>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ================= SERVICES ================= */}
-      <section aria-label='services' className="relative overflow-hidden">
+      <ServiceHero title={heroContent.title} intro={heroContent.intro} ctas={heroContent.ctas} />
+      <section className="relative overflow-hidden">
         <InfiniteGrid className="z-0 opacity-30" />
-        <div className="relative z-10 mx-auto max-w-6xl px-4 py-section sm:px-6">
-          <div className="grid grid-cols-1 gap-5 sm:gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
-            {services.map((service, index) => (
-              <ScrollReveal key={`${service.title}-${index}`} delay={index * 0.06} className="h-full">
-                <Card
-                  className="
-                    group relative h-full bg-background
-                    border border-border
-                    transition-all duration-300 ease-out
-                    hover:-translate-y-1 hover:shadow-2xl
-                    hover:border-primary/40
-                  "
-                >
-                  <CardContent className="flex flex-col gap-4 p-5 sm:gap-5 sm:p-8">
+        <div className="relative z-10">
+          <TrustMetricsStrip items={trustMetrics} />
+          <StickySectionNav items={sectionNavItems} />
 
-                    {/* ICON */}
-                    <div
-                      className="
-                        relative flex h-12 w-12 items-center justify-center
-                        rounded-xl bg-primary/10 text-primary
-                        transition-all duration-300
-                        sm:h-14 sm:w-14
-
-                        group-hover:bg-primary
-                        group-hover:text-white
-                        group-hover:scale-110
-                      "
-                    >
-                      {/* subtle glow ring */}
-                      <span
-                        className="
-                          absolute inset-0 rounded-xl
-                          bg-primary/20 opacity-0 blur-md
-                          transition-opacity duration-300
-                          group-hover:opacity-100
-                        "
-                      />
-
-                      {/* actual icon */}
-                      <span className="relative">
-                        {service.icon}
-                      </span>
-                    </div>
-
-                    <CardTitle className="text-base font-semibold text-foreground sm:text-lg">
-                      {service.title}
-                    </CardTitle>
-
-                    <p className="text-sm leading-relaxed text-secondary sm:text-base">
-                      {service.description}
+          {serviceSections.map((section, index) => {
+            const cta = ctaBySection[section.id];
+            const expandableDetails = getExpandableDetails(section);
+            return (
+              <ServiceSection
+                key={section.id}
+                id={section.id}
+                title={section.title}
+                mainDescription={section.mainDescription}
+                featureTitle={section.featureTitle}
+                features={mapFeatures(section)}
+                highlightTitle={section.highlightTitle}
+                highlightDescription={section.highlightDescription}
+                highlightItems={section.highlightItems}
+                detailParagraphs={section.detailParagraphs}
+                expandableDetails={expandableDetails}
+                reverse={index % 2 === 1}
+                background={sectionBackgrounds[index]}
+                footerSlot={
+                  section.id === "solar-panel-installation" ? (
+                    <p className="text-base leading-8 text-secondary">
+                      You can also review relevant{" "}
+                      <Link href="/products" className="font-medium text-foreground underline underline-offset-4 hover:text-primary">
+                        solar products and inverter options
+                      </Link>{" "}
+                      before finalizing system architecture.
                     </p>
+                  ) : null
+                }
+                ctaSlot={
+                  cta ? (
+                    <CTASection
+                      title={cta.title}
+                      description={cta.description}
+                      primary={{ label: cta.primaryLabel, href: "/contact" }}
+                      secondary={{ label: cta.secondaryLabel, href: "/contact" }}
+                    />
+                  ) : undefined
+                }
+              />
+            );
+          })}
 
-                  </CardContent>
-                </Card>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-        <ScrollReveal delay={0.1}>
+          <section id="our-installation-process" className="scroll-mt-32 border-t border-border/60 bg-surface">
+            <div className="mx-auto max-w-6xl px-6 py-14 sm:py-18">
+              <div className="rounded-2xl border border-border/70 bg-accent p-5 sm:p-8">
+                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">Our <span className="highlight text-primary">Installation</span> Process</h2>
+                <p className="mt-4 max-w-3xl text-base leading-8 text-secondary">
+                  Every deployment follows a documented engineering workflow so project quality remains consistent from survey to
+                  commissioning and after-sales support.
+                </p>
+                <ProcessTimeline steps={processSteps} />
+              </div>
+            </div>
+          </section>
+
+          <section className="border-t border-border/60 bg-background">
+            <div className="mx-auto max-w-6xl px-6 py-14 sm:py-18">
+              <div className="rounded-2xl border border-border/70 bg-surface p-5 sm:p-8">
+                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">Why Choose <span className="highlight text-primary">Fujitek Solar</span> Energy</h2>
+                <div className="mt-5 space-y-4">
+                  {whyChooseContent.map((paragraph) => (
+                    <p key={paragraph.slice(0, 32)} className="max-w-4xl text-base leading-8 text-secondary">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+                <div className="mt-10">
+                  <CTASection
+                    title="Need a Project Estimate with Clear Technical Scope?"
+                    description="Speak with our engineering team for realistic capacity planning, timeline estimates, and implementation guidance."
+                    primary={{ label: "Book Free Consultation", href: "/contact" }}
+                    secondary={{ label: "Talk to Our Experts", href: "/contact" }}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="service-areas" className="scroll-mt-32 border-t border-border/60 bg-surface">
+            <div className="mx-auto max-w-6xl px-6 py-14 sm:py-18">
+              <div className="rounded-2xl border border-border/70 bg-accent p-5 sm:p-8">
+                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">Service Areas in <span className="highlight text-primary">Uttar Pradesh</span></h2>
+                <p className="mt-4 max-w-4xl text-base leading-8 text-secondary">{serviceAreasText}</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="faqs" className="scroll-mt-32 border-t border-border/60 bg-background">
+            <div className="mx-auto max-w-6xl px-6 py-14 sm:py-18">
+              <div className="rounded-2xl border border-border/70 bg-surface p-5 sm:p-8">
+                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">Frequently Asked Questions</h2>
+                <FAQAccordion items={faqs} />
+              </div>
+            </div>
+          </section>
+
           <FinalCTA
-            heading="Power Your Home or Business with Confidence"
-            supportingText="From system design to lifetime support, our service team is ready to build a solar plan that fits your goals."
-            ctaLabel="Get Free Consultation"
+            heading="Build a Reliable Solar Future with Fujitek"
+            supportingText="Get engineering-led guidance for solar panels, inverters, EV charging, and lifecycle maintenance across Uttar Pradesh."
+            ctaLabel="Book Free Consultation"
             ctaHref="/contact"
-            ariaLabel="Services page call to action"
+            ariaLabel="Services page final call to action"
+            sectionClassName="px-6"
+            panelClassName="max-w-6xl"
           />
-        </ScrollReveal>
+        </div>
       </section>
-    </div>
-  )
+
+      <div className="fixed inset-x-0 bottom-0 z-40 flex justify-center border-t border-border bg-white/95 p-3 backdrop-blur md:hidden">
+        <Button asChild variant="explore" className="w-auto">
+          <Link href="/contact">Book Free Consultation</Link>
+        </Button>
+      </div>
+    </main>
+  );
 }
+
+
+
+
+
+
+
+
+
+
 

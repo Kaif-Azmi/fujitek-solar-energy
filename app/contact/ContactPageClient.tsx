@@ -64,7 +64,7 @@ export default function Contact() {
 
       <section className="relative overflow-hidden" aria-label="Contact Fujitek Solar Energy">
         <InfiniteGrid className="z-0 opacity-30" />
-        <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+        <div className="relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-24">
           <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-5">
             <ScrollReveal className="order-1 md:order-2 md:col-span-3">
               {submitted && (
@@ -221,7 +221,7 @@ export default function Contact() {
             </ScrollReveal>
 
             <ScrollReveal delay={0.08} className="order-2 md:order-1 md:col-span-2">
-              <h2 className="text-2xl font-extrabold text-foreground md:text-3xl">Talk to Our Solar Team</h2>
+              <h2 className="text-2xl font-extrabold text-foreground md:text-3xl">Talk to Our <span className="highlight text-primary">Solar Team</span></h2>
 
               <p className="mt-6 max-w-md text-secondary">
                 Fill out the form and our experts will guide you with the best solar solution tailored to your needs. You can also review our{" "}
@@ -293,4 +293,7 @@ export default function Contact() {
     </div>
   );
 }
+
+
+
 

@@ -113,10 +113,10 @@ export default function About() {
 
       <section className="relative overflow-hidden">
         <InfiniteGrid className="z-0 opacity-30" />
-        <div className="relative z-10 mx-auto max-w-6xl px-3 py-section sm:px-4 md:px-5">
+        <div className="relative z-10 mx-auto max-w-6xl px-6 py-section">
 
         {/* ================= EXECUTION ASSURANCE ================= */}
-        <section className="mb-section rounded-[28px] border border-border/70 bg-background px-3 py-8 shadow-sm sm:px-4 md:px-5 lg:py-10">
+        <section className="mb-section rounded-[28px] border border-border/70 bg-background px-6 py-8 shadow-sm lg:py-10">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
             <ScrollReveal className="lg:self-center">
               <div className="relative max-w-[560px] lg:my-auto">
@@ -175,7 +175,7 @@ export default function About() {
 
                 <h2 className="mt-5 max-w-2xl text-[32px] font-semibold leading-[1.18] tracking-[-0.015em] text-foreground lg:text-[42px]">
                   Fujitek Solar Energy is a process-driven{" "}
-                  <span className="text-primary">solar EPC partner</span> for
+                  <span className="highlight text-primary">solar EPC partner</span> for
                   dependable long-term energy infrastructure.
                 </h2>
 
@@ -199,7 +199,7 @@ export default function About() {
         </section>
 
         {/* ================= MISSION VISION ================= */}
-        <section className="mb-section rounded-[28px] border border-border/70 bg-background px-3 py-8 shadow-sm sm:px-4 md:px-5 lg:py-10">
+        <section className="mb-section rounded-[28px] border border-border/70 bg-background px-6 py-8 shadow-sm lg:py-10">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_1.9fr] lg:items-center">
             <ScrollReveal>
               <div className="max-w-[26rem]">
@@ -208,7 +208,7 @@ export default function About() {
                 </p>
                 <h2 className="mt-4 text-[32px] font-semibold leading-[1.16] tracking-[-0.02em] text-foreground lg:text-[44px]">
                   We deliver pragmatic,{" "}
-                  <span className="text-primary">forward-thinking solutions</span>{" "}
+                  <span className="highlight text-primary">forward-thinking solutions</span>{" "}
                   built for India&apos;s evolving energy needs.
                 </h2>
                 <p className="mt-5 max-w-[24rem] text-[16px] leading-7 text-secondary">
@@ -454,4 +454,7 @@ export default function About() {
     </div>
   );
 }
+
+
+
 

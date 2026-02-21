@@ -125,6 +125,11 @@
     background-size: 48px 48px;
   }
 
+  .highlight {
+    color: var(--brand) !important;
+    font-weight: 700;
+  }
+
   /* ===============================
      CARDS
      =============================== */
@@ -239,3 +244,4 @@
   }
 
 }
+

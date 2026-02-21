@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle, Button } from "./ui";
+import { Card, CardContent, Button, FaqAccordion } from "./ui";
 import { Highlighter } from "@/components/ui/highlighter";
 
 interface FaqItem {
@@ -71,69 +71,7 @@ export default function FaqSection() {
               </p>
             </div>
 
-            {/* FAQ Grid */}
-            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
-              {FAQS.map((f, i) => (
-                <Card
-                  key={i}
-                  className="
-    relative overflow-hidden
-    bg-background
-    transition-all duration-300
-    hover:-translate-y-2
-  "
-                  style={{ transitionDelay: `${i * 40}ms` }}
-                >
-                  {/* Soft glow */}
-                  <div
-                    className="
-                      pointer-events-none absolute inset-0
-                      bg-primary/10
-                      opacity-0 transition-opacity
-                      group-hover:opacity-100
-                    "
-                  />
-
-                  {/* Accent spine */}
-                  <div
-                    className="
-                      absolute left-0 top-0 h-full w-[3px]
-                      bg-primary
-                      opacity-0 transition-opacity
-                      group-hover:opacity-100
-                    "
-                  />
-
-                  {/* Icon bubble */}
-                  <div className="absolute right-4 top-4 z-10">
-                    <div
-                      className="
-                        flex h-11 w-11 items-center justify-center
-                        rounded-full
-                        bg-primary/10 text-primary
-                        ring-1 ring-primary/20
-                        transition-all
-                        group-hover:bg-primary
-                        group-hover:text-white
-                        group-hover:ring-primary/40
-                      "
-                    >
-                      ?
-                    </div>
-                  </div>
-
-                  <CardHeader className="p-6 pr-16">
-                    <CardTitle className="text-lg leading-snug">
-                      {f.question}
-                    </CardTitle>
-                  </CardHeader>
-
-                  <CardContent className="px-6 pb-6 pt-2 text-sm leading-relaxed text-muted">
-                    {f.answer}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <FaqAccordion items={FAQS} className="max-w-3xl" singleOpen defaultOpenIndex={0} />
           </div>
 
           {/* ================= RIGHT — SUPPORT ================= */}

@@ -5,6 +5,28 @@ type HeroSectionProps = {
   description: string;
 };
 
+function renderHeadingHighlight(text: string) {
+  const words = text.trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) {
+    return text;
+  }
+
+  const highlightedCount = words.length > 2 ? 2 : 1;
+  const normalText = words.slice(0, -highlightedCount).join(" ");
+  const highlightedText = words.slice(-highlightedCount).join(" ");
+
+  if (!normalText) {
+    return <span className="highlight text-primary">{highlightedText}</span>;
+  }
+
+  return (
+    <>
+      {normalText}{" "}
+      <span className="highlight text-primary">{highlightedText}</span>
+    </>
+  );
+}
+
 export default function HeroSection({
   badge,
   title,
@@ -22,7 +44,7 @@ export default function HeroSection({
 
         <h1 className="mb-6 text-4xl font-extrabold leading-tight text-foreground md:text-5xl">
           {title}
-          <span className="block text-primary">{highlight}</span>
+          <span className="block">{renderHeadingHighlight(highlight)}</span>
         </h1>
 
         <p className="mx-auto max-w-2xl text-lg text-secondary">{description}</p>
@@ -30,3 +52,4 @@ export default function HeroSection({
     </section>
   );
 }
+
