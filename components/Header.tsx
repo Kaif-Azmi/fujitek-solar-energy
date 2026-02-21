@@ -58,6 +58,7 @@ export default function Header() {
                   className={`
                     relative z-10 px-5 py-2 text-sm font-medium rounded-full
                     transition-colors duration-200 no-underline
+                    after:absolute after:-inset-y-1.5 after:-inset-x-1 after:content-['']
                     ${
                       isActive
                         ? "text-white"
@@ -81,7 +82,7 @@ export default function Header() {
           {/* Call */}
           <a
             href={`tel:${PHONE_NUMBER}`}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-primary transition hover:bg-hover hover:text-primary-hover no-underline sm:h-9 sm:w-9"
+            className="relative inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-primary transition hover:bg-hover hover:text-primary-hover no-underline sm:h-9 sm:w-9 after:absolute after:-inset-1.5 after:content-['']"
             aria-label="Call Fujitek Solar Energy"
           >
             <Phone className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
@@ -92,7 +93,7 @@ export default function Header() {
             href={`https://wa.me/918447097751?text=${WHATSAPP_MESSAGE}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-[#25D366] transition hover:bg-hover hover:text-[#1ebe57] no-underline sm:h-9 sm:w-9"
+            className="relative inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-[#25D366] transition hover:bg-hover hover:text-[#1ebe57] no-underline sm:h-9 sm:w-9 after:absolute after:-inset-1.5 after:content-['']"
             aria-label="Chat on WhatsApp"
           >
             <svg className="h-4.5 w-4.5 sm:h-5 sm:w-5" viewBox="0 0 448 512" fill="currentColor" aria-hidden>
@@ -104,7 +105,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setIsMenuOpen((p) => !p)}
-            className="relative flex h-8 w-8 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-primary md:hidden sm:h-9 sm:w-9"
+            className="relative flex h-8 w-8 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-primary md:hidden sm:h-9 sm:w-9 after:absolute after:-inset-1.5 after:content-['']"
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"

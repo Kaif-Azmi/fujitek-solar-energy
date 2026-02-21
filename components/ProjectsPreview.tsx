@@ -102,7 +102,7 @@ export default function ProjectsPreview({
                         <ProjectIcon index={index} />
                       </div>
                       <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/90">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
                           {ProjectTag({ index })}
                         </p>
                         <CardTitle className="text-lg font-semibold text-foreground">
@@ -111,7 +111,7 @@ export default function ProjectsPreview({
                       </div>
                     </div>
 
-                    <div className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/60 text-foreground/70 transition-colors duration-300 group-hover:border-primary/20 group-hover:text-primary">
+                    <div className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/60 text-secondary transition-colors duration-300 group-hover:border-primary/20 group-hover:text-primary">
                       <ArrowRight className="h-4 w-4" aria-hidden />
                     </div>
                   </div>

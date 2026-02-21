@@ -61,7 +61,7 @@ export default function FinalCTA({
                 {heading}
               </Highlighter>
             </h2>
-            <p className="mt-4 max-w-xl text-base text-white/90 md:text-lg">{supportingText}</p>
+            <p className="mt-4 max-w-xl text-base text-white md:text-lg">{supportingText}</p>
             <div className="mt-8">
               <Button asChild variant="exploreInverse">
                 <Link href={ctaHref}>{ctaLabel}</Link>
@@ -76,7 +76,7 @@ export default function FinalCTA({
                   <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-primary">
                     <Check className="h-4 w-4" />
                   </span>
-                  <p className="text-sm font-medium text-white/95 md:text-base">{benefit}</p>
+                  <p className="text-sm font-medium text-white md:text-base">{benefit}</p>
                 </li>
               ))}
             </ul>

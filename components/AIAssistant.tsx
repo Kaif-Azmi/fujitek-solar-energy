@@ -524,13 +524,13 @@ export default function AIAssistant() {
                   </div>
                   <div>
                     <p className="text-sm text-accent font-semibold leading-tight">Sam</p>
-                    <p className="text-xs text-white/90">We're online · {stageLabel}</p>
+                    <p className="text-xs text-white">We're online · {stageLabel}</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/15"
+                  className="relative inline-flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/15 after:absolute after:-inset-2 after:content-['']"
                   aria-label="Close assistant"
                 >
                   <X className="h-4 w-4" />
@@ -626,7 +626,7 @@ export default function AIAssistant() {
                                 variant="outline"
                                 onClick={() => handleQuickAction(action)}
                                 disabled={disableInputs}
-                                className="h-auto rounded-full px-3 py-1 text-xs"
+                                className="relative h-auto rounded-full px-3 py-1 text-xs after:absolute after:-inset-y-2.5 after:-inset-x-1.5 after:content-['']"
                               >
                                 {action}
                               </Button>
@@ -683,7 +683,7 @@ export default function AIAssistant() {
                     type="button"
                     onClick={handleSend}
                     disabled={disableInputs || !input.trim()}
-                    className="h-10 w-10 rounded-full bg-primary p-0 text-accent hover:bg-primary/80-hover"
+                    className="relative h-10 w-10 rounded-full bg-primary p-0 text-accent hover:bg-primary/80-hover after:absolute after:-inset-1 after:content-['']"
                     aria-label="Send message"
                   >
                     <Send className="h-4 w-4" />

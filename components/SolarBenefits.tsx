@@ -161,7 +161,7 @@ export default function SolarBenefitsBento() {
                     <h3 className={["text-base font-semibold", isPrimary ? "text-white" : "text-primary"].join(" ")}>
                       {benefit.title}
                     </h3>
-                    <p className={["mt-2 text-sm leading-relaxed", isPrimary ? "text-white/85" : "text-primary/80"].join(" ")}>
+                    <p className={["mt-2 text-sm leading-relaxed", isPrimary ? "text-white" : "text-primary"].join(" ")}>
                       {benefit.description}
                     </p>
                   </div>

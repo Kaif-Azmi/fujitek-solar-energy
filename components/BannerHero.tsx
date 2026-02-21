@@ -111,7 +111,7 @@ export default function BannerHero({
 
           {/* Headline */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-semibold leading-[1.08] tracking-tight">
-            <span className="block text-white/90">
+            <span className="block text-white">
               Sustainable Energy
             </span>
             <span className="block font-bold text-accent">
@@ -121,7 +121,7 @@ export default function BannerHero({
 
           {/* Subtitle */}
           {banner.subtitle && (
-            <p className="mt-6 text-lg leading-relaxed text-white/80">
+            <p className="mt-6 text-lg leading-relaxed text-white">
               {banner.subtitle}
             </p>
           )}
@@ -149,7 +149,7 @@ export default function BannerHero({
                 (prev) => (prev - 1 + banners.length) % banners.length
               )
             }
-            className="absolute left-6 sm:left-8 top-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="absolute left-6 sm:left-8 top-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent after:absolute after:-inset-1 after:content-['']"
             aria-label="Previous slide"
           >
             ‹
@@ -160,7 +160,7 @@ export default function BannerHero({
             onClick={() =>
               setCurrentIndex((prev) => (prev + 1) % banners.length)
             }
-            className="absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent"
+            className="absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent after:absolute after:-inset-1 after:content-['']"
             aria-label="Next slide"
           >
             ›
@@ -178,7 +178,7 @@ export default function BannerHero({
             type="button"
             onClick={() => setCurrentIndex(i)}
             aria-label={`Go to slide ${i + 1}`}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`relative h-2 rounded-full transition-all duration-300 after:absolute after:-inset-y-5 after:-inset-x-3 after:content-[''] ${
               i === currentIndex
                 ? 'w-8 bg-white'
                 : 'w-2 bg-white/40 hover:bg-white/70'
