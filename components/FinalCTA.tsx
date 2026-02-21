@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
 import { cn } from "@/lib/utils";
 
@@ -62,12 +63,9 @@ export default function FinalCTA({
             </h2>
             <p className="mt-4 max-w-xl text-base text-white/90 md:text-lg">{supportingText}</p>
             <div className="mt-8">
-              <Link
-                href={ctaHref}
-                className="inline-flex items-center justify-center rounded-full border border-accent bg-accent px-6 py-3 text-sm font-semibold text-primary"
-              >
-                {ctaLabel}
-              </Link>
+              <Button asChild variant="exploreInverse">
+                <Link href={ctaHref}>{ctaLabel}</Link>
+              </Button>
             </div>
           </div>
 

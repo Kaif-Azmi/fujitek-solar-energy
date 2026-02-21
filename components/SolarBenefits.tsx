@@ -8,7 +8,7 @@ import {
   TrendingUp,
   Zap,
 } from 'lucide-react';
-import MissionLottie from '@/components/MissionLottie';
+import Image from "next/image";
 import { Highlighter } from "@/components/ui/highlighter";
 
 type Benefit = {
@@ -76,12 +76,12 @@ export default function SolarBenefitsBento() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
-          <div className="group relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-accent/10 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium md:p-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch">
+          <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-accent/10 p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium md:p-6">
             <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-accent/20 blur-3xl transition-opacity duration-300 group-hover:opacity-90" />
             <div className="pointer-events-none absolute -bottom-14 -left-10 h-40 w-40 rounded-full bg-primary/20 blur-3xl transition-opacity duration-300 group-hover:opacity-90" />
 
-            <div className="relative mb-5 flex items-start justify-between gap-4">
+            <div className="relative mb-4 flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/20">
                   <Sun className="h-5 w-5" />
@@ -92,27 +92,38 @@ export default function SolarBenefitsBento() {
                 </div>
               </div>
               <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary">
-                Live
+                Overview
               </span>
             </div>
 
-            <div className="relative rounded-2xl border border-border/70 bg-background/80 p-3 backdrop-blur-sm">
-              <MissionLottie />
+            <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-white/95 p-3 shadow-sm backdrop-blur-sm md:p-4">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/70 via-transparent to-primary/5" />
+              <Image
+                src="/different_solar_energy_systems.webp"
+                alt="Different solar energy systems"
+                width={1200}
+                height={800}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="relative h-auto max-h-[360px] w-full rounded-xl object-contain"
+              />
+              <p className="mt-3 text-center text-xs font-medium text-muted">
+                On-grid, off-grid, and hybrid solar configurations
+              </p>
             </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-3">
-              <div className="rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 transition-colors duration-300 group-hover:bg-primary/15">
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="rounded-xl border border-primary/20 bg-primary/10 px-4 py-2.5 transition-colors duration-300 group-hover:bg-primary/15">
                 <p className="text-lg font-extrabold text-primary">4-6 yrs</p>
                 <p className="text-xs text-secondary">Typical payback period</p>
               </div>
-              <div className="rounded-xl border border-accent/35 bg-accent/20 px-4 py-3 transition-colors duration-300 group-hover:bg-accent/25">
+              <div className="rounded-xl border border-accent/35 bg-accent/20 px-4 py-2.5 transition-colors duration-300 group-hover:bg-accent/25">
                 <p className="text-lg font-extrabold text-primary">25+ yrs</p>
                 <p className="text-xs text-secondary">Long-term output life</p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid h-full grid-cols-1 gap-3 sm:auto-rows-fr sm:grid-cols-2">
             {BENEFITS.map((benefit, index) => {
               const Icon = benefit.icon;
               const isPrimary = index % 2 === 0;
@@ -120,7 +131,7 @@ export default function SolarBenefitsBento() {
                 <article
                   key={benefit.title}
                   className={[
-                    "group relative overflow-hidden rounded-2xl border p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium",
+                    "group relative h-full min-h-[150px] overflow-hidden rounded-2xl border p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium",
                     isPrimary
                       ? "border-primary/30 bg-primary text-white hover:border-primary/60"
                       : "border-accent/40 bg-accent text-primary hover:border-accent",
@@ -139,13 +150,13 @@ export default function SolarBenefitsBento() {
                   <div className="relative">
                     <div
                       className={[
-                        "mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-300",
+                        "mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl transition-colors duration-300",
                         isPrimary
                           ? "bg-white/15 text-accent group-hover:bg-white group-hover:text-primary"
                           : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white",
                       ].join(" ")}
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-4.5 w-4.5" />
                     </div>
                     <h3 className={["text-base font-semibold", isPrimary ? "text-white" : "text-primary"].join(" ")}>
                       {benefit.title}
