@@ -1,8 +1,4 @@
-"use client";
-
 import type { ReactNode } from "react";
-import type { UseInViewOptions } from "motion/react";
-import { BlurFade } from "@/components/ui/blur-fade";
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -11,7 +7,7 @@ interface ScrollRevealProps {
   duration?: number;
   offset?: number;
   direction?: "up" | "down" | "left" | "right";
-  margin?: UseInViewOptions["margin"];
+  margin?: string;
 }
 
 export function ScrollReveal({
@@ -23,17 +19,15 @@ export function ScrollReveal({
   direction = "up",
   margin = "-90px",
 }: ScrollRevealProps) {
+  void delay;
+  void duration;
+  void offset;
+  void direction;
+  void margin;
+
   return (
-    <BlurFade
-      inView
-      inViewMargin={margin}
-      delay={delay}
-      duration={duration}
-      offset={offset}
-      direction={direction}
-      className={className}
-    >
+    <div className={className}>
       {children}
-    </BlurFade>
+    </div>
   );
 }

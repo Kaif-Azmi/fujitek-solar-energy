@@ -1,10 +1,4 @@
-"use client"
-
-import { useEffect, useRef } from "react"
 import type React from "react"
-import { useInView } from "motion/react"
-import { annotate } from "rough-notation"
-import { type RoughAnnotation } from "rough-notation/lib/model"
 
 type AnnotationAction =
   | "highlight"
@@ -38,65 +32,33 @@ export function Highlighter({
   multiline = true,
   isView = false,
 }: HighlighterProps) {
-  const elementRef = useRef<HTMLSpanElement>(null)
-  const annotationRef = useRef<RoughAnnotation | null>(null)
+  void animationDuration
+  void iterations
+  void padding
+  void multiline
+  void isView
 
-  const isInView = useInView(elementRef, {
-    once: true,
-    margin: "-10%",
-  })
+  const style: React.CSSProperties = {}
 
-  // If isView is false, always show. If isView is true, wait for inView
-  const shouldShow = !isView || isInView
-
-  useEffect(() => {
-    if (!shouldShow) return
-
-    const element = elementRef.current
-    if (!element) return
-
-    const annotationConfig = {
-      type: action,
-      color,
-      strokeWidth,
-      animationDuration,
-      iterations,
-      padding,
-      multiline,
-    }
-
-    const annotation = annotate(element, annotationConfig)
-
-    annotationRef.current = annotation
-    annotationRef.current.show()
-
-    const resizeObserver = new ResizeObserver(() => {
-      annotation.hide()
-      annotation.show()
-    })
-
-    resizeObserver.observe(element)
-    resizeObserver.observe(document.body)
-
-    return () => {
-      if (element) {
-        annotate(element, { type: action }).remove()
-        resizeObserver.disconnect()
-      }
-    }
-  }, [
-    shouldShow,
-    action,
-    color,
-    strokeWidth,
-    animationDuration,
-    iterations,
-    padding,
-    multiline,
-  ])
+  if (action === "underline") {
+    style.textDecorationLine = "underline"
+    style.textDecorationColor = color
+    style.textDecorationThickness = `${strokeWidth}px`
+    style.textUnderlineOffset = "0.12em"
+  } else if (action === "highlight") {
+    style.backgroundImage = `linear-gradient(transparent 60%, ${color} 60%)`
+    style.backgroundRepeat = "no-repeat"
+  } else if (action === "strike-through" || action === "crossed-off") {
+    style.textDecorationLine = "line-through"
+    style.textDecorationColor = color
+    style.textDecorationThickness = `${strokeWidth}px`
+  } else if (action === "box" || action === "circle" || action === "bracket") {
+    style.boxShadow = `inset 0 0 0 ${strokeWidth}px ${color}`
+    if (action === "circle") style.borderRadius = "9999px"
+  }
 
   return (
-    <span ref={elementRef} className="relative inline-block bg-transparent">
+    <span className="relative inline-block bg-transparent" style={style}>
       {children}
     </span>
   )

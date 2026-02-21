@@ -23,33 +23,10 @@ interface BannerHeroProps {
 export default function BannerHero({
   initialBanners = [],
 }: BannerHeroProps) {
-  const [banners, setBanners] = useState<Banner[]>(initialBanners);
+  const [banners] = useState<Banner[]>(initialBanners);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  /* ================= Fetch ================= */
-  useEffect(() => {
-    async function fetchBanners() {
-      try {
-        const res = await fetch('/api/banners');
-        const data = await res.json();
-
-        const rows = Array.isArray(data)
-          ? data
-          : Array.isArray(data?.items)
-          ? data.items
-          : [];
-
-        const active = rows.filter((b: Banner) => b.status === 'Active');
-        if (active.length) setBanners(active);
-      } catch {
-        // silent fail — fallback to initialBanners
-      }
-    }
-
-    if (!initialBanners.length) fetchBanners();
-  }, [initialBanners]);
 
   /* ================= Auto Slide ================= */
   useEffect(() => {

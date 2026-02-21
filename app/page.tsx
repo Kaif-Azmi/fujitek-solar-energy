@@ -1,17 +1,19 @@
 import "./globals.css";
+import dynamic from "next/dynamic";
 import BannerHero from "../components/BannerHero";
-import WhyChooseUs from "../components/WhyChooseUs";
-import ProductsPreview from "../components/ProductsPreview";
-import ServicesPreview from "../components/ServicesPreview";
-import ProjectsPreview from "../components/ProjectsPreview";
-import FinalCTA from "../components/FinalCTA";
-import FaqSection from "../components/FaqSection";
-import InfiniteServicesMarquee from "../components/InfiniteServicesMarquee";
-import SolarBenefits from '@/components/SolarBenefits';
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import type { Metadata } from "next";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 import { getDb } from "@/lib/mongodb";
+
+const WhyChooseUs = dynamic(() => import("../components/WhyChooseUs"));
+const ProductsPreview = dynamic(() => import("../components/ProductsPreview"));
+const SolarBenefits = dynamic(() => import("@/components/SolarBenefits"));
+const ServicesPreview = dynamic(() => import("../components/ServicesPreview"));
+const ProjectsPreview = dynamic(() => import("../components/ProjectsPreview"));
+const InfiniteServicesMarquee = dynamic(() => import("../components/InfiniteServicesMarquee"));
+const FaqSection = dynamic(() => import("../components/FaqSection"));
+const FinalCTA = dynamic(() => import("../components/FinalCTA"));
 
 type HomeBanner = {
   _id?: string;
