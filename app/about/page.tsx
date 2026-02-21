@@ -122,7 +122,7 @@ export default function About() {
               <div className="relative max-w-[560px] lg:my-auto">
                 <div className="relative aspect-[1/1] overflow-hidden rounded-[18px]">
                   <Image
-                    src="/solar_engineer.jpg"
+                    src="/solar_engineer.webp"
                     alt="Fujitek engineering team reviewing rooftop solar execution plan"
                     fill
                     className="object-cover"

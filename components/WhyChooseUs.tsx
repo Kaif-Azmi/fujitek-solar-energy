@@ -111,7 +111,7 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
             <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-primary/5 shadow-sm">
               <div className="absolute inset-0 bg-gradient-to-br from-white/35 via-transparent to-transparent" />
               <Image
-                src="/solar_engineer.jpg"
+                src="/solar_engineer.webp"
                 alt="Fujitek solar engineer working on inverter installation"
                 width={900}
                 height={680}
