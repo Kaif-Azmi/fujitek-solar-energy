@@ -5,6 +5,7 @@ import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
 import { InfiniteGrid } from "@/components/ui/infinite-grid";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { siteSeo } from "@/lib/seo";
 import {
   Button,
   Input,
@@ -30,8 +31,9 @@ const INITIAL_FORM_DATA = {
 };
 
 export default function Contact() {
-  const contactNumber = "+918447097751";
+  const contactNumber = siteSeo.business.phone;
   const contactNumberDisplay = "+91 84470 97751";
+  const contactEmail = siteSeo.business.email;
   const whatsappMessage = encodeURIComponent(
     "Hi Fujitek Solar Energy, I am interested in your solar solutions. Please share details."
   );
@@ -286,8 +288,8 @@ export default function Contact() {
                     text: `WhatsApp: ${contactNumberDisplay}`,
                     href: `https://wa.me/${contactNumber.replace("+", "")}?text=${whatsappMessage}`,
                   },
-                  { icon: Mail, text: "contact@yourdomain.com" },
-                  { icon: MapPin, text: "A5, Yadav Park, Rohtak Road, Nangloi, Delhi, India, 110041" },
+                  { icon: Mail, text: contactEmail, href: `mailto:${contactEmail}` },
+                  { icon: MapPin, text: siteSeo.business.address },
                 ].map(({ icon: Icon, text, href }) => (
                   <div key={text} className="flex items-center gap-4">
                     <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/15 text-primary">
@@ -315,19 +317,23 @@ export default function Contact() {
 
               <div className="mt-8 flex gap-3">
                 {[
-                  { Icon: Instagram, label: "Instagram" },
-                  { Icon: Facebook, label: "Facebook" },
-                  { Icon: X, label: "X" },
-                ].map(({ Icon, label }) => (
-                  <a
-                    key={label}
-                    href="#"
-                    aria-label={label}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary/20 text-secondary transition-colors hover:bg-primary hover:text-background"
-                  >
-                    <Icon className="h-5 w-5" />
-                  </a>
-                ))}
+                  { Icon: Instagram, label: "Instagram", href: siteSeo.social.instagram },
+                  { Icon: Facebook, label: "Facebook", href: siteSeo.social.facebook },
+                  { Icon: X, label: "X", href: siteSeo.social.x },
+                ].map(({ Icon, label, href }) =>
+                  href ? (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary/20 text-secondary transition-colors hover:bg-primary hover:text-background"
+                    >
+                      <Icon className="h-5 w-5" />
+                    </a>
+                  ) : null
+                )}
               </div>
             </ScrollReveal>
           </div>

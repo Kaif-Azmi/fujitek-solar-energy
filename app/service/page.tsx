@@ -79,7 +79,7 @@ const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "@id": serviceId,
-  name: "Solar Installation Services in Uttar Pradesh",
+  name: "Solar, Inverter, and EV Installation Services Across Uttar Pradesh",
   provider: {
     "@id": localBusinessId,
   },

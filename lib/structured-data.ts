@@ -11,7 +11,15 @@ type ProductSchemaInput = {
 const ORG_ID = `${siteSeo.url}#organization`;
 const LOCAL_BUSINESS_ID = `${siteSeo.url}#local-business`;
 
+function getSameAsLinks() {
+  return [siteSeo.social.facebook, siteSeo.social.instagram, siteSeo.social.x].filter(
+    (url): url is string => Boolean(url && /^https?:\/\//.test(url)),
+  );
+}
+
 export function getOrganizationSchema() {
+  const sameAs = getSameAsLinks();
+
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -29,7 +37,7 @@ export function getOrganizationSchema() {
         availableLanguage: ["English", "Hindi"],
       },
     ],
-    sameAs: [siteSeo.social.facebook, siteSeo.social.instagram, siteSeo.social.x],
+    ...(sameAs.length > 0 ? { sameAs } : {}),
   };
 }
 

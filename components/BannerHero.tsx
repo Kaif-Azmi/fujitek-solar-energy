@@ -167,14 +167,14 @@ export default function BannerHero({
           </span>
 
           {/* Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-semibold leading-[1.08] tracking-tight">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-semibold leading-[1.08] tracking-tight">
             <span className="block text-white">
               Sustainable Energy
             </span>
             <span className="block font-bold text-accent">
               Solutions for Tomorrow
             </span>
-          </h1>
+          </h2>
 
           {/* Subtitle */}
           {banner.subtitle && (

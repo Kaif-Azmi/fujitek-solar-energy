@@ -23,11 +23,18 @@ type SiteSeo = {
     country: string;
   };
   social: {
-    facebook: string;
-    instagram: string;
-    x: string;
+    facebook?: string;
+    instagram?: string;
+    x?: string;
   };
 };
+
+function getOptionalPublicUrl(envKey: "NEXT_PUBLIC_SOCIAL_FACEBOOK" | "NEXT_PUBLIC_SOCIAL_INSTAGRAM" | "NEXT_PUBLIC_SOCIAL_X") {
+  const value = process.env[envKey];
+  if (!value) return undefined;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
 
 export const siteSeo = {
   name: "Fujitek Solar Energy",
@@ -53,9 +60,9 @@ export const siteSeo = {
     country: "India",
   },
   social: {
-    facebook: "https://facebook.com",
-    instagram: "https://instagram.com",
-    x: "https://x.com",
+    facebook: getOptionalPublicUrl("NEXT_PUBLIC_SOCIAL_FACEBOOK"),
+    instagram: getOptionalPublicUrl("NEXT_PUBLIC_SOCIAL_INSTAGRAM"),
+    x: getOptionalPublicUrl("NEXT_PUBLIC_SOCIAL_X"),
   },
 } satisfies SiteSeo;
 
@@ -73,9 +80,9 @@ export const pageSeo = {
     canonicalPath: "/products",
   },
   services: {
-    title: "Solar Installation Services in Uttar Pradesh | Fujitek",
+    title: "Residential & Commercial Solar Services",
     description:
-      "Residential and commercial solar, inverter, EV charger installation and maintenance across Lucknow, Noida, Kanpur, and nearby UP cities.",
+      "Residential and commercial solar, inverter, EV charger installation, and maintenance services across major Uttar Pradesh cities.",
     canonicalPath: "/service",
   },
   about: {

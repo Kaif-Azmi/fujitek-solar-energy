@@ -3,10 +3,17 @@ import type { NextRequest } from "next/server";
 import { ADMIN_AUTH_COOKIE, verifyAdminSessionToken } from "@/lib/admin-auth";
 import { validateRequiredEnv } from "@/lib/env";
 
+function withAdminNoIndex(response: NextResponse) {
+  response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive, nosnippet");
+  return response;
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const host = request.headers.get("host") ?? "";
   const forwardedProto = request.headers.get("x-forwarded-proto");
+  const isAdminPagePath = pathname.startsWith("/admin");
+  const isAdminApiPath = pathname.startsWith("/api/admin");
 
   const isProductionHost =
     host === "fujiteksolar.com" || host === "www.fujiteksolar.com";
@@ -21,11 +28,19 @@ export async function middleware(request: NextRequest) {
       redirectUrl.protocol = "https:";
       redirectUrl.hostname = "www.fujiteksolar.com";
       redirectUrl.port = "";
-      return NextResponse.redirect(redirectUrl, 308);
+      const redirectResponse = NextResponse.redirect(redirectUrl, 308);
+      if (isAdminPagePath || isAdminApiPath) {
+        return withAdminNoIndex(redirectResponse);
+      }
+      return redirectResponse;
     }
   }
 
-  if (!pathname.startsWith("/admin")) {
+  if (isAdminApiPath) {
+    return withAdminNoIndex(NextResponse.next());
+  }
+
+  if (!isAdminPagePath) {
     return NextResponse.next();
   }
 
@@ -37,18 +52,18 @@ export async function middleware(request: NextRequest) {
 
   if (pathname === "/admin/login") {
     if (isAuthorized) {
-      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+      return withAdminNoIndex(NextResponse.redirect(new URL("/admin/dashboard", request.url)));
     }
-    return NextResponse.next();
+    return withAdminNoIndex(NextResponse.next());
   }
 
   if (!isAuthorized) {
     const loginUrl = new URL("/admin/login", request.url);
     loginUrl.searchParams.set("next", pathname);
-    return NextResponse.redirect(loginUrl);
+    return withAdminNoIndex(NextResponse.redirect(loginUrl));
   }
 
-  return NextResponse.next();
+  return withAdminNoIndex(NextResponse.next());
 }
 
 export const config = {

@@ -62,6 +62,7 @@ export default async function Home() {
   const banners = await getHomeBanners();
   return (
     <div className="w-full">
+      <h1 className="sr-only">Solar &amp; Inverter Solutions for Homes and Businesses</h1>
       <ScrollReveal>
         <BannerHero initialBanners={banners} />
       </ScrollReveal>

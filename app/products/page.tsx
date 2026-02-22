@@ -5,11 +5,13 @@ import HeroSection from "@/components/HeroSection";
 import FinalCTA from "@/components/FinalCTA";
 import { InfiniteGrid } from "@/components/ui/infinite-grid";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import JsonLd from "@/components/seo/JsonLd";
 import type { Metadata } from "next";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 import { getDb } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 import { getOptimizedCloudinaryUrl } from "@/lib/image";
+import { getProductListSchema } from "@/lib/structured-data";
 
 type ProductCategory = "Panel" | "Inverter" | "Battery" | "EV Charger";
 
@@ -47,9 +49,22 @@ async function getActiveProducts() {
 
 export default async function ProductsPage() {
   const products = await getActiveProducts();
+  const productListSchema =
+    products.length > 0
+      ? getProductListSchema(
+          products.map((product) => ({
+            id: product.id,
+            name: product.name,
+            category: product.category,
+            price: product.price,
+            image: product.imageUrl,
+          })),
+        )
+      : null;
 
   return (
     <div className="min-h-screen bg-surface">
+      {productListSchema ? <JsonLd data={productListSchema} /> : null}
       <HeroSection
         badge="OUR PRODUCTS"
         title="Complete Solar Product Lineup"

@@ -5,6 +5,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AIAssistantLazy from "../components/AIAssistantLazy";
 import { siteSeo } from "@/lib/seo";
+import JsonLd from "@/components/seo/JsonLd";
+import { getOrganizationSchema, getWebsiteSchema } from "@/lib/structured-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,9 +50,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = getOrganizationSchema();
+  const webSiteSchema = getWebsiteSchema();
+
   return (
     <html lang="en">
       <body className={`bg-app ${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <JsonLd data={organizationSchema} />
+        <JsonLd data={webSiteSchema} />
         <Header />
         <main>{children}</main>
         <Footer />

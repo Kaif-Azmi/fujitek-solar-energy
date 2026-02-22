@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Mail, Phone, Twitter } from "lucide-react";
 import { DottedMap } from "@/components/ui/dotted-map";
+import { siteSeo } from "@/lib/seo";
 
 const QUICK_LINKS = [
   { href: "/", label: "Home" },
@@ -11,13 +12,13 @@ const QUICK_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-const PHONE_NUMBER = "+918447097751";
+const PHONE_NUMBER = siteSeo.business.phone;
 const PHONE_NUMBER_DISPLAY = "+91 84470 97751";
-const EMAIL = "info@fujiteksolar.com";
+const EMAIL = siteSeo.business.email;
 const WHATSAPP_MESSAGE = encodeURIComponent(
   "Hi Fujitek Solar Energy, I am interested in your solar solutions. Please share details."
 );
-const WHATSAPP_LINK = `https://wa.me/918447097751?text=${WHATSAPP_MESSAGE}`;
+const WHATSAPP_LINK = `https://wa.me/${PHONE_NUMBER.replace("+", "")}?text=${WHATSAPP_MESSAGE}`;
 
 export default function Footer() {
   return (
@@ -101,33 +102,24 @@ export default function Footer() {
             </div>
 
             <div className="mt-5 flex items-center gap-2.5">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 text-white transition hover:bg-white/10 after:absolute after:-inset-1 after:content-['']"
-              >
-                <Facebook className="h-4 w-4" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 text-white transition hover:bg-white/10 after:absolute after:-inset-1 after:content-['']"
-              >
-                <Instagram className="h-4 w-4" />
-              </a>
-              <a
-                href="https://x.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="X (Twitter)"
-                className="relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 text-white transition hover:bg-white/10 after:absolute after:-inset-1 after:content-['']"
-              >
-                <Twitter className="h-4 w-4" />
-              </a>
+              {[
+                { href: siteSeo.social.facebook, label: "Facebook", Icon: Facebook },
+                { href: siteSeo.social.instagram, label: "Instagram", Icon: Instagram },
+                { href: siteSeo.social.x, label: "X (Twitter)", Icon: Twitter },
+              ].map(({ href, label, Icon }) =>
+                href ? (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 text-white transition hover:bg-white/10 after:absolute after:-inset-1 after:content-['']"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                ) : null
+              )}
             </div>
           </section>
         </div>

@@ -13,9 +13,9 @@ export type ServiceSectionContent = {
 };
 
 export const heroContent: { title: string; intro: string; ctas: [CtaLink, CtaLink, CtaLink] } = {
-  title: "Solar Installation Services in Uttar Pradesh",
+  title: "Residential and Commercial Solar Services",
   intro:
-    "Fujitek Solar Energy Pvt. Ltd. provides complete residential and commercial solar solutions for customers who want reliable power savings. From rooftop solar planning to inverter integration, EV charger deployment, and long-term maintenance, our certified engineers execute each project with performance-focused design and safety-first installation standards. We support subsidy-ready documentation for eligible residential systems. Every project is delivered with clear warranty commitments, transparent technical scope, and structured after-sales support. Whether you are in Lucknow, Noida, Kanpur, Prayagraj, or nearby Uttar Pradesh locations, we design each system around your sanctioned load, energy profile, roof constraints, and expansion plans so your investment delivers measurable output over the long term.",
+    "Serving Uttar Pradesh, Delhi, Haryana & Rajasthan with end-to-end residential and commercial solar solutions. From rooftop solar planning to inverter integration, EV charger deployment, and long-term maintenance, our certified engineers execute each project with performance-focused design and safety-first installation standards. We support subsidy-ready documentation for eligible residential systems. Every project is delivered with clear warranty commitments, transparent technical scope, and structured after-sales support. We design each system around sanctioned load, energy profile, roof constraints, and expansion plans so your investment delivers measurable output over the long term.",
   ctas: [
     { label: "Book Free Consultation", href: "/contact" },
     { label: "Get Solar Quote", href: "/contact" },
@@ -233,7 +233,7 @@ export const whyChooseContent = [
 ];
 
 export const serviceAreasText =
-  "We provide solar, inverter, EV charger, and maintenance services in Lucknow, Noida, Kanpur, Prayagraj across Uttar Pradesh. If your site is in or around these cities, we can schedule a visit and share a project-feasibility proposal.";
+  "We provide solar, inverter, EV charger, and maintenance services in Lucknow, Noida, Kanpur, Prayagraj, and nearby areas across Uttar Pradesh. If your site is in or around these cities, we can schedule a visit and share a project-feasibility proposal.";
 
 export const faqs: FaqItem[] = [
   {
@@ -267,7 +267,7 @@ export const faqs: FaqItem[] = [
       "EMI and financing options may be available based on project size, customer profile, and partner terms. The team can guide practical financing pathways during consultation.",
   },
   {
-    question: "Which cities and locations do you serve in Uttar Pradesh?",
+    question: "Which areas do you serve for solar and EV charging projects?",
     answer:
       "Fujitek serves Lucknow, Noida, Kanpur, Prayagraj, and nearby regions in Uttar Pradesh for residential and commercial solar and EV charging projects.",
   },
