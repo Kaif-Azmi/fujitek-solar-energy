@@ -349,7 +349,7 @@ export default function ProductsAdminPage() {
                       alt={item.name}
                       width={640}
                       height={320}
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                       className="h-full w-full object-cover"
                     />
                   ) : (

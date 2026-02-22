@@ -22,11 +22,11 @@ export default function Header() {
     "Hi Fujitek Solar Energy, I am interested in your solar solutions. Please share details."
   );
 
-  const mobileLink =
-    "block rounded-lg px-4 py-3 text-base font-medium text-foreground transition no-underline hover:bg-hover hover:text-primary";
+  const mobileLinkBase =
+    "block rounded-lg px-4 py-3 text-base font-semibold transition-colors duration-200 no-underline";
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border relative">
+    <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur relative">
       <div className="relative mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6 sm:py-3">
         
         {/* Logo */}
@@ -37,6 +37,7 @@ export default function Header() {
             width={160}
             height={40}
             priority
+            sizes="(max-width: 640px) 140px, 160px"
             className="h-11 w-auto sm:h-14"
           />
         </Link>
@@ -105,7 +106,11 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setIsMenuOpen((p) => !p)}
-            className="relative flex h-8 w-8 items-center justify-center rounded-md border border-border text-secondary transition hover:bg-hover hover:text-primary md:hidden sm:h-9 sm:w-9 after:absolute after:-inset-1.5 after:content-['']"
+            className={`relative flex h-8 w-8 items-center justify-center rounded-md border transition md:hidden sm:h-9 sm:w-9 after:absolute after:-inset-1.5 after:content-[''] ${
+              isMenuOpen
+                ? "border-primary bg-primary text-white hover:bg-primary-hover hover:text-white"
+                : "border-border text-secondary hover:bg-hover hover:text-primary"
+            }`}
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
@@ -138,18 +143,29 @@ export default function Header() {
             : "pointer-events-none opacity-0 -translate-y-2"
         }`}
       >
-        <div className="mx-3 mb-3 mt-2.5 max-w-md rounded-xl border border-border bg-background shadow-lg sm:mx-auto sm:mb-4 sm:mt-3">
+        <div className="mx-3 mb-3 mt-2.5 max-w-md rounded-xl border border-primary/25 bg-primary shadow-xl sm:mx-auto sm:mb-4 sm:mt-3">
           <nav className="flex flex-col gap-1 p-4" aria-label="Mobile">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.id}
-                href={item.href}
-                className={mobileLink}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
+
+              return (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  className={`${mobileLinkBase} ${
+                    isActive
+                      ? "bg-accent text-primary"
+                      : "text-white hover:bg-white/10 hover:text-accent"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
 
           </nav>
         </div>

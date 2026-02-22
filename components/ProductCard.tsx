@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, IndianRupee } from "lucide-react";
 import Image from "next/image";
-import { getOptimizedCloudinaryUrl } from "@/lib/image";
 
 export interface ProductCardProps {
   name: string;
@@ -28,11 +27,12 @@ export default function ProductCard({ name, category, price, imageUrl }: Product
 
           <div className="relative aspect-square w-full overflow-hidden">
             <Image
-              src={getOptimizedCloudinaryUrl(imageUrl, { width: 1024, quality: 76, crop: "fit" })}
+              src={imageUrl}
               alt={name}
               width={1024}
               height={1024}
-              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 28vw"
+              quality={72}
+              sizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 1024px) calc(50vw - 2.5rem), 360px"
               className="h-full w-full object-contain transition-transform duration-300 ease-out group-hover:scale-[1.03]"
             />
           </div>
@@ -65,4 +65,3 @@ export default function ProductCard({ name, category, price, imageUrl }: Product
     </article>
   );
 }
-

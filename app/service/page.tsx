@@ -159,7 +159,7 @@ export const metadata: Metadata = buildPageMetadata(pageSeo.services);
 
 export default function ServicesPage() {
   return (
-    <main className="min-h-screen bg-surface pb-24 md:pb-0">
+    <main className="min-h-screen overflow-x-clip bg-surface pb-24 md:pb-0">
       <JsonLd data={faqSchema} />
       <JsonLd data={localBusinessSchema} />
       <JsonLd data={serviceSchema} />

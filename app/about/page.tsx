@@ -126,7 +126,8 @@ export default function About() {
                     alt="Fujitek engineering team reviewing rooftop solar execution plan"
                     fill
                     className="object-cover"
-                    sizes="(min-width: 1024px) 42vw, 100vw"
+                    sizes="(max-width: 1024px) calc(100vw - 3rem), 560px"
+                    quality={72}
                   />
                 </div>
 

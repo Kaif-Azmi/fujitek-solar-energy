@@ -103,7 +103,8 @@ export default function SolarBenefitsBento() {
                 alt="Different solar energy systems"
                 width={1200}
                 height={800}
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) calc(100vw - 3rem), 520px"
+                quality={72}
                 className="relative h-auto max-h-[360px] w-full rounded-xl object-contain"
               />
               <p className="mt-3 text-center text-xs font-medium text-muted">

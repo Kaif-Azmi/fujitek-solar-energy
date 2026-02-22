@@ -157,20 +157,22 @@ function messageId(prefix: string): string {
 }
 
 type FloatingTriggerProps = {
-  onOpen: () => void;
+  isOpen: boolean;
+  onToggle: () => void;
 };
 
-function FloatingTrigger({ onOpen }: FloatingTriggerProps) {
+function FloatingTrigger({ isOpen, onToggle }: FloatingTriggerProps) {
   return (
     <div className="group fixed bottom-6 right-6 z-50">
-      <div className="pointer-events-none absolute -inset-2 rounded-full bg-accent/35 blur-md transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="pointer-events-none absolute -inset-2 rounded-full bg-accent blur-md transition-opacity duration-300 group-hover:opacity-100" />
       <motion.button
         type="button"
-        onClick={onOpen}
+        onClick={onToggle}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.96 }}
-        className="relative flex h-16 w-16 items-center justify-center rounded-full bg-primary text-background shadow-xl"
-        aria-label="Solar AI Advisor"
+        className="relative flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-xl"
+        aria-label={isOpen ? "Close solar AI advisor" : "Open solar AI advisor"}
+        aria-expanded={isOpen}
       >
         <Bot className="h-8 w-8" />
         <span className="absolute -right-0.5 -top-0.5 rounded-full border border-background bg-accent p-1 text-primary">
@@ -250,7 +252,7 @@ function ContactCaptureCard({
   onSubmit,
 }: ContactCaptureCardProps) {
   return (
-    <Card className="w-full rounded-2xl border border-border bg-background/95 shadow-sm hover:translate-y-0">
+    <Card className="w-full rounded-2xl border border-border bg-background shadow-sm hover:translate-y-0">
       <CardContent className="space-y-3 p-4">
         <p className="text-sm font-medium text-foreground">Share your contact for an expert callback</p>
         <Input
@@ -499,7 +501,7 @@ export default function AIAssistant() {
 
   return (
     <>
-      <FloatingTrigger onOpen={() => setOpen(true)} />
+      <FloatingTrigger isOpen={open} onToggle={() => setOpen((prev) => !prev)} />
 
       <AnimatePresence>
         {open ? (
@@ -508,29 +510,29 @@ export default function AIAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed bottom-24 right-6 z-50 w-[360px]"
+            className="fixed bottom-24 left-3 right-3 z-50 sm:left-auto sm:right-6 sm:w-[360px]"
           >
             <Card
-              className="flex max-h-[600px] w-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-xl hover:translate-y-0"
+              className="flex h-[min(76vh,620px)] max-h-[min(76vh,620px)] w-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-xl hover:translate-y-0"
               role="dialog"
               aria-modal="true"
               aria-label="Fujitek Solar AI Advisor"
             >
               <div className="flex items-center justify-between gap-3 border-b border-border bg-primary px-4 py-3 text-white">
                 <div className="flex items-center gap-3">
-                  <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white/20">
+                  <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary-hover">
                     <PersonIcon className="h-5 w-5" />
                     <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-white bg-accent" />
                   </div>
                   <div>
-                    <p className="text-sm text-accent font-semibold leading-tight">Sam</p>
-                    <p className="text-xs text-white">We're online · {stageLabel}</p>
+                    <p className="text-sm font-semibold leading-tight text-white">Sam</p>
+                    <p className="text-xs text-slate-100">We're online · {stageLabel}</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="relative inline-flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/15 after:absolute after:-inset-2 after:content-['']"
+                  className="relative inline-flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-primary-hover after:absolute after:-inset-2 after:content-['']"
                   aria-label="Close assistant"
                 >
                   <X className="h-4 w-4" />
@@ -539,7 +541,7 @@ export default function AIAssistant() {
 
               <div
                 ref={scrollRef}
-                className="max-h-[420px] min-h-0 flex-1 space-y-3 overflow-y-auto bg-accent/90 px-4 py-3 scroll-smooth"
+                className="min-h-0 flex-1 space-y-3 overflow-y-auto bg-accent px-4 py-3 scroll-smooth"
               >
                 {messages.map((message) => {
                   if (message.role === "user") {
@@ -551,7 +553,7 @@ export default function AIAssistant() {
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className="flex justify-end"
                       >
-                        <div className="max-w-[86%] rounded-2xl bg-primary px-4 py-2 text-sm text-background">
+                        <div className="max-w-[86%] rounded-2xl bg-primary px-4 py-2 text-sm text-white">
                           {message.text}
                         </div>
                       </motion.div>
@@ -677,13 +679,13 @@ export default function AIAssistant() {
                     onKeyDown={onInputKeyDown}
                     placeholder="Ask about savings..."
                     disabled={disableInputs}
-                    className="h-10 flex-1 rounded-full border border-border bg-primary px-4 text-sm"
+                    className="h-10 flex-1 rounded-full border border-border bg-white px-4 text-sm text-foreground placeholder:text-muted"
                   />
                   <Button
                     type="button"
                     onClick={handleSend}
-                    disabled={disableInputs || !input.trim()}
-                    className="relative h-10 w-10 rounded-full bg-primary p-0 text-accent hover:bg-primary/80-hover after:absolute after:-inset-1 after:content-['']"
+                    disabled={disableInputs}
+                    className="relative h-10 w-10 rounded-full bg-primary p-0 text-white hover:bg-primary-hover after:absolute after:-inset-1 after:content-['']"
                     aria-label="Send message"
                   >
                     <Send className="h-4 w-4" />

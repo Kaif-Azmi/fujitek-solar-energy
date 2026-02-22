@@ -27,6 +27,10 @@ export default function BannerHero({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchStartYRef = useRef<number | null>(null);
+  const touchEndXRef = useRef<number | null>(null);
+  const touchEndYRef = useRef<number | null>(null);
 
   /* ================= Auto Slide ================= */
   useEffect(() => {
@@ -43,6 +47,56 @@ export default function BannerHero({
 
   if (!banners.length) return null;
 
+  const goToPrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + banners.length) % banners.length);
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % banners.length);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    const touch = event.changedTouches[0];
+    touchStartXRef.current = touch.clientX;
+    touchStartYRef.current = touch.clientY;
+    touchEndXRef.current = touch.clientX;
+    touchEndYRef.current = touch.clientY;
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    const touch = event.changedTouches[0];
+    touchEndXRef.current = touch.clientX;
+    touchEndYRef.current = touch.clientY;
+  };
+
+  const handleTouchEnd = () => {
+    if (
+      touchStartXRef.current === null ||
+      touchStartYRef.current === null ||
+      touchEndXRef.current === null ||
+      touchEndYRef.current === null
+    ) {
+      return;
+    }
+
+    const deltaX = touchEndXRef.current - touchStartXRef.current;
+    const deltaY = touchEndYRef.current - touchStartYRef.current;
+    const minSwipeDistance = 45;
+
+    if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 0) {
+        goToPrev();
+      } else {
+        goToNext();
+      }
+    }
+
+    touchStartXRef.current = null;
+    touchStartYRef.current = null;
+    touchEndXRef.current = null;
+    touchEndYRef.current = null;
+  };
+
   const banner = banners[currentIndex];
 
  return (
@@ -52,9 +106,12 @@ export default function BannerHero({
     aria-label="Featured solar promotions"
   >
     <div
-      className="relative min-h-[60vh] sm:min-h-[75vh] lg:min-h-[85vh] w-full"
+      className="relative min-h-[60vh] sm:min-h-[75vh] lg:min-h-[85vh] w-full touch-pan-y"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       {/* ================= Framed Image ================= */}
       {banner.imageUrl && (
@@ -64,14 +121,14 @@ export default function BannerHero({
             <div className="relative h-full w-full overflow-hidden">
               <Image
                 src={getOptimizedCloudinaryUrl(banner.imageUrl, {
-                  width: 1920,
-                  quality: 75,
+                  width: 1800,
+                  quality: 72,
                   crop: 'fill',
                 })}
                 alt={banner.title}
                 fill
                 priority
-                sizes="100vw"
+                sizes="(min-width: 1024px) 0px, 100vw"
                 className="object-cover object-[70%_center]"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
@@ -84,14 +141,14 @@ export default function BannerHero({
               <Image
                 src={getOptimizedCloudinaryUrl(banner.imageUrl, {
                   width: 1920,
-                  quality: 75,
+                  quality: 72,
                   crop: 'fit',
                 })}
                 alt={banner.title}
                 width={1920}
                 height={1080}
                 priority
-                sizes="100vw"
+                sizes="(max-width: 1023px) 0px, 100vw"
                 className="h-[85vh] w-auto max-w-full object-contain"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-transparent" />
@@ -144,12 +201,8 @@ export default function BannerHero({
         <>
           <button
             type="button"
-            onClick={() =>
-              setCurrentIndex(
-                (prev) => (prev - 1 + banners.length) % banners.length
-              )
-            }
-            className="absolute left-6 sm:left-8 top-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent after:absolute after:-inset-1 after:content-['']"
+            onClick={goToPrev}
+            className="absolute left-6 sm:left-8 top-1/2 -translate-y-1/2 hidden h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent sm:flex sm:h-11 sm:w-11 after:absolute after:-inset-1 after:content-['']"
             aria-label="Previous slide"
           >
             ‹
@@ -157,10 +210,8 @@ export default function BannerHero({
 
           <button
             type="button"
-            onClick={() =>
-              setCurrentIndex((prev) => (prev + 1) % banners.length)
-            }
-            className="absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent after:absolute after:-inset-1 after:content-['']"
+            onClick={goToNext}
+            className="absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 hidden h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent sm:flex sm:h-11 sm:w-11 after:absolute after:-inset-1 after:content-['']"
             aria-label="Next slide"
           >
             ›

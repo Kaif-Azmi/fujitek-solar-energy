@@ -115,7 +115,8 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
                 alt="Fujitek solar engineer working on inverter installation"
                 width={900}
                 height={680}
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) calc(100vw - 3rem), 560px"
+                quality={72}
                 className="h-full w-full object-cover"
               />
             </div>

@@ -25,11 +25,11 @@ export default function TrustMetricsStrip({ items }: TrustMetricsStripProps) {
               )}
             >
               <CardContent className="px-4 py-4 sm:py-5">
-                <div className={cn("inline-flex items-center gap-2", index % 2 === 0 ? "text-accent" : "text-primary")}>
+                <div className={cn("inline-flex items-center gap-2", index % 2 === 0 ? "text-white" : "text-primary-deep")}>
                   <BadgeCheck className="h-4 w-4" aria-hidden />
                   <p className="text-sm font-semibold uppercase tracking-wide">{item.value}</p>
                 </div>
-                <p className={cn("mt-2 text-sm leading-7", index % 2 === 0 ? "text-white" : "text-secondary")}>{item.label}</p>
+                <p className={cn("mt-2 text-sm leading-7", index % 2 === 0 ? "text-white" : "text-primary-deep")}>{item.label}</p>
               </CardContent>
             </Card>
           ))}

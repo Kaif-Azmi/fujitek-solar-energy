@@ -44,7 +44,6 @@ export default function BannersPage() {
         if (!mounted) return;
         setBanners(Array.isArray(rows) ? rows : []);
       } catch (err) {
-        console.error('Failed to load banners', err);
         setError('Failed to load banners');
         setBanners([]);
       } finally {
@@ -157,7 +156,6 @@ export default function BannersPage() {
                     setBanners((prev) => [{ _id: json.id, ...payload, createdAt: new Date().toISOString() }, ...prev]);
                     setAddForm({ title: '', subtitle: '', ctaText: '', status: 'Inactive', file: null, imageUrl: '' });
                   } catch (err) {
-                    console.error('Add banner failed', err);
                     alert('Failed to add banner: ' + ((err as Error).message || ''));
                   } finally {
                     setUploading(false);
@@ -200,7 +198,7 @@ export default function BannersPage() {
                       alt={b.title}
                       width={640}
                       height={320}
-                      sizes="(max-width: 1024px) 100vw, 33vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -237,7 +235,6 @@ export default function BannersPage() {
                           if (!res.ok) throw new Error('Delete failed');
                           setBanners((prev) => prev.filter((x) => x._id !== b._id));
                         } catch (err) {
-                          console.error('Delete failed', err);
                           alert('Failed to delete banner');
                         } finally {
                           setActionLoading(null);
@@ -301,7 +298,6 @@ export default function BannersPage() {
                               setBanners((prev) => prev.map((x) => (x._id === b._id ? { ...x, ...form } as Banner : x)));
                               setEditingId(null);
                             } catch (err) {
-                              console.error('Update failed', err);
                               alert('Failed to update banner');
                             } finally {
                               setActionLoading(null);
