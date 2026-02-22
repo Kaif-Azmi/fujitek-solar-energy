@@ -99,7 +99,12 @@ export default function BannersPage() {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setAddForm((f) => ({ ...f, file: e.target.files?.[0] ?? null }))}
+                onChange={(e) =>
+                  setAddForm((f) => ({
+                    ...f,
+                    file: e.target.files && e.target.files[0] ? e.target.files[0] : null,
+                  }))
+                }
                 className="w-full"
               />
             </div>
@@ -118,7 +123,7 @@ export default function BannersPage() {
                 onClick={async () => {
                   if (!addForm.title) { alert('Title is required'); return; }
                   setUploading(true);
-                  let imageUrl = addForm.imageUrl ?? '';
+                  let imageUrl = addForm.imageUrl || '';
                   try {
                     if (addForm.file) {
                       const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -190,7 +195,7 @@ export default function BannersPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {banners.map((b) => (
-              <div key={b._id ?? b.title} className="border rounded overflow-hidden bg-white">
+              <div key={b._id || b.title} className="border rounded overflow-hidden bg-white">
                 <div className="w-full h-44 bg-white flex items-center justify-center overflow-hidden relative">
                   {b.imageUrl ? (
                     <Image
@@ -208,7 +213,7 @@ export default function BannersPage() {
                         <button
                           className="bg-white bg-opacity-80 px-2 py-1 rounded text-sm hover:bg-opacity-100 border"
                       onClick={() => {
-                        setEditingId(b._id ?? null);
+                        setEditingId(b._id || null);
                         setForm({
                           title: b.title,
                           subtitle: b.subtitle,
@@ -250,31 +255,31 @@ export default function BannersPage() {
                   {editingId === b._id ? (
                     <div className="space-y-3">
                       <input
-                        value={form.title ?? ''}
+                        value={form.title || ''}
                         onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                         className="w-full border px-3 py-2 rounded"
                         placeholder="Title"
                       />
                       <input
-                        value={form.subtitle ?? ''}
+                        value={form.subtitle || ''}
                         onChange={(e) => setForm((f) => ({ ...f, subtitle: e.target.value }))}
                         className="w-full border px-3 py-2 rounded"
                         placeholder="Subtitle"
                       />
                       <input
-                        value={form.ctaText ?? ''}
+                        value={form.ctaText || ''}
                         onChange={(e) => setForm((f) => ({ ...f, ctaText: e.target.value }))}
                         className="w-full border px-3 py-2 rounded"
                         placeholder="CTA Text"
                       />
                       <input
-                        value={form.imageUrl ?? ''}
+                        value={form.imageUrl || ''}
                         onChange={(e) => setForm((f) => ({ ...f, imageUrl: e.target.value }))}
                         className="w-full border px-3 py-2 rounded"
                         placeholder="Image URL (full Cloudinary URL)"
                       />
                       <select
-                        value={form.status ?? 'Inactive'}
+                        value={form.status || 'Inactive'}
                         onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}
                         className="w-full border px-3 py-2 rounded"
                       >
@@ -322,7 +327,7 @@ export default function BannersPage() {
                       <h3 className="font-semibold text-lg">{b.title}</h3>
                       {b.subtitle && <p className="text-sm text-slate-600 mt-1">{b.subtitle}</p>}
                       <div className="mt-3 flex items-center justify-between text-sm text-slate-500">
-                        <span>Status: {b.status ?? 'Unknown'}</span>
+                        <span>Status: {b.status ? b.status : 'Unknown'}</span>
                         <span>{b.createdAt ? new Date(b.createdAt).toLocaleDateString() : ''}</span>
                       </div>
                     </>

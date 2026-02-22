@@ -8,16 +8,23 @@ export const runtime = "nodejs";
 
 type LeadCategory = "high" | "medium" | "low";
 type LeadStatus = "new" | "contacted" | "closed";
+type LeadSource = "ai_assistant" | "contact_form";
 
 type LeadDoc = {
   _id: ObjectId;
   name: string;
   phone: string;
   city?: string;
+  email?: string;
   monthlyBill?: number;
+  propertyTypeSelection?: string;
+  serviceInterested?: string;
+  preferredContactTime?: string;
+  requirement?: string;
   score: number;
   category: LeadCategory;
   status: LeadStatus;
+  source?: LeadSource;
   netProfit?: number;
   createdAt: Date;
   updatedAt: Date;
@@ -77,10 +84,16 @@ export async function GET(request: NextRequest) {
           name: lead.name,
           phone: lead.phone,
           city: lead.city,
+          email: lead.email,
           monthlyBill: lead.monthlyBill,
+          propertyTypeSelection: lead.propertyTypeSelection,
+          serviceInterested: lead.serviceInterested,
+          preferredContactTime: lead.preferredContactTime,
+          requirement: lead.requirement,
           score: lead.score,
           category: lead.category,
           status: lead.status,
+          source: lead.source ?? "ai_assistant",
           netProfit: lead.netProfit,
           createdAt: lead.createdAt,
           updatedAt: lead.updatedAt,

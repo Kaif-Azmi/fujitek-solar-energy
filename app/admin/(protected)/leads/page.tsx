@@ -6,6 +6,7 @@ import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 type LeadCategory = "high" | "medium" | "low";
 type LeadStatus = "new" | "contacted" | "closed";
+type LeadSource = "ai_assistant" | "contact_form";
 type FilterTab = "all" | LeadCategory | "closed";
 
 type LeadItem = {
@@ -13,10 +14,16 @@ type LeadItem = {
   name: string;
   phone: string;
   city?: string;
+  email?: string;
   monthlyBill?: number;
+  propertyTypeSelection?: string;
+  serviceInterested?: string;
+  preferredContactTime?: string;
+  requirement?: string;
   score: number;
   category: LeadCategory;
   status: LeadStatus;
+  source: LeadSource;
   netProfit?: number;
   createdAt: string;
 };
@@ -41,6 +48,16 @@ function categoryBadgeClass(category: LeadCategory): string {
   if (category === "high") return "bg-emerald-100 text-emerald-700";
   if (category === "medium") return "bg-amber-100 text-amber-700";
   return "bg-slate-200 text-slate-700";
+}
+
+function sourceBadgeClass(source: LeadSource): string {
+  if (source === "contact_form") return "bg-sky-100 text-sky-700";
+  return "bg-violet-100 text-violet-700";
+}
+
+function sourceLabel(source: LeadSource): string {
+  if (source === "contact_form") return "Contact Form";
+  return "AI Assistant";
 }
 
 function getNextStatusOptions(status: LeadStatus): LeadStatus[] {
@@ -215,6 +232,8 @@ export default function LeadsPage() {
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Phone</th>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">City</th>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Monthly Bill</th>
+                  <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Source</th>
+                  <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Requirement</th>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Score</th>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Category</th>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Status</th>
@@ -225,24 +244,44 @@ export default function LeadsPage() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={9} className="px-3 py-6 text-center text-slate-500">
+                    <td colSpan={11} className="px-3 py-6 text-center text-slate-500">
                       Loading leads...
                     </td>
                   </tr>
                 ) : filteredLeads.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className="px-3 py-6 text-center text-slate-500">
+                    <td colSpan={11} className="px-3 py-6 text-center text-slate-500">
                       No leads found for this filter.
                     </td>
                   </tr>
                 ) : (
                   filteredLeads.map((lead) => (
                     <tr key={lead.id} className="odd:bg-slate-50/60">
-                      <td className="border-b border-slate-100 px-3 py-2 font-medium text-slate-900">{lead.name}</td>
+                      <td className="border-b border-slate-100 px-3 py-2">
+                        <p className="font-medium text-slate-900">{lead.name}</p>
+                        {lead.email ? <p className="text-xs text-slate-500">{lead.email}</p> : null}
+                      </td>
                       <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{lead.phone}</td>
                       <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{lead.city || "-"}</td>
                       <td className="border-b border-slate-100 px-3 py-2 text-slate-700">
                         {typeof lead.monthlyBill === "number" ? formatINR(lead.monthlyBill) : "-"}
+                      </td>
+                      <td className="border-b border-slate-100 px-3 py-2">
+                        <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${sourceBadgeClass(lead.source)}`}>
+                          {sourceLabel(lead.source)}
+                        </span>
+                      </td>
+                      <td className="border-b border-slate-100 px-3 py-2 text-slate-700">
+                        <p className="max-w-[22rem] truncate" title={lead.requirement || "-"}>
+                          {lead.requirement || "-"}
+                        </p>
+                        {lead.source === "contact_form" ? (
+                          <p className="mt-1 text-xs text-slate-500">
+                            {[lead.propertyTypeSelection, lead.serviceInterested, lead.preferredContactTime]
+                              .filter(Boolean)
+                              .join(" | ") || "No additional preferences"}
+                          </p>
+                        ) : null}
                       </td>
                       <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{lead.score}</td>
                       <td className="border-b border-slate-100 px-3 py-2">

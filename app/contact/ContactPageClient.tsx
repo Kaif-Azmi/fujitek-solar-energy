@@ -18,6 +18,17 @@ import {
 } from "@/components/ui";
 import { Phone, Mail, MapPin, Facebook, Instagram, MessageCircle, X } from "lucide-react";
 
+const INITIAL_FORM_DATA = {
+  name: "",
+  email: "",
+  phone: "",
+  location: "",
+  propertyType: "",
+  service: "",
+  contactTime: "",
+  message: "",
+};
+
 export default function Contact() {
   const contactNumber = "+918447097751";
   const contactNumberDisplay = "+91 84470 97751";
@@ -25,18 +36,11 @@ export default function Contact() {
     "Hi Fujitek Solar Energy, I am interested in your solar solutions. Please share details."
   );
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    location: "",
-    propertyType: "",
-    service: "",
-    contactTime: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -47,10 +51,40 @@ export default function Contact() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+
+    setSubmitting(true);
+    setError(null);
+    setSubmitted(false);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const payload = (await response.json().catch(() => null)) as { message?: string } | null;
+
+      if (!response.ok) {
+        throw new Error(payload?.message || "Failed to submit your form. Please try again.");
+      }
+
+      setSubmitted(true);
+      setFormData(INITIAL_FORM_DATA);
+      setTimeout(() => setSubmitted(false), 3000);
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "Failed to submit your form. Please try again."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -72,6 +106,11 @@ export default function Contact() {
                   <AlertDescription>
                     Thank you for your message. We&apos;ll contact you shortly.
                   </AlertDescription>
+                </Alert>
+              )}
+              {error && (
+                <Alert variant="destructive" className="mb-6">
+                  <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
 
@@ -153,6 +192,7 @@ export default function Contact() {
                       <select
                         id="contact-property-type"
                         name="propertyType"
+                        value={formData.propertyType}
                         onChange={handleChange}
                         className="w-full rounded-md border border-accent bg-primary text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent/40"
                       >
@@ -170,6 +210,7 @@ export default function Contact() {
                       <select
                         id="contact-service"
                         name="service"
+                        value={formData.service}
                         onChange={handleChange}
                         className="w-full rounded-md border border-accent bg-primary text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent/40"
                       >
@@ -187,6 +228,7 @@ export default function Contact() {
                       <select
                         id="contact-time"
                         name="contactTime"
+                        value={formData.contactTime}
                         onChange={handleChange}
                         className="w-full rounded-md border border-accent bg-primary text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent/40"
                       >
@@ -205,6 +247,7 @@ export default function Contact() {
                         id="contact-message"
                         variant="inverse"
                         name="message"
+                        value={formData.message}
                         onChange={handleChange}
                         className="min-h-[140px]"
                         placeholder="Tell us more about your requirement"
@@ -212,8 +255,8 @@ export default function Contact() {
                       />
                     </div>
 
-                    <Button type="submit" size="lg" className="sm:col-span-2 h-12">
-                      Send Message
+                    <Button type="submit" size="lg" className="sm:col-span-2 h-12" disabled={submitting}>
+                      {submitting ? "Sending..." : "Send Message"}
                     </Button>
                   </form>
                 </CardContent>
