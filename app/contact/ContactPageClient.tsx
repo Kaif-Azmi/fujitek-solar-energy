@@ -317,17 +317,32 @@ export default function Contact() {
 
               <div className="mt-8 flex gap-3">
                 {[
-                  { Icon: Instagram, label: "Instagram", href: siteSeo.social.instagram },
-                  { Icon: Facebook, label: "Facebook", href: siteSeo.social.facebook },
-                  { Icon: X, label: "X", href: siteSeo.social.x },
-                ].map(({ Icon, label, href }) =>
+                  {
+                    Icon: Instagram,
+                    label: "Instagram",
+                    href: siteSeo.social.instagram,
+                    ariaLabel: "Fujitek Solar on Instagram",
+                  },
+                  {
+                    Icon: Facebook,
+                    label: "Facebook",
+                    href: siteSeo.social.facebook,
+                    ariaLabel: "Fujitek Solar on Facebook",
+                  },
+                  {
+                    Icon: X,
+                    label: "X",
+                    href: siteSeo.social.x,
+                    ariaLabel: "Fujitek Solar on X",
+                  },
+                ].map(({ Icon, label, href, ariaLabel }) =>
                   href ? (
                     <a
                       key={label}
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={label}
+                      aria-label={ariaLabel}
                       className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary/20 text-secondary transition-colors hover:bg-primary hover:text-background"
                     >
                       <Icon className="h-5 w-5" />

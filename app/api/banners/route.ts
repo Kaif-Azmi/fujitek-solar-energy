@@ -6,6 +6,18 @@ import { ensureMongoIndexes } from "@/lib/mongodb-indexes";
 import { requireAdminRequest } from "@/lib/admin-route-auth";
 import { withNoStore, withPublicCache } from "@/lib/security";
 
+const DEFAULT_BANNER_CTA_LINK = "/contact";
+const ALLOWED_BANNER_CTA_LINKS = new Set(["/", "/contact", "/products", "/service", "/blog", "/about"]);
+
+function normalizeBannerCtaLink(value: unknown) {
+  if (typeof value !== "string") return DEFAULT_BANNER_CTA_LINK;
+  const trimmed = value.trim();
+  if (!trimmed) return DEFAULT_BANNER_CTA_LINK;
+  if (!trimmed.startsWith("/") || trimmed.startsWith("//")) return DEFAULT_BANNER_CTA_LINK;
+  if (!ALLOWED_BANNER_CTA_LINKS.has(trimmed)) return DEFAULT_BANNER_CTA_LINK;
+  return trimmed;
+}
+
 export async function GET(_request: NextRequest) {
   try {
     await ensureMongoIndexes();
@@ -20,7 +32,7 @@ export async function GET(_request: NextRequest) {
       .collection("banners")
       .find({
         $or: [{ status: "Active" }, { isActive: true }],
-      }, { projection: { title: 1, subtitle: 1, ctaText: 1, imageUrl: 1, status: 1, isActive: 1, createdAt: 1 } })
+      }, { projection: { title: 1, subtitle: 1, ctaText: 1, ctaLink: 1, imageUrl: 1, status: 1, isActive: 1, createdAt: 1 } })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -38,7 +50,7 @@ export async function POST(request: NextRequest) {
     if (unauthorized) return unauthorized;
 
     const payload = await request.json();
-    const { title, subtitle, ctaText, status, imageUrl } = payload || {};
+    const { title, subtitle, ctaText, ctaLink, status, imageUrl } = payload || {};
 
     if (!title || typeof title !== "string") {
       return withNoStore(NextResponse.json({ error: "Title is required" }, { status: 400 }));
@@ -51,6 +63,7 @@ export async function POST(request: NextRequest) {
       title: title ?? "",
       subtitle: subtitle ?? "",
       ctaText: ctaText ?? "",
+      ctaLink: normalizeBannerCtaLink(ctaLink),
       status: status ?? "Inactive",
       imageUrl: imageUrl ?? "",
       createdAt: new Date(),
@@ -72,7 +85,7 @@ export async function PUT(request: NextRequest) {
     if (unauthorized) return unauthorized;
 
     const payload = await request.json();
-    const { id, title, subtitle, ctaText, status, imageUrl } = payload || {};
+    const { id, title, subtitle, ctaText, ctaLink, status, imageUrl } = payload || {};
 
     if (!id) {
       return withNoStore(NextResponse.json({ error: "Banner id is required" }, { status: 400 }));
@@ -89,6 +102,7 @@ export async function PUT(request: NextRequest) {
     if (title !== undefined) updateDoc.title = title;
     if (subtitle !== undefined) updateDoc.subtitle = subtitle;
     if (ctaText !== undefined) updateDoc.ctaText = ctaText;
+    if (ctaLink !== undefined) updateDoc.ctaLink = normalizeBannerCtaLink(ctaLink);
     if (status !== undefined) updateDoc.status = status;
     if (imageUrl !== undefined) updateDoc.imageUrl = imageUrl;
     updateDoc.updatedAt = new Date();

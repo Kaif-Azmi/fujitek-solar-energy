@@ -103,17 +103,32 @@ export default function Footer() {
 
             <div className="mt-5 flex items-center gap-2.5">
               {[
-                { href: siteSeo.social.facebook, label: "Facebook", Icon: Facebook },
-                { href: siteSeo.social.instagram, label: "Instagram", Icon: Instagram },
-                { href: siteSeo.social.x, label: "X (Twitter)", Icon: Twitter },
-              ].map(({ href, label, Icon }) =>
+                {
+                  href: siteSeo.social.facebook,
+                  label: "Facebook",
+                  ariaLabel: "Fujitek Solar on Facebook",
+                  Icon: Facebook,
+                },
+                {
+                  href: siteSeo.social.instagram,
+                  label: "Instagram",
+                  ariaLabel: "Fujitek Solar on Instagram",
+                  Icon: Instagram,
+                },
+                {
+                  href: siteSeo.social.x,
+                  label: "X (Twitter)",
+                  ariaLabel: "Fujitek Solar on X",
+                  Icon: Twitter,
+                },
+              ].map(({ href, label, ariaLabel, Icon }) =>
                 href ? (
                   <a
                     key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={label}
+                    aria-label={ariaLabel}
                     className="relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 text-white transition hover:bg-white/10 after:absolute after:-inset-1 after:content-['']"
                   >
                     <Icon className="h-4 w-4" />

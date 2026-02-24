@@ -1,7 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { calculateLeadScore } from "@/lib/lead-scoring";
 import { getDb } from "@/lib/mongodb";
+import { ensureMongoIndexes } from "@/lib/mongodb-indexes";
 import { checkPublicRateLimit } from "@/lib/public-rate-limit";
+import { ConversationStage } from "@/lib/chat-funnel";
 
 export const runtime = "nodejs";
 
@@ -17,11 +19,13 @@ type ContactRequestBody = {
 };
 
 type LeadCategory = "high" | "medium" | "low";
-type LeadStatus = "new" | "contacted" | "closed";
+type LeadStatus = "new" | "contacted" | "converted" | "lost";
+type LeadSource = "ai_assistant" | "contact_form";
 
 type ContactLeadDoc = {
   name: string;
   phone: string;
+  state?: string;
   city?: string;
   email?: string;
   propertyTypeSelection?: string;
@@ -31,7 +35,10 @@ type ContactLeadDoc = {
   score: number;
   category: LeadCategory;
   status: LeadStatus;
-  source: string;
+  source: LeadSource;
+  stage?: ConversationStage;
+  interactionCount: number;
+  lastInteractionAt: Date;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -144,6 +151,7 @@ export async function POST(request: NextRequest) {
     });
 
     const db = await getDb();
+    await ensureMongoIndexes();
     const collection = db.collection<ContactLeadDoc>("leads");
     const now = new Date();
 
@@ -153,6 +161,7 @@ export async function POST(request: NextRequest) {
         $set: {
           name,
           phone: normalizedPhone,
+          state: location,
           city: location,
           email,
           propertyTypeSelection: propertyType || undefined,
@@ -160,12 +169,18 @@ export async function POST(request: NextRequest) {
           preferredContactTime: contactTime || undefined,
           requirement: message,
           source: "contact_form",
+          stage: ConversationStage.COMPLETED,
+          lastInteractionAt: now,
           updatedAt: now,
+        },
+        $inc: {
+          interactionCount: 1,
         },
         $setOnInsert: {
           score: scoreResult.score,
           category: scoreResult.category,
           status: "new",
+          interactionCount: 0,
           createdAt: now,
         },
       },

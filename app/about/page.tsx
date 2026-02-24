@@ -84,21 +84,29 @@ export default function About() {
       icon: Leaf,
       title: "Sustainability",
       description: "Committed to environmental protection",
+      iconClass: "bg-primary/12 text-primary",
+      surfaceClass: "from-primary/10 via-transparent to-transparent",
     },
     {
       icon: Star,
       title: "Quality",
       description: "Best materials and workmanship",
+      iconClass: "bg-accent/18 text-primary",
+      surfaceClass: "from-accent/25 via-transparent to-transparent",
     },
     {
       icon: Handshake,
       title: "Integrity",
       description: "Transparent and honest dealings",
+      iconClass: "bg-navy/12 text-primary",
+      surfaceClass: "from-navy/10 via-transparent to-transparent",
     },
     {
       icon: Rocket,
       title: "Innovation",
       description: "Latest technology and solutions",
+      iconClass: "bg-primary/10 text-primary",
+      surfaceClass: "from-primary/20 via-transparent to-transparent",
     },
   ];
 
@@ -274,43 +282,36 @@ export default function About() {
               {JOURNEY.map((item, index) => {
                 const Icon = item.icon;
                 const isLeft = index % 2 === 0;
+                const journeyCard = (
+                  <Card
+                    className={`
+                      w-full
+                      ${isLeft ? "bg-background/90" : "bg-surface"}
+                      border-border/60
+                      transition-all duration-300
+                      hover:-translate-y-1
+                      hover:shadow-lg
+                    `}
+                  >
+                    <CardContent className="p-7">
+                      <span className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                        {item.year}
+                      </span>
+                      <h3 className="mt-3 text-lg font-semibold text-foreground">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 text-sm text-secondary">
+                        {item.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
 
                 return (
                   <div
                     key={item.year}
-                    className="relative grid grid-cols-1 gap-8 pl-12 md:grid-cols-[1fr_auto_1fr] md:items-start md:gap-6 md:pl-0"
+                    className="relative pl-12 md:pl-0"
                   >
-                    <div
-                      className={`${
-                        isLeft
-                          ? "md:col-start-1 md:text-right md:pr-6"
-                          : "md:col-start-3 md:pl-6"
-                      }`}
-                    >
-                      <Card
-                        className={`
-                          w-full
-                          ${isLeft ? "bg-background/90" : "bg-surface"}
-                          border-border/60
-                          transition-all duration-300
-                          hover:-translate-y-1
-                          hover:shadow-lg
-                        `}
-                      >
-                        <CardContent className="p-7">
-                          <span className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-                            {item.year}
-                          </span>
-                          <h3 className="mt-3 text-lg font-semibold text-foreground">
-                            {item.title}
-                          </h3>
-                          <p className="mt-2 text-sm text-secondary">
-                            {item.description}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </div>
-
                     <div className="absolute left-0 top-6 flex md:hidden">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-background ring-2 ring-primary/30 shadow-md">
                         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white">
@@ -319,11 +320,25 @@ export default function About() {
                       </div>
                     </div>
 
-                    <div className="hidden md:col-start-2 md:flex md:justify-center md:pt-5">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-background ring-2 ring-primary/30 shadow-md">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
-                          <Icon className="h-5 w-5" />
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto_1fr] md:items-start md:gap-6">
+                      <div
+                        className={
+                          isLeft ? "md:pr-6 md:text-right" : "hidden md:block"
+                        }
+                      >
+                        {isLeft ? journeyCard : null}
+                      </div>
+
+                      <div className="hidden md:flex md:justify-center md:pt-5">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-background ring-2 ring-primary/30 shadow-md">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
+                            <Icon className="h-5 w-5" />
+                          </div>
                         </div>
+                      </div>
+
+                      <div className={isLeft ? "hidden md:block" : "md:pl-6"}>
+                        {isLeft ? null : journeyCard}
                       </div>
                     </div>
                   </div>
@@ -345,13 +360,16 @@ export default function About() {
                 Solar Outcomes
               </Highlighter>
             </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-secondary">
+              Tangible delivery outcomes from residential and commercial solar execution.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:auto-rows-[170px] md:grid-cols-4">
-            <ScrollReveal delay={0.05} className="md:col-span-2 md:row-span-2">
-            <Card className="group relative h-full overflow-hidden border-primary/35 bg-primary transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/15 to-transparent" />
-              <CardContent className="relative flex h-full flex-col justify-between p-8">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+            <ScrollReveal delay={0.05} className="lg:col-span-6 lg:row-span-2">
+            <Card className="group relative h-full min-h-[280px] overflow-hidden border-primary/35 bg-primary transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/35 via-primary/15 to-accent/10" />
+              <CardContent className="relative flex h-full flex-col justify-between p-7 sm:p-8">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
                     {stats[0].label}
@@ -360,44 +378,49 @@ export default function About() {
                     <NumberTicker value={stats[0].value} className="text-accent dark:text-accent" />
                     <span>{stats[0].suffix}</span>
                   </p>
+                  <p className="mt-3 max-w-sm text-sm text-white/80">
+                    Proven deployment across multi-site installations.
+                  </p>
                 </div>
-                <p className="max-w-sm text-sm leading-relaxed text-white/85">
-                  {stats[0].detail}
-                </p>
+                <div className="border-t border-white/15 pt-4">
+                  <p className="max-w-sm text-sm leading-relaxed text-white/90">
+                    {stats[0].detail}
+                  </p>
+                </div>
               </CardContent>
             </Card>
             </ScrollReveal>
 
-            <ScrollReveal delay={0.12} className="md:col-span-2">
-            <Card className="group relative h-full overflow-hidden border-primary/25 bg-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/18 via-accent/8 to-transparent" />
-              <CardContent className="relative p-7">
+            <ScrollReveal delay={0.12} className="lg:col-span-6">
+            <Card className="group relative h-full min-h-[132px] overflow-hidden border-primary/25 bg-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-primary/40" />
+              <CardContent className="relative p-6 sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                   {stats[1].label}
                 </p>
-                <p className="mt-3 text-4xl font-extrabold leading-none text-primary">
+                <p className="mt-2 text-4xl font-extrabold leading-none text-primary">
                   <NumberTicker value={stats[1].value} className="text-primary dark:text-primary" />
                   <span>{stats[1].suffix}</span>
                 </p>
-                <p className="mt-3 text-sm leading-relaxed text-primary/80">
+                <p className="mt-2.5 text-sm leading-relaxed text-primary/80">
                   {stats[1].detail}
                 </p>
               </CardContent>
             </Card>
             </ScrollReveal>
 
-            <ScrollReveal delay={0.18} className="md:col-span-2">
-            <Card className="group relative h-full overflow-hidden border-accent/35 bg-accent/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg md:col-span-2">
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/35 via-accent/15 to-transparent" />
-              <CardContent className="relative p-7">
+            <ScrollReveal delay={0.18} className="lg:col-span-6">
+            <Card className="group relative h-full min-h-[132px] overflow-hidden border-accent/35 bg-accent/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg lg:col-span-6">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-accent/60" />
+              <CardContent className="relative p-6 sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                   {stats[2].label}
                 </p>
-                <p className="mt-3 text-4xl font-extrabold leading-none text-primary">
+                <p className="mt-2 text-4xl font-extrabold leading-none text-primary">
                   <NumberTicker value={stats[2].value} className="text-primary dark:text-primary" />
                   <span className="ml-1">{stats[2].suffix}</span>
                 </p>
-                <p className="mt-3 text-sm leading-relaxed text-primary/80">
+                <p className="mt-2.5 text-sm leading-relaxed text-primary/80">
                   {stats[2].detail}
                 </p>
               </CardContent>
@@ -408,31 +431,31 @@ export default function About() {
 
         {/* ================= VALUES ================= */}
         <section className="mb-section">
-          <h2 className="mb-12 text-center text-3xl text-strong text-foreground">
-            Our{" "}
-            <Highlighter action="underline" color="var(--primary)" strokeWidth={2} animationDuration={700} iterations={1}>
-              Core Values
-            </Highlighter>
-          </h2>
+          <div className="mx-auto mb-10 max-w-3xl text-center">
+            <h2 className="text-3xl text-strong text-foreground sm:text-4xl">
+              Our{" "}
+              <Highlighter action="underline" color="var(--primary)" strokeWidth={2} animationDuration={700} iterations={1}>
+                Core Values
+              </Highlighter>
+            </h2>
+            <p className="mt-3 text-base leading-relaxed text-secondary">
+              The principles that define how we design, deliver, and support every solar project.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {values.map(({ icon: Icon, title, description }, index) => (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {values.map(({ icon: Icon, title, description, iconClass, surfaceClass }, index) => (
               <ScrollReveal key={title} delay={index * 0.06}>
-                <Card className="transition hover:-translate-y-1 hover:shadow-lg">
-                  <CardContent className="p-8 text-center">
-                    <div
-                      className={`
-                        mb-4 mx-auto flex h-14 w-14 items-center justify-center rounded-full
-                        ${title === "Sustainability" && "bg-primary/15"}
-                        ${title === "Quality" && "bg-accent/20"}
-                        ${title === "Integrity" && "bg-navy/15"}
-                        ${title === "Innovation" && "bg-primary/10"}
-                      `}
-                    >
-                      <Icon className="h-7 w-7 text-primary" />
+                <Card className="group relative h-full overflow-hidden rounded-2xl border border-border/70 bg-background shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-medium">
+                  <div className={`pointer-events-none absolute inset-x-6 top-0 h-[3px] rounded-full bg-gradient-to-r ${surfaceClass}`} />
+                  <CardContent className="relative p-6 text-center">
+                    <div className={`mb-5 mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-border/40 ${iconClass}`}>
+                      <Icon className="h-7 w-7" />
                     </div>
-                    <CardTitle className="mb-2">{title}</CardTitle>
-                    <p className="text-sm text-secondary">{description}</p>
+                    <CardTitle className="mb-2.5 text-3xl font-semibold leading-tight text-foreground">
+                      {title}
+                    </CardTitle>
+                    <p className="text-sm leading-6 text-secondary">{description}</p>
                   </CardContent>
                 </Card>
               </ScrollReveal>

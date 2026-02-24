@@ -1,14 +1,14 @@
 import "./globals.css";
 import dynamic from "next/dynamic";
 import BannerHero from "../components/BannerHero";
+import WhyChooseUs from "../components/WhyChooseUs";
+import SolarBenefits from "@/components/SolarBenefits";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import type { Metadata } from "next";
 import { buildPageMetadata, pageSeo } from "@/lib/seo";
 import { getDb } from "@/lib/mongodb";
 
-const WhyChooseUs = dynamic(() => import("../components/WhyChooseUs"));
 const ProductsPreview = dynamic(() => import("../components/ProductsPreview"));
-const SolarBenefits = dynamic(() => import("@/components/SolarBenefits"));
 const ServicesPreview = dynamic(() => import("../components/ServicesPreview"));
 const ProjectsPreview = dynamic(() => import("../components/ProjectsPreview"));
 const InfiniteServicesMarquee = dynamic(() => import("../components/InfiniteServicesMarquee"));
@@ -21,6 +21,7 @@ type HomeBanner = {
   title: string;
   subtitle?: string;
   ctaText?: string;
+  ctaLink?: string;
   imageUrl?: string;
   status: string;
 };
@@ -36,13 +37,14 @@ async function getHomeBanners(): Promise<HomeBanner[]> {
       title: string;
       subtitle?: string;
       ctaText?: string;
+      ctaLink?: string;
       imageUrl?: string;
       status?: string;
       isActive?: boolean;
     }>("banners")
     .find(
       { $or: [{ status: "Active" }, { isActive: true }] },
-      { projection: { title: 1, subtitle: 1, ctaText: 1, imageUrl: 1, status: 1, isActive: 1 } },
+      { projection: { title: 1, subtitle: 1, ctaText: 1, ctaLink: 1, imageUrl: 1, status: 1, isActive: 1 } },
     )
     .sort({ createdAt: -1 })
     .limit(5)
@@ -53,6 +55,7 @@ async function getHomeBanners(): Promise<HomeBanner[]> {
     title: doc.title,
     subtitle: doc.subtitle,
     ctaText: doc.ctaText,
+    ctaLink: doc.ctaLink || "/contact",
     imageUrl: doc.imageUrl,
     status: doc.status || (doc.isActive ? "Active" : "Inactive"),
   }));

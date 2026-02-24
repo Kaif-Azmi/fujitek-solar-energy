@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   Box,
   BriefcaseBusiness,
+  FileText,
   FolderKanban,
   ImageIcon,
   LayoutDashboard,
@@ -22,6 +23,7 @@ const NAV_ITEMS = [
   { href: "/admin/services", label: "Services", icon: BriefcaseBusiness },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/banners", label: "Banners", icon: ImageIcon },
+  { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/leads", label: "Leads", icon: LifeBuoy },
 ];
 
@@ -40,7 +42,7 @@ export default function AdminLayoutShell({ children }: Props) {
           <nav className="space-y-1">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
-              const active = pathname === item.href;
+              const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <Link
                   key={item.href}
@@ -78,4 +80,3 @@ export default function AdminLayoutShell({ children }: Props) {
     </div>
   );
 }
-

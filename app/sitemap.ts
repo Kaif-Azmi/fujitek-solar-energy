@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
 import { siteSeo } from "@/lib/seo";
+import { getPublishedBlogSitemapEntries } from "@/lib/blog";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  const blogPosts = await getPublishedBlogSitemapEntries();
 
   return [
     {
@@ -35,5 +37,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${siteSeo.url}/blog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    ...blogPosts.map((post) => ({
+      url: `${siteSeo.url}/blog/${post.slug}`,
+      lastModified: new Date(post.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
+    })),
   ];
 }

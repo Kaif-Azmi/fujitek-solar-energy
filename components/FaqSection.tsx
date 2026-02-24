@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, CardContent, Button, FaqAccordion } from "./ui";
+import { Card, CardContent, Button, FaqAccordion, SectionHeader } from "./ui";
 import { Highlighter } from "@/components/ui/highlighter";
 
 interface FaqItem {
@@ -48,53 +48,37 @@ export default function FaqSection() {
           {/* ================= LEFT — FAQ ================= */}
           <div className="md:col-span-3">
             {/* Section Header */}
-            <div className="mb-12 max-w-2xl">
-              <span className="inline-flex rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
-                FAQs
-              </span>
-
-              <h2 className="mt-5 text-3xl text-strong tracking-tight text-foreground md:text-4xl">
-                <Highlighter
-                  action="underline"
-                  color="var(--accent)"
-                  strokeWidth={2}
-                  animationDuration={700}
-                  iterations={1}
-                >
+            <SectionHeader
+              badge="FAQs"
+              title={
+                <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
                   Frequently Asked Questions About Solar and Inverter Services
                 </Highlighter>
-              </h2>
-
-              <p className="mt-4 text-secondary">
-                Clear answers to help you understand our solar and inverter
-                solutions with confidence.
-              </p>
-            </div>
+              }
+              description="Clear answers to help you understand our solar and inverter solutions with confidence."
+              className="mb-12"
+              badgeClassName="text-sm font-medium normal-case tracking-normal"
+              titleClassName="md:text-4xl text-strong"
+            />
 
             <FaqAccordion items={FAQS} className="max-w-3xl" singleOpen defaultOpenIndex={0} />
           </div>
 
           {/* ================= RIGHT — SUPPORT ================= */}
           <div className="md:col-span-2">
-            <Card
-              variant="green"
-              className="
-              bg-primary
-                relative flex min-h-[380px] flex-col
-                justify-center overflow-hidden
-              "
-            >
-              {/* Background tint */}
-              <div className="absolute inset-0 bg-primary/10" />
+            <Card className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-primary/5 shadow-[0_22px_46px_rgba(29,92,156,0.14)]">
+              <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-primary/15 blur-2xl" />
+              <div className="pointer-events-none absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-accent/20 blur-3xl" />
 
-              <CardContent className="relative z-10 flex flex-col items-center p-12 text-center">
+              <CardContent className="relative z-10 flex flex-col items-center p-8 text-center sm:p-10">
                 {/* Icon */}
                 <div
                   className="
-                    mb-7 flex h-16 w-16 items-center justify-center
+                    mb-6 flex h-16 w-16 items-center justify-center
                     rounded-full
-                    bg-primary/25 text-primary
-                    ring-1 ring-primary/30
+                    border border-primary/20
+                    bg-background text-primary
+                    shadow-sm
                   "
                 >
                   <svg
@@ -112,26 +96,33 @@ export default function FaqSection() {
                   </svg>
                 </div>
 
-                <h3 className="text-2xl font-semibold text-foreground">
+                <h3 className="text-3xl font-bold tracking-tight text-foreground">
                   Still need clarity?
                 </h3>
 
-                <p className="mt-4 max-w-sm text-sm text-secondary">
+                <p className="mt-4 max-w-sm text-base leading-relaxed text-secondary">
                   Our experts will help you choose the right solar and inverter
                   solution for your needs.
                 </p>
 
-                <div className="mt-10 w-full max-w-xs">
-                  <Link href="/contact">
-                    <Button size="lg" className="w-full">
+                <div className="mt-8 w-full max-w-sm">
+                  <Button asChild variant="explore" size="lg" className="w-full justify-center">
+                    <Link href="/contact">
                       Talk to an Expert
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </div>
 
-                <p className="mt-5 text-xs text-muted">
-                  Monday–Saturday · Response within 24–48 hours
-                </p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-muted">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/80 px-2.5 py-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    Monday–Saturday
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/80 px-2.5 py-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                    Response within 24–48 hours
+                  </span>
+                </div>
               </CardContent>
             </Card>
           </div>

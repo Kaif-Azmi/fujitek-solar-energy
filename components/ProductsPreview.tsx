@@ -4,6 +4,7 @@ import { ArrowRight, BatteryCharging, Car, Sun, Zap } from "lucide-react";
 import { Card, CardContent, CardTitle } from "./ui/card";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
+import SectionHeader from "@/components/ui/section-header";
 
 interface Product {
   name: string;
@@ -82,25 +83,15 @@ export default function ProductsPreview({
     <section className="w-full py-section" aria-label={ariaLabel}>
       <div className="mx-auto max-w-7xl px-6">
         <header className="mb-12 flex flex-col items-center gap-6 text-center md:mb-14 md:flex-row md:items-end md:justify-between md:text-left">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
-              {badgeLabel}
-            </span>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-              <Highlighter
-                action="underline"
-                color="var(--accent)"
-                strokeWidth={2}
-                animationDuration={700}
-                iterations={1}
-              >
+          <SectionHeader
+            badge={badgeLabel}
+            title={
+              <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
                 {heading}
               </Highlighter>
-            </h2>
-            <p className="mt-3 text-base leading-relaxed text-secondary">
-              {description}
-            </p>
-          </div>
+            }
+            description={description}
+          />
 
           <Button asChild variant="explore" size="lg" className="shrink-0">
             <Link href={ctaHref} aria-label={ctaLabel}>

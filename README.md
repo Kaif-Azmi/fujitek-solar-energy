@@ -16,6 +16,7 @@ Create `.env.local`:
 ```env
 MONGODB_URI=...
 ADMIN_SESSION_SECRET=...
+CHAT_SESSION_SECRET=... # optional, falls back to ADMIN_SESSION_SECRET
 CLOUDINARY_CLOUD_NAME=...
 CLOUDINARY_API_KEY=...
 CLOUDINARY_API_SECRET=...
@@ -41,5 +42,10 @@ NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=... # optional
 
 ## Notes
 
-- User auth (NextAuth, signup, Google, Apple) has been removed.
 - Admin credentials are database-backed (no plain admin password in env).
+- Chat qualification flow uses a finite-state machine with a signed HTTP-only `chat_session` cookie.
+- Cookie payload stores `sid`, `stage`, `slots`, `rev`, `exp` (HMAC signed).
+- Chat session state is not persisted to Mongo on every turn.
+- Mongo writes happen only when:
+  - Projection is computed and result is presented (`lead_drafts` upsert).
+  - Contact confirmation is completed (final lead insert/upsert in `leads`).

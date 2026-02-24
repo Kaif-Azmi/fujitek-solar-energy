@@ -1,14 +1,22 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { guardAIRequest, validateUserInput } from "@/lib/ai-guard";
-import { calculateSolarProjection } from "@/lib/solar-calculator";
-import { getNextLeadStage } from "@/lib/lead-flow";
-import { extractLeadDetails } from "@/lib/lead-extractor";
-import { saveQualifiedLead } from "@/lib/lead-service";
+import {
+  ConversationStage,
+  extractInputSignals,
+  getStagePrompt,
+  type ChatSessionState,
+} from "@/lib/chat-funnel";
+import {
+  bumpChatSession,
+  createInitialChatSession,
+  readChatSession,
+  writeChatSessionCookie,
+} from "@/lib/chat-session-cookie";
 import { checkPublicRateLimit } from "@/lib/public-rate-limit";
-import { getCachedResponse, setCachedResponse } from "@/lib/ai-cache";
-import { GeminiRequestError, generateResponse } from "@/lib/gemini";
-import { connectDB } from "@/lib/db";
-import SolarSchemeModel from "@/models/SolarScheme";
+import { calculateSolarProjection } from "@/lib/solar-calculator";
+import { saveQualifiedLead } from "@/lib/lead-service";
+import { getDb } from "@/lib/mongodb";
+import { generateResponse } from "@/lib/gemini";
 
 export const runtime = "nodejs";
 
@@ -16,120 +24,100 @@ type ChatRequestBody = {
   message?: unknown;
 };
 
-type GeminiRequestInput = {
-  userMessage: string;
-  systemContext: string;
-};
-
-type GeminiModule = {
-  generateResponse: (input: GeminiRequestInput) => Promise<string>;
-};
-
 const MAX_MESSAGE_LENGTH = 1500;
-const BILL_CANDIDATE_REGEX =
-  /(?:₹?\s?\d{3,6}(?:,\d{3})*(?:\.\d+)?|\d+(?:\.\d+)?\s*k\b|\d+(?:\.\d+)?\s*(?:rs|rupees)\b)/gi;
-const CURRENCY_OR_WORD_REGEX = /₹|,|\b(?:rs|rupees)\b/gi;
-const BILL_MIN = 500;
-const BILL_MAX = 200_000;
-const SCHEME_KEYWORD_REGEX = /\b(subsidy|scheme|mnre|pm\s*surya)\b/i;
-const OWNED_PROPERTY_REGEX = /\b(own|owned|self[-\s]?owned)\b/i;
-const RENTED_PROPERTY_REGEX = /\b(rent|rented|tenant)\b/i;
-const TIMELINE_IMMEDIATE_REGEX = /\b(immediate|now|asap|right away)\b/i;
-const TIMELINE_3MONTHS_REGEX = /\b(3\s*months?|three\s*months?|within\s*3\s*months?)\b/i;
-const TIMELINE_EXPLORING_REGEX = /\b(exploring|just exploring|researching|browsing)\b/i;
-const GEMINI_TIMEOUT_MS = 10_000;
 const REPEAT_WINDOW_MS = 60_000;
 const REPEAT_THRESHOLD = 5;
+const RESTART_REGEX = /\b(restart|start over|new quote|new calculation)\b/i;
 
 type RepeatEntry = {
   count: number;
   windowStart: number;
 };
 
+type IntentKind = "greeting" | "faq" | "qualification" | "unknown";
+
 const repeatMessageMap = new Map<string, RepeatEntry>();
-const BILL_FALLBACK_VARIANTS = [
-  "I’d be happy to calculate your solar savings. What’s your monthly electricity bill?",
-  "To give an accurate solar estimate, please share your monthly electricity bill.",
-  "Solar savings depend on usage. Share your monthly bill amount, and I’ll estimate your potential savings.",
-] as const;
 
-function parseMonthlyBill(message: string): number | null {
-  const normalized = message.trim().toLowerCase();
-  if (!normalized) {
-    return null;
-  }
+const GREETING_INTENT_REGEX = /^(hi|hello|hey|good (morning|afternoon|evening))\b/i;
+const SOLAR_FAQ_TOPIC_REGEX = /\b(solar|panel|inverter|subsidy|cost|savings|installation|benefit|price|scheme)\b/i;
+const QUESTION_STRUCTURE_REGEX = /(\?|\b(how|what|why)\b|^(tell me|explain)\b)/i;
+const QUALIFICATION_KEYWORDS_REGEX = /\b(calculate|estimate|want solar|install solar)\b/i;
+const BILL_CONTEXT_REGEX = /\b(bill|rs|rupees?)\b/i;
+const BILL_SOFT_GUIDE = "If you'd like a personalized estimate, share your monthly bill.";
 
-  const parseAndValidate = (rawCandidate: string): number | null => {
-    let cleaned = rawCandidate.replace(CURRENCY_OR_WORD_REGEX, "").trim();
-    const hasK = /\bk\b/i.test(cleaned);
-    if (hasK) {
-      cleaned = cleaned.replace(/\bk\b/i, "").trim();
-    }
-
-    const parsed = Number(cleaned) * (hasK ? 1000 : 1);
-    if (!Number.isFinite(parsed) || parsed <= 0) {
-      return null;
-    }
-    if (parsed < BILL_MIN || parsed > BILL_MAX) {
-      return null;
-    }
-    return parsed;
-  };
-
-  for (const match of normalized.matchAll(BILL_CANDIDATE_REGEX)) {
-    const candidate = match[0]?.trim();
-    if (!candidate) {
-      continue;
-    }
-    const parsed = parseAndValidate(candidate);
-    if (parsed !== null) {
-      return parsed;
+function isStandaloneBillCandidate(message: string): boolean {
+  const numericMatches = message.match(/\d[\d,]*(?:\.\d+)?/g) ?? [];
+  for (const raw of numericMatches) {
+    const parsed = Number(raw.replace(/,/g, ""));
+    if (Number.isFinite(parsed) && parsed >= 500 && parsed <= 200_000) {
+      return true;
     }
   }
-
-  return null;
+  return false;
 }
 
-function getBillFallbackMessage(): string {
-  const randomIndex = Math.floor(Math.random() * BILL_FALLBACK_VARIANTS.length);
-  return BILL_FALLBACK_VARIANTS[randomIndex] ?? BILL_FALLBACK_VARIANTS[0];
+function hasExplicitBillSignal(message: string): boolean {
+  const hasCurrencySymbol = /₹/.test(message);
+  const hasBillContext = BILL_CONTEXT_REGEX.test(message) && /\d/.test(message);
+  if (hasCurrencySymbol && /\d/.test(message)) return true;
+  if (hasBillContext) return true;
+  return isStandaloneBillCandidate(message);
 }
 
-async function generateGeminiResponse(userMessage: string, systemContext: string): Promise<string> {
-  const geminiModulePath = "@/lib/gemini";
-  const loadedModule = (await import(geminiModulePath)) as unknown;
+function classifyIntent(message: string): IntentKind {
+  const normalized = message.trim();
+  if (!normalized) return "unknown";
 
-  if (
-    typeof loadedModule !== "object" ||
-    loadedModule === null ||
-    !("generateResponse" in loadedModule) ||
-    typeof loadedModule.generateResponse !== "function"
-  ) {
-    throw new Error("gemini_unavailable");
+  if (GREETING_INTENT_REGEX.test(normalized)) return "greeting";
+  if (hasExplicitBillSignal(normalized)) return "qualification";
+
+  if (SOLAR_FAQ_TOPIC_REGEX.test(normalized) && QUESTION_STRUCTURE_REGEX.test(normalized)) {
+    return "faq";
   }
 
-  const gemini = loadedModule as GeminiModule;
-  return gemini.generateResponse({ userMessage, systemContext });
+  if (QUALIFICATION_KEYWORDS_REGEX.test(normalized)) return "qualification";
+
+  return "unknown";
 }
 
-function buildCacheKey(prefix: "scheme" | "faq", message: string): string {
-  return `${prefix}:${message.trim().toLowerCase()}`;
+function buildFaqFallback(message: string): string {
+  if (/\b(subsidy|scheme|mnre|pm surya)\b/i.test(message)) {
+    return "Solar subsidies vary by state and policy. For rooftop systems, eligibility depends on location, consumer category, and DISCOM rules.";
+  }
+  if (/\b(cost|price|expensive|budget|investment)\b/i.test(message)) {
+    return "Solar system cost depends on your consumption, roof conditions, and component quality. Higher monthly bills generally see faster payback.";
+  }
+  if (/\b(how many panels|panel needed|panels required)\b/i.test(message)) {
+    return "Panel count depends on monthly usage, available roof area, and panel wattage. We estimate this from your bill and location.";
+  }
+  if (/\b(what is solar|how does solar)\b/i.test(message)) {
+    return "Solar converts sunlight into electricity using PV panels and can reduce grid dependence through net metering where available.";
+  }
+  return "I can help with solar basics, cost drivers, subsidies, and system sizing.";
+}
+
+async function buildFaqResponse(message: string): Promise<string> {
+  try {
+    const aiText = await generateResponse({
+      userMessage: message,
+      context:
+        "FAQ_MODE: answer only the user question in concise, factual solar terms. Do not request contact details or control conversation stage.",
+    });
+    return aiText;
+  } catch (error) {
+    console.error("[chat] faq_mode_fallback", error);
+    return buildFaqFallback(message);
+  }
 }
 
 function getClientIp(request: NextRequest): string {
   const forwardedFor = request.headers.get("x-forwarded-for");
   if (forwardedFor) {
     const first = forwardedFor.split(",")[0]?.trim();
-    if (first) {
-      return first;
-    }
+    if (first) return first;
   }
-
   const requestWithOptionalIp = request as NextRequest & { ip?: string };
-  if (requestWithOptionalIp.ip) {
-    return requestWithOptionalIp.ip;
-  }
-
+  if (requestWithOptionalIp.ip) return requestWithOptionalIp.ip;
   return "unknown";
 }
 
@@ -153,35 +141,62 @@ function isSuspiciousRepeatedMessage(ip: string, message: string): boolean {
   return current.count >= REPEAT_THRESHOLD;
 }
 
-async function generateGeminiResponseWithTimeout(userMessage: string, systemContext: string): Promise<string> {
-  const timeoutPromise = new Promise<string>((_, reject) => {
-    setTimeout(() => reject(new Error("timeout")), GEMINI_TIMEOUT_MS);
-  });
-
-  return Promise.race([generateGeminiResponse(userMessage, systemContext), timeoutPromise]);
+function respond(payload: unknown, status: number, session: ChatSessionState): NextResponse {
+  const response = NextResponse.json(payload, { status });
+  writeChatSessionCookie(response, bumpChatSession(session));
+  return response;
 }
 
-function detectPropertyType(message: string): "owned" | "rented" | undefined {
-  if (OWNED_PROPERTY_REGEX.test(message)) {
-    return "owned";
-  }
-  if (RENTED_PROPERTY_REGEX.test(message)) {
-    return "rented";
-  }
-  return undefined;
+async function persistLeadDraft(session: ChatSessionState): Promise<void> {
+  const db = await getDb();
+  await db.collection("lead_drafts").updateOne(
+    { sid: session.sid },
+    {
+      $set: {
+        sid: session.sid,
+        stage: session.stage,
+        monthlyBill: session.slots.monthlyBill,
+        state: session.slots.state,
+        segment: session.slots.segment,
+        ownership: session.slots.ownership,
+        timeline: session.slots.timeline,
+        projection: session.slots.projection,
+        name: session.slots.name,
+        phone: session.slots.phone,
+        updatedAt: new Date(),
+      },
+      $setOnInsert: {
+        createdAt: new Date(),
+      },
+    },
+    { upsert: true },
+  );
 }
 
-function detectInstallationTimeline(message: string): "immediate" | "3months" | "exploring" | undefined {
-  if (TIMELINE_IMMEDIATE_REGEX.test(message)) {
-    return "immediate";
+function postValidationGuard(message: string) {
+  const guardResult = guardAIRequest(message);
+  if (guardResult.reason === "prompt_injection_detected") {
+    return { blocked: true, status: 400, error: "prompt_injection_detected" as const };
   }
-  if (TIMELINE_3MONTHS_REGEX.test(message)) {
-    return "3months";
+  if (guardResult.reason === "invalid_input") {
+    return { blocked: true, status: 400, error: "invalid_input" as const };
   }
-  if (TIMELINE_EXPLORING_REGEX.test(message)) {
-    return "exploring";
+  return { blocked: false as const, nonSolar: guardResult.reason === "non_solar_topic" };
+}
+
+function handleBillCaptureTransition(session: ChatSessionState, message: string, signals: ReturnType<typeof extractInputSignals>) {
+  if (signals.monthlyBill === undefined) {
+    const guard = postValidationGuard(message);
+    if (guard.blocked) return respond({ error: guard.error }, guard.status, session);
+    const prompt = getStagePrompt(ConversationStage.BILL_CAPTURE);
+    return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
   }
-  return undefined;
+
+  session.slots.monthlyBill = signals.monthlyBill;
+  if (signals.state) session.slots.state = signals.state;
+  session.stage = session.slots.state ? ConversationStage.SEGMENT_CAPTURE : ConversationStage.STATE_CAPTURE;
+  const prompt = getStagePrompt(session.stage);
+  return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
 }
 
 export async function POST(request: NextRequest) {
@@ -199,181 +214,297 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "invalid_input" }, { status: 400 });
     }
 
-    if (typeof body.message !== "string") {
+    if (typeof body.message !== "string" || body.message.length > MAX_MESSAGE_LENGTH) {
       return NextResponse.json({ error: "invalid_input" }, { status: 400 });
     }
 
-    if (body.message.length > MAX_MESSAGE_LENGTH) {
-      return NextResponse.json({ error: "invalid_input" }, { status: 400 });
-    }
-
-    let cleanedMessage: string;
+    let message: string;
     try {
-      cleanedMessage = validateUserInput(body.message);
+      message = validateUserInput(body.message);
     } catch {
       return NextResponse.json({ error: "invalid_input" }, { status: 400 });
     }
 
-    const guardResult = guardAIRequest(cleanedMessage);
-    const safeMessage = guardResult.cleanedInput ?? cleanedMessage;
-    const detectedBill = parseMonthlyBill(cleanedMessage) ?? parseMonthlyBill(safeMessage);
-    if (!guardResult.allowed) {
-      if (!(guardResult.reason === "non_solar_topic" && detectedBill !== null)) {
-        return NextResponse.json({ error: guardResult.reason ?? "invalid_input" }, { status: 400 });
-      }
-    }
-
-    if (isSuspiciousRepeatedMessage(ip, safeMessage)) {
+    if (isSuspiciousRepeatedMessage(ip, message)) {
       return NextResponse.json({ error: "suspicious_activity" }, { status: 400 });
     }
 
-    await connectDB();
+    let session = readChatSession(request);
+    const signals = extractInputSignals(message);
 
-    const finalDetectedBill = detectedBill;
-    const extracted = extractLeadDetails(safeMessage);
-    const monthlyBillForLead = extracted.monthlyBill ?? finalDetectedBill ?? undefined;
-    const leadStage = getNextLeadStage("initial", safeMessage);
-    const looksLikeStateOnlyMessage =
-      /^[a-z][a-z\s]{1,40}$/i.test(safeMessage) &&
-      safeMessage.trim().split(/\s+/).length <= 3;
-    const subsidyIntent =
-      SCHEME_KEYWORD_REGEX.test(safeMessage) ||
-      (leadStage === "qualification" && looksLikeStateOnlyMessage);
-
-    if (extracted.name && extracted.phone && typeof monthlyBillForLead === "number" && monthlyBillForLead > 0) {
-      const projection = await calculateSolarProjection({ monthlyBill: monthlyBillForLead, state: extracted.city });
-      const savedLead = await saveQualifiedLead({
-        name: extracted.name,
-        phone: extracted.phone,
-        city: extracted.city,
-        monthlyBill: monthlyBillForLead,
-        propertyType: detectPropertyType(safeMessage),
-        installationTimeline: detectInstallationTimeline(safeMessage),
-        projection,
-        conversationSummary: safeMessage,
-      });
-
-      return NextResponse.json({
-        type: "lead_captured",
-        message: "Thank you. Our solar expert will contact you shortly.",
-        leadCategory: savedLead.category,
-      });
+    if (RESTART_REGEX.test(message)) {
+      session = createInitialChatSession();
     }
 
-    if (finalDetectedBill !== null) {
-      const projection = await calculateSolarProjection({ monthlyBill: finalDetectedBill });
-      return NextResponse.json({
-        type: "calculation",
-        data: projection,
-        nextStep: "ask_for_contact",
-      });
-    }
+    switch (session.stage) {
+      case ConversationStage.INTENT_GATE: {
+        if (signals.monthlyBill !== undefined) session.slots.monthlyBill = signals.monthlyBill;
+        if (signals.state) session.slots.state = signals.state;
 
-    if (subsidyIntent) {
-      const stateMatch = safeMessage.match(
-        /\b(?:in|from|state(?:\s+is)?)\s+([a-z][a-z\s]{1,40})\b/i,
-      );
-      const state = stateMatch?.[1]?.trim() ?? (looksLikeStateOnlyMessage ? safeMessage.trim() : undefined);
+        const intent = classifyIntent(message);
+        const guard = postValidationGuard(message);
+        if (guard.blocked) return respond({ error: guard.error }, guard.status, session);
 
-      if (!state) {
-        return NextResponse.json({
-          type: "ai_response",
-          data: "Please share your state so I can check available solar subsidy schemes.",
-        });
+        if (intent === "greeting") {
+          const greetingText = session.slots.intentGateBillPrompted
+            ? `Hi. I can explain solar basics, costs, subsidies, and panel sizing. ${BILL_SOFT_GUIDE}`
+            : "Hi. I can explain solar basics, costs, subsidies, and panel sizing, then build a personalized savings estimate when you're ready.";
+          return respond({ type: "ai_response", data: greetingText, nextStep: "ask_for_bill" }, 200, session);
+        }
+
+        if (intent === "faq") {
+          const faqAnswer = await buildFaqResponse(message);
+          session.slots.intentGateBillPrompted = true;
+          return respond(
+            {
+              type: "ai_response",
+              data: `${faqAnswer}\n\n${BILL_SOFT_GUIDE}`,
+              nextStep: "ask_for_bill",
+            },
+            200,
+            session,
+          );
+        }
+
+        if (intent === "qualification") {
+          session.stage = ConversationStage.BILL_CAPTURE;
+          if (signals.monthlyBill !== undefined) {
+            return handleBillCaptureTransition(session, message, signals);
+          }
+
+          const firstAsk = !session.slots.intentGateBillPrompted;
+          session.slots.intentGateBillPrompted = true;
+          return respond(
+            {
+              type: "ai_response",
+              data: firstAsk
+                ? "Great. Share your monthly electricity bill (example: ₹3500) so I can start your estimate."
+                : "Understood. Please share your monthly electricity bill to continue your personalized solar estimate.",
+              nextStep: "ask_for_bill",
+            },
+            200,
+            session,
+          );
+        }
+
+        if (!session.slots.intentGateBillPrompted) {
+          session.slots.intentGateBillPrompted = true;
+          return respond(
+            {
+              type: "ai_response",
+              data: "I can help with solar estimates, subsidy checks, and system basics. Share your monthly electricity bill to start a personalized estimate.",
+              nextStep: "ask_for_bill",
+            },
+            200,
+            session,
+          );
+        }
+
+        return respond(
+          {
+            type: "ai_response",
+            data: `Happy to help with solar questions. ${BILL_SOFT_GUIDE}`,
+            nextStep: "ask_for_bill",
+          },
+          200,
+          session,
+        );
       }
 
-      await connectDB();
-
-      const scheme = await SolarSchemeModel.findOne({
-        state: new RegExp(state, "i"),
-      }).lean();
-
-      if (scheme) {
-        const formatted = [
-          `Solar subsidy details for ${state}:`,
-          `Scheme: ${scheme.name}`,
-          `Description: ${scheme.description}`,
-          `Subsidy per kW: ₹${scheme.subsidyPerKW}`,
-          `Maximum subsidy: ₹${scheme.maxSubsidy}`,
-          `Maximum eligible system size: ${scheme.maxEligibleKW} kW`,
-          `Eligibility: ${scheme.eligibility}`,
-        ].join("\n");
-
-        return NextResponse.json({
-          type: "ai_response",
-          data: formatted,
-        });
+      case ConversationStage.BILL_CAPTURE: {
+        return handleBillCaptureTransition(session, message, signals);
       }
 
-      const aiText = await generateResponse({
-        userMessage: cleanedMessage,
-        leadStage: "subsidy",
-      });
+      case ConversationStage.STATE_CAPTURE: {
+        if (!signals.state) {
+          const guard = postValidationGuard(message);
+          if (guard.blocked) return respond({ error: guard.error }, guard.status, session);
+          const prompt = getStagePrompt(ConversationStage.STATE_CAPTURE);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
 
-      return NextResponse.json({
-        type: "ai_response",
-        data: aiText,
-      });
+        session.slots.state = signals.state;
+        session.stage = session.slots.monthlyBill !== undefined ? ConversationStage.SEGMENT_CAPTURE : ConversationStage.BILL_CAPTURE;
+        const prompt = getStagePrompt(session.stage);
+        return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+      }
+
+      case ConversationStage.SEGMENT_CAPTURE: {
+        if (!signals.segment) {
+          const guard = postValidationGuard(message);
+          if (guard.blocked) return respond({ error: guard.error }, guard.status, session);
+          const prompt = getStagePrompt(ConversationStage.SEGMENT_CAPTURE);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        session.slots.segment = signals.segment;
+        session.stage =
+          signals.segment === "commercial" ? ConversationStage.TIMELINE_CAPTURE : ConversationStage.OWNERSHIP_CAPTURE;
+        const prompt = getStagePrompt(session.stage);
+        return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+      }
+
+      case ConversationStage.OWNERSHIP_CAPTURE: {
+        if (!signals.ownership) {
+          const guard = postValidationGuard(message);
+          if (guard.blocked) return respond({ error: guard.error }, guard.status, session);
+          const prompt = getStagePrompt(ConversationStage.OWNERSHIP_CAPTURE);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        session.slots.ownership = signals.ownership;
+        session.stage = ConversationStage.TIMELINE_CAPTURE;
+        const prompt = getStagePrompt(session.stage);
+        return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+      }
+
+      case ConversationStage.TIMELINE_CAPTURE: {
+        if (!signals.timeline) {
+          const guard = postValidationGuard(message);
+          if (guard.blocked) return respond({ error: guard.error }, guard.status, session);
+          const prompt = getStagePrompt(ConversationStage.TIMELINE_CAPTURE);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        if (!session.slots.monthlyBill) {
+          session.stage = ConversationStage.BILL_CAPTURE;
+          const prompt = getStagePrompt(session.stage);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        session.slots.timeline = signals.timeline;
+        session.slots.projection = await calculateSolarProjection({
+          monthlyBill: session.slots.monthlyBill,
+          state: session.slots.state,
+        });
+        session.stage = ConversationStage.RESULT_PRESENTATION;
+
+        await persistLeadDraft(session);
+
+        return respond(
+          {
+            type: "calculation",
+            data: session.slots.projection,
+            nextStep: "ask_for_contact",
+          },
+          200,
+          session,
+        );
+      }
+
+      case ConversationStage.RESULT_PRESENTATION: {
+        if (signals.name) session.slots.name = signals.name;
+        if (signals.phone) session.slots.phone = signals.phone;
+
+        if (session.slots.name && session.slots.phone) {
+          session.stage = ConversationStage.CONTACT_CONFIRMATION;
+          const prompt = getStagePrompt(session.stage);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        session.stage = session.slots.name ? ConversationStage.CONTACT_PHONE_CAPTURE : ConversationStage.CONTACT_NAME_CAPTURE;
+        const prompt = getStagePrompt(session.stage);
+        return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+      }
+
+      case ConversationStage.CONTACT_NAME_CAPTURE: {
+        if (signals.name) session.slots.name = signals.name;
+        if (signals.phone) session.slots.phone = signals.phone;
+
+        if (!session.slots.name) {
+          const guard = postValidationGuard(message);
+          if (guard.blocked) return respond({ error: guard.error }, guard.status, session);
+          const prompt = getStagePrompt(ConversationStage.CONTACT_NAME_CAPTURE);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        session.stage = session.slots.phone ? ConversationStage.CONTACT_CONFIRMATION : ConversationStage.CONTACT_PHONE_CAPTURE;
+        const prompt = getStagePrompt(session.stage);
+        return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+      }
+
+      case ConversationStage.CONTACT_PHONE_CAPTURE: {
+        if (signals.phone) session.slots.phone = signals.phone;
+        if (signals.name && !session.slots.name) session.slots.name = signals.name;
+
+        if (!session.slots.phone) {
+          const guard = postValidationGuard(message);
+          if (guard.blocked) return respond({ error: guard.error }, guard.status, session);
+          const prompt = getStagePrompt(ConversationStage.CONTACT_PHONE_CAPTURE);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        session.stage = session.slots.name ? ConversationStage.CONTACT_CONFIRMATION : ConversationStage.CONTACT_NAME_CAPTURE;
+        const prompt = getStagePrompt(session.stage);
+        return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+      }
+
+      case ConversationStage.CONTACT_CONFIRMATION: {
+        if (signals.confirmation === "edit") {
+          session.slots.name = undefined;
+          session.slots.phone = undefined;
+          session.stage = ConversationStage.CONTACT_NAME_CAPTURE;
+          const prompt = getStagePrompt(session.stage);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        const implicitConfirm = Boolean(signals.name && signals.phone);
+        const confirmed = signals.confirmation === "confirm" || implicitConfirm;
+
+        if (!confirmed) {
+          const prompt = getStagePrompt(ConversationStage.CONTACT_CONFIRMATION);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        if (!session.slots.name || !session.slots.phone || !session.slots.monthlyBill) {
+          session.stage = ConversationStage.RESULT_PRESENTATION;
+          const prompt = getStagePrompt(session.stage);
+          return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+        }
+
+        const savedLead = await saveQualifiedLead({
+          name: session.slots.name,
+          phone: session.slots.phone,
+          state: session.slots.state,
+          city: session.slots.state,
+          monthlyBill: session.slots.monthlyBill,
+          segment: session.slots.segment,
+          propertyType: session.slots.ownership,
+          installationTimeline: session.slots.timeline,
+          projection: session.slots.projection,
+          stage: ConversationStage.CONTACT_CONFIRMATION,
+          conversationSummary: [
+            `Stage: ${session.stage}`,
+            `State: ${session.slots.state ?? "unknown"}`,
+            `Segment: ${session.slots.segment ?? "unknown"}`,
+            `Timeline: ${session.slots.timeline ?? "unknown"}`,
+          ].join(" | "),
+        });
+
+        session.stage = ConversationStage.COMPLETED;
+        return respond(
+          {
+            type: "lead_captured",
+            message: "Thank you. Our solar expert will contact you shortly.",
+            leadCategory: savedLead.category,
+          },
+          200,
+          session,
+        );
+      }
+
+      case ConversationStage.COMPLETED: {
+        const prompt = getStagePrompt(ConversationStage.COMPLETED);
+        return respond({ type: "ai_response", data: prompt.text }, 200, session);
+      }
+
+      default: {
+        session = createInitialChatSession();
+        const prompt = getStagePrompt(session.stage);
+        return respond({ type: "ai_response", data: prompt.text, nextStep: prompt.nextStep }, 200, session);
+      }
     }
-
-    if (
-      guardResult.allowed &&
-      finalDetectedBill === null &&
-      !subsidyIntent &&
-      leadStage !== "capture" &&
-      leadStage !== "completed"
-    ) {
-      return NextResponse.json({
-        type: "ai_response",
-        data: getBillFallbackMessage(),
-        nextStep: "qualification",
-      });
-    }
-
-    const systemContext = [
-      "You are a solar advisory assistant for a solar energy company.",
-      "Only answer solar-related questions (solar systems, subsidy, net metering, bills, rooftop, inverter, battery, installation, savings).",
-      "If user goes off-topic, redirect to solar advisory politely.",
-      "Keep responses concise, practical, and lead-focused.",
-      "Prioritize collecting user's monthly electricity bill and city/state for accurate estimate.",
-      "After qualification, nudge user toward contact sharing for follow-up consultation.",
-      `Current lead stage: ${leadStage}.`,
-    ].join(" ");
-
-    const faqCacheKey = buildCacheKey("faq", safeMessage);
-    const cachedFaqResponse = getCachedResponse(faqCacheKey);
-    if (cachedFaqResponse) {
-      return NextResponse.json({
-        type: "ai_response",
-        data: cachedFaqResponse,
-        nextStep: "qualification",
-      });
-    }
-
-    const modelResponse = await generateGeminiResponseWithTimeout(safeMessage, systemContext);
-    setCachedResponse(faqCacheKey, modelResponse);
-
-    return NextResponse.json({
-      type: "ai_response",
-      data: modelResponse,
-      nextStep: "qualification",
-    });
   } catch (error) {
-    if (error instanceof GeminiRequestError) {
-      console.error("[chat] GeminiRequestError", {
-        status: error.status,
-        details: error.bodyPreview,
-      });
-      return NextResponse.json(
-        {
-          error: "gemini_request_failed",
-          status: error.status,
-          details: error.bodyPreview,
-        },
-        { status: 502 },
-      );
-    }
-
     console.error("[chat] internal error", error);
     return NextResponse.json({ error: "internal_server_error" }, { status: 500 });
   }

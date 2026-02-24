@@ -12,6 +12,7 @@ interface Banner {
   title: string;
   subtitle?: string;
   ctaText?: string;
+  ctaLink?: string;
   imageUrl?: string;
   status: string;
 }
@@ -186,7 +187,7 @@ export default function BannerHero({
           {/* CTA — Original Button System */}
           {banner.ctaText && (
             <div className="mt-8 sm:mt-12">
-              <Link href="/contact">
+              <Link href={banner.ctaLink || "/contact"}>
                 <Button variant="explore" size="lg">
                   {banner.ctaText}
                 </Button>

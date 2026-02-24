@@ -5,14 +5,15 @@ import AdminCard from "@/components/admin/AdminCard";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 type LeadCategory = "high" | "medium" | "low";
-type LeadStatus = "new" | "contacted" | "closed";
+type LeadStatus = "new" | "contacted" | "converted" | "lost";
 type LeadSource = "ai_assistant" | "contact_form";
-type FilterTab = "all" | LeadCategory | "closed";
+type FilterTab = "all" | LeadCategory | "converted" | "lost";
 
 type LeadItem = {
   id: string;
   name: string;
   phone: string;
+  state?: string;
   city?: string;
   email?: string;
   monthlyBill?: number;
@@ -28,16 +29,31 @@ type LeadItem = {
   createdAt: string;
 };
 
+type LeadsApiPayload = {
+  items: LeadItem[];
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+};
+
 type ApiErrorPayload = {
   message?: string;
 };
+
+const PAGE_SIZE = 50;
 
 const FILTER_TABS: ReadonlyArray<{ key: FilterTab; label: string }> = [
   { key: "all", label: "All" },
   { key: "high", label: "High" },
   { key: "medium", label: "Medium" },
   { key: "low", label: "Low" },
-  { key: "closed", label: "Closed" },
+  { key: "converted", label: "Converted" },
+  { key: "lost", label: "Lost" },
 ];
 
 function formatINR(value: number): string {
@@ -61,9 +77,14 @@ function sourceLabel(source: LeadSource): string {
 }
 
 function getNextStatusOptions(status: LeadStatus): LeadStatus[] {
-  if (status === "new") return ["new", "contacted"];
-  if (status === "contacted") return ["contacted", "closed"];
-  return ["closed"];
+  if (status === "new") return ["new", "contacted", "lost"];
+  if (status === "contacted") return ["contacted", "converted", "lost"];
+  if (status === "converted") return ["converted"];
+  return ["lost"];
+}
+
+function isStatusTab(tab: FilterTab): tab is Extract<FilterTab, LeadStatus> {
+  return tab === "converted" || tab === "lost";
 }
 
 export default function LeadsPage() {
@@ -72,6 +93,9 @@ export default function LeadsPage() {
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
   const [statusSavingId, setStatusSavingId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     let mounted = true;
@@ -80,20 +104,36 @@ export default function LeadsPage() {
       try {
         setLoading(true);
         setErrorMessage("");
-        const response = await fetch("/api/admin/leads", { cache: "no-store" });
-        const payload = (await response.json()) as LeadItem[] | ApiErrorPayload;
+
+        const params = new URLSearchParams();
+        params.set("page", String(page));
+        params.set("pageSize", String(PAGE_SIZE));
+
+        if (isStatusTab(activeTab)) {
+          params.set("status", activeTab);
+        } else if (activeTab !== "all") {
+          params.set("category", activeTab);
+        }
+
+        const response = await fetch(`/api/admin/leads?${params.toString()}`, { cache: "no-store" });
+        const payload = (await response.json()) as LeadsApiPayload | ApiErrorPayload;
 
         if (!response.ok) {
           const error = payload as ApiErrorPayload;
           throw new Error(error.message || "Failed to load leads.");
         }
 
+        const data = payload as LeadsApiPayload;
         if (mounted) {
-          setLeads(payload as LeadItem[]);
+          setLeads(data.items);
+          setTotal(data.pagination.total);
+          setTotalPages(data.pagination.totalPages);
         }
       } catch (error) {
         if (mounted) {
           setLeads([]);
+          setTotal(0);
+          setTotalPages(1);
           setErrorMessage(error instanceof Error ? error.message : "Failed to load leads.");
         }
       } finally {
@@ -107,20 +147,14 @@ export default function LeadsPage() {
     return () => {
       mounted = false;
     };
-  }, []);
-
-  const filteredLeads = useMemo(() => {
-    if (activeTab === "all") return leads;
-    if (activeTab === "closed") return leads.filter((lead) => lead.status === "closed");
-    return leads.filter((lead) => lead.category === activeTab);
-  }, [activeTab, leads]);
+  }, [activeTab, page]);
 
   const kpis = useMemo(() => {
     const totalLeads = leads.length;
     const high = leads.filter((lead) => lead.category === "high").length;
     const medium = leads.filter((lead) => lead.category === "medium").length;
     const low = leads.filter((lead) => lead.category === "low").length;
-    const closed = leads.filter((lead) => lead.status === "closed").length;
+    const converted = leads.filter((lead) => lead.status === "converted").length;
     const projectedRevenuePotential = leads
       .filter((lead) => lead.category === "high")
       .reduce((sum, lead) => sum + (lead.netProfit ?? 0), 0);
@@ -130,7 +164,7 @@ export default function LeadsPage() {
       high,
       medium,
       low,
-      closed,
+      converted,
       projectedRevenuePotential,
     };
   }, [leads]);
@@ -171,7 +205,7 @@ export default function LeadsPage() {
       <ScrollReveal delay={0.04}>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
           <AdminCard>
-            <p className="text-sm text-slate-500">Total Leads</p>
+            <p className="text-sm text-slate-500">Page Leads</p>
             <p className="mt-2 text-2xl font-bold text-slate-900">{kpis.totalLeads}</p>
           </AdminCard>
           <AdminCard>
@@ -187,8 +221,8 @@ export default function LeadsPage() {
             <p className="mt-2 text-2xl font-bold text-slate-700">{kpis.low}</p>
           </AdminCard>
           <AdminCard>
-            <p className="text-sm text-slate-500">Closed Leads</p>
-            <p className="mt-2 text-2xl font-bold text-blue-700">{kpis.closed}</p>
+            <p className="text-sm text-slate-500">Converted Leads</p>
+            <p className="mt-2 text-2xl font-bold text-blue-700">{kpis.converted}</p>
           </AdminCard>
         </div>
       </ScrollReveal>
@@ -197,18 +231,21 @@ export default function LeadsPage() {
         <AdminCard className="bg-gradient-to-r from-emerald-50 to-teal-50">
           <p className="text-sm font-medium text-slate-600">Projected Revenue Potential</p>
           <p className="mt-2 text-3xl font-extrabold text-emerald-800">{formatINR(kpis.projectedRevenuePotential)}</p>
-          <p className="mt-1 text-xs text-slate-600">Based on cumulative net profit from high category leads.</p>
+          <p className="mt-1 text-xs text-slate-600">Based on cumulative net profit from high category leads on current page.</p>
         </AdminCard>
       </ScrollReveal>
 
       <ScrollReveal delay={0.1}>
         <AdminCard>
-          <div className="mb-4 flex flex-wrap gap-2">
+          <div className="mb-4 flex flex-wrap items-center gap-2">
             {FILTER_TABS.map((tab) => (
               <button
                 key={tab.key}
                 type="button"
-                onClick={() => setActiveTab(tab.key)}
+                onClick={() => {
+                  setActiveTab(tab.key);
+                  setPage(1);
+                }}
                 className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${
                   activeTab === tab.key
                     ? "bg-primary text-white"
@@ -218,6 +255,12 @@ export default function LeadsPage() {
                 {tab.label}
               </button>
             ))}
+            <div className="ml-auto flex items-center gap-2 text-sm text-slate-600">
+              <span>Total: {total}</span>
+              <span>
+                Page {page} / {totalPages}
+              </span>
+            </div>
           </div>
 
           {errorMessage ? (
@@ -230,7 +273,7 @@ export default function LeadsPage() {
                 <tr>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Name</th>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Phone</th>
-                  <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">City</th>
+                  <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">State</th>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Monthly Bill</th>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Source</th>
                   <th className="border-b border-slate-200 px-3 py-2 text-left font-semibold text-slate-600">Requirement</th>
@@ -248,21 +291,21 @@ export default function LeadsPage() {
                       Loading leads...
                     </td>
                   </tr>
-                ) : filteredLeads.length === 0 ? (
+                ) : leads.length === 0 ? (
                   <tr>
                     <td colSpan={11} className="px-3 py-6 text-center text-slate-500">
                       No leads found for this filter.
                     </td>
                   </tr>
                 ) : (
-                  filteredLeads.map((lead) => (
+                  leads.map((lead) => (
                     <tr key={lead.id} className="odd:bg-slate-50/60">
                       <td className="border-b border-slate-100 px-3 py-2">
                         <p className="font-medium text-slate-900">{lead.name}</p>
                         {lead.email ? <p className="text-xs text-slate-500">{lead.email}</p> : null}
                       </td>
                       <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{lead.phone}</td>
-                      <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{lead.city || "-"}</td>
+                      <td className="border-b border-slate-100 px-3 py-2 text-slate-700">{lead.state || lead.city || "-"}</td>
                       <td className="border-b border-slate-100 px-3 py-2 text-slate-700">
                         {typeof lead.monthlyBill === "number" ? formatINR(lead.monthlyBill) : "-"}
                       </td>
@@ -300,7 +343,7 @@ export default function LeadsPage() {
                       <td className="border-b border-slate-100 px-3 py-2">
                         <select
                           value={lead.status}
-                          disabled={statusSavingId === lead.id || lead.status === "closed"}
+                          disabled={statusSavingId === lead.id || lead.status === "converted" || lead.status === "lost"}
                           onChange={(event) => updateLeadStatus(lead.id, event.target.value as LeadStatus)}
                           className="rounded-md border border-slate-200 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
                         >
@@ -317,9 +360,27 @@ export default function LeadsPage() {
               </tbody>
             </table>
           </div>
+
+          <div className="mt-4 flex items-center justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page <= 1 || loading}
+              className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page >= totalPages || loading}
+              className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
         </AdminCard>
       </ScrollReveal>
     </div>
   );
 }
-

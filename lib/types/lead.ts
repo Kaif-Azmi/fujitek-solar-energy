@@ -5,6 +5,6 @@ export interface Lead {
   phone: string;
   message: string;
   source: string;
-  status: "new" | "contacted" | "closed";
+  status: "new" | "contacted" | "converted" | "lost";
   createdAt: string;
 }

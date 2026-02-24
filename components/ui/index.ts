@@ -6,4 +6,7 @@ export { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, Di
 export { Textarea } from './textarea'
 export { Alert, AlertTitle, AlertDescription } from './alert'
 export { default as FaqAccordion } from './faq-accordion'
+export { default as SectionHeader } from './section-header'
 export * from './icons'     
+export { Switch } from './switch'
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './table'

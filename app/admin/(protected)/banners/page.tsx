@@ -10,10 +10,20 @@ interface Banner {
   title: string;
   subtitle?: string;
   ctaText?: string;
+  ctaLink?: string;
   imageUrl?: string;
   status?: string;
   createdAt?: string;
 }
+
+const CTA_LINK_OPTIONS = [
+  { label: "Contact Page", value: "/contact" },
+  { label: "Products Page", value: "/products" },
+  { label: "Service Page", value: "/service" },
+  { label: "Blog Page", value: "/blog" },
+  { label: "About Page", value: "/about" },
+  { label: "Home Page", value: "/" },
+];
 
 export default function BannersPage() {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -26,10 +36,11 @@ export default function BannersPage() {
     title: string;
     subtitle?: string;
     ctaText?: string;
+    ctaLink?: string;
     status: string;
     file?: File | null;
     imageUrl?: string;
-  }>({ title: '', subtitle: '', ctaText: '', status: 'Inactive', file: null, imageUrl: '' });
+  }>({ title: '', subtitle: '', ctaText: '', ctaLink: '/contact', status: 'Inactive', file: null, imageUrl: '' });
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
@@ -88,6 +99,20 @@ export default function BannersPage() {
               className="w-full border px-3 py-2 rounded"
               placeholder="CTA Text"
             />
+            <div>
+              <label className="mb-1 block text-sm text-slate-600">CTA Redirect Page</label>
+              <select
+                value={addForm.ctaLink || "/contact"}
+                onChange={(e) => setAddForm((f) => ({ ...f, ctaLink: e.target.value }))}
+                className="w-full border px-3 py-2 rounded"
+              >
+                {CTA_LINK_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
             <input
               value={addForm.imageUrl}
               onChange={(e) => setAddForm((f) => ({ ...f, imageUrl: e.target.value }))}
@@ -147,6 +172,7 @@ export default function BannersPage() {
                       title: addForm.title,
                       subtitle: addForm.subtitle,
                       ctaText: addForm.ctaText,
+                      ctaLink: addForm.ctaLink || '/contact',
                       status: addForm.status,
                       imageUrl: imageUrl,
                     };
@@ -159,7 +185,7 @@ export default function BannersPage() {
                     if (!res.ok) throw new Error('Failed to create banner');
                     const json = await res.json();
                     setBanners((prev) => [{ _id: json.id, ...payload, createdAt: new Date().toISOString() }, ...prev]);
-                    setAddForm({ title: '', subtitle: '', ctaText: '', status: 'Inactive', file: null, imageUrl: '' });
+                    setAddForm({ title: '', subtitle: '', ctaText: '', ctaLink: '/contact', status: 'Inactive', file: null, imageUrl: '' });
                   } catch (err) {
                     alert('Failed to add banner: ' + ((err as Error).message || ''));
                   } finally {
@@ -171,7 +197,7 @@ export default function BannersPage() {
               </button>
               <button
                 className="bg-slate-100 px-4 py-2 rounded"
-                onClick={() => setAddForm({ title: '', subtitle: '', ctaText: '', status: 'Inactive', file: null, imageUrl: '' })}
+                onClick={() => setAddForm({ title: '', subtitle: '', ctaText: '', ctaLink: '/contact', status: 'Inactive', file: null, imageUrl: '' })}
               >
                 Reset
               </button>
@@ -218,6 +244,7 @@ export default function BannersPage() {
                           title: b.title,
                           subtitle: b.subtitle,
                           ctaText: b.ctaText,
+                          ctaLink: b.ctaLink || '/contact',
                           status: b.status,
                           imageUrl: b.imageUrl,
                         });
@@ -272,6 +299,20 @@ export default function BannersPage() {
                         className="w-full border px-3 py-2 rounded"
                         placeholder="CTA Text"
                       />
+                      <div>
+                        <label className="mb-1 block text-sm text-slate-600">CTA Redirect Page</label>
+                        <select
+                          value={form.ctaLink || '/contact'}
+                          onChange={(e) => setForm((f) => ({ ...f, ctaLink: e.target.value }))}
+                          className="w-full border px-3 py-2 rounded"
+                        >
+                          {CTA_LINK_OPTIONS.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                       <input
                         value={form.imageUrl || ''}
                         onChange={(e) => setForm((f) => ({ ...f, imageUrl: e.target.value }))}
@@ -326,6 +367,12 @@ export default function BannersPage() {
                     <>
                       <h3 className="font-semibold text-lg">{b.title}</h3>
                       {b.subtitle && <p className="text-sm text-slate-600 mt-1">{b.subtitle}</p>}
+                      {b.ctaText ? (
+                        <p className="mt-2 text-xs text-slate-600">
+                          CTA: <span className="font-medium">{b.ctaText}</span>{" -> "}
+                          <span className="font-medium text-primary">{b.ctaLink || "/contact"}</span>
+                        </p>
+                      ) : null}
                       <div className="mt-3 flex items-center justify-between text-sm text-slate-500">
                         <span>Status: {b.status ? b.status : 'Unknown'}</span>
                         <span>{b.createdAt ? new Date(b.createdAt).toLocaleDateString() : ''}</span>

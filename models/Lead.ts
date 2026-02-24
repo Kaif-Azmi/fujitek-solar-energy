@@ -1,15 +1,20 @@
 import mongoose, { Schema, type HydratedDocument, type Model } from "mongoose";
+import type { ConversationStage } from "@/lib/chat-funnel";
 
 export type LeadPropertyType = "owned" | "rented";
 export type LeadInstallationTimeline = "immediate" | "3months" | "exploring";
 export type LeadCategory = "high" | "medium" | "low";
-export type LeadStatus = "new" | "contacted" | "closed";
+export type LeadStatus = "new" | "contacted" | "converted" | "lost";
+export type LeadSource = "ai_assistant" | "contact_form";
 
 export interface Lead {
   name: string;
   phone: string;
+  state?: string;
   city?: string;
+  email?: string;
   monthlyBill?: number;
+  segment?: "residential" | "commercial";
   propertyType?: LeadPropertyType;
   installationTimeline?: LeadInstallationTimeline;
   systemSizeKW?: number;
@@ -22,8 +27,11 @@ export interface Lead {
   score: number;
   category: LeadCategory;
   conversationSummary?: string;
-  source: string;
+  stage?: ConversationStage;
+  source: LeadSource;
   status: LeadStatus;
+  interactionCount: number;
+  lastInteractionAt: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,8 +43,15 @@ const leadSchema = new Schema<Lead, LeadModelType>(
   {
     name: { type: String, required: true },
     phone: { type: String, required: true },
+    state: { type: String, required: false },
     city: { type: String, required: false },
+    email: { type: String, required: false },
     monthlyBill: { type: Number, required: false, min: 0 },
+    segment: {
+      type: String,
+      required: false,
+      enum: ["residential", "commercial"],
+    },
     propertyType: {
       type: String,
       required: false,
@@ -61,20 +76,29 @@ const leadSchema = new Schema<Lead, LeadModelType>(
       enum: ["high", "medium", "low"],
     },
     conversationSummary: { type: String, required: false },
-    source: { type: String, required: true, default: "ai_assistant" },
+    stage: { type: String, required: false },
+    source: {
+      type: String,
+      required: true,
+      enum: ["ai_assistant", "contact_form"],
+      default: "ai_assistant",
+    },
     status: {
       type: String,
       required: true,
-      enum: ["new", "contacted", "closed"],
+      enum: ["new", "contacted", "converted", "lost"],
       default: "new",
     },
+    interactionCount: { type: Number, required: true, min: 1, default: 1 },
+    lastInteractionAt: { type: Date, required: true, default: () => new Date() },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const LeadModel =
   (mongoose.models.Lead as LeadModelType | undefined) || mongoose.model<Lead, LeadModelType>("Lead", leadSchema);
 
 export default LeadModel;
+
