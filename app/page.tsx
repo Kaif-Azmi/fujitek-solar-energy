@@ -63,115 +63,129 @@ async function getHomeBanners(): Promise<HomeBanner[]> {
 
 export default async function Home() {
   const banners = await getHomeBanners();
+
   return (
     <div className="w-full">
-      <h1 className="sr-only">Solar &amp; Inverter Solutions for Homes and Businesses</h1>
+      <h1 className="sr-only">
+        Solar Inverter, EV Charger & Renewable Energy Equipment Manufacturer in India
+      </h1>
+
       <ScrollReveal>
         <BannerHero initialBanners={banners} />
       </ScrollReveal>
 
       {/* WHY CHOOSE US */}
       <ScrollReveal>
-        <section className="bg-surface-elevated" aria-label="Why choose us">
+        <section className="bg-surface-elevated" aria-label="Why choose Fujitek Solar">
           <WhyChooseUs />
         </section>
       </ScrollReveal>
 
       {/* PRODUCTS */}
       <ScrollReveal delay={0.04}>
-        <section className="bg-surface" aria-label="Products">
+        <section className="bg-surface" aria-label="Solar Products">
           <ProductsPreview
             products={[
               {
                 name: "Solar Panels",
                 description:
-                  "High-efficiency panels for residential and commercial use.",
+                  "High-efficiency solar panels engineered for long-term durability and consistent energy generation.",
               },
               {
-                name: "Inverters",
+                name: "On-Grid, Off-Grid & Hybrid Inverters",
                 description:
-                  "Reliable inverters designed for stable power conversion.",
+                  "Advanced inverter technology designed for Indian grid conditions and voltage stability.",
               },
               {
-                name: "Batteries",
+                name: "Batteries & Charge Controllers",
                 description:
-                  "Advanced energy storage for uninterrupted power supply.",
+                  "Reliable energy storage and smart PWM charge controllers for optimized system performance.",
+              },
+              {
+                name: "EV Chargers",
+                description:
+                  "Lithium e-rickshaw chargers and electric scooty chargers built for safe and efficient mobility charging.",
               },
             ]}
           />
         </section>
       </ScrollReveal>
 
-        {/* {Benefits of solar} */}
+      {/* SOLAR BENEFITS */}
       <ScrollReveal delay={0.06}>
-        <section className="bg-surface-elevated" aria-label="Solar Benefits">
+        <section className="bg-surface-elevated" aria-label="Benefits of Solar Equipment">
           <SolarBenefits />
         </section>
       </ScrollReveal>
 
-      {/* SERVICES */}
+      {/* SERVICES → Convert to PRODUCT SUPPORT POSITIONING */}
       <ScrollReveal delay={0.08}>
-        <section className="bg-surface" aria-label="Services">
+        <section className="bg-surface" aria-label="Product Support">
           <ServicesPreview
             services={[
               {
-                title: "Solar Installation",
+                title: "Bulk Supply & Dealership",
                 description:
-                  "Professional installation with expert engineering support.",
+                  "Manufacturer-direct supply for distributors, dealers, and institutional buyers.",
               },
               {
-                title: "Energy Consultation",
+                title: "OEM Solutions",
                 description:
-                  "System sizing and efficiency planning for maximum ROI.",
+                  "Low-cost smart PWM charge controllers and custom power electronics for OEM partners.",
               },
               {
-                title: "Custom System Design",
+                title: "Technical Product Guidance",
                 description:
-                  "Tailored solar and inverter solutions for every need.",
+                  "Capacity planning and inverter selection support based on electrical requirements.",
               },
               {
-                title: "Maintenance & Support",
-                description: "Ongoing maintenance and warranty-backed support.",
+                title: "After-Sales Assistance",
+                description:
+                  "Warranty-backed product support with responsive technical communication.",
               },
               {
-                title: "Performance Monitoring",
-                description: "Real-time system monitoring and analytics.",
+                title: "EV Charging Hardware",
+                description:
+                  "Reliable chargers for electric rickshaws and electric scooters.",
               },
               {
-                title: "24/7 Technical Support",
-                description: "Always-on support for troubleshooting and service.",
+                title: "Pan-India Distribution",
+                description:
+                  "Scalable supply capability across India with structured dealer network.",
               },
             ]}
           />
         </section>
       </ScrollReveal>
 
-      {/* PROJECTS */}
+      {/* PROJECTS → Convert to DEPLOYMENTS / APPLICATIONS */}
       <ScrollReveal delay={0.1}>
-        <section className="bg-surface-elevated" aria-label="Projects">
+        <section className="bg-surface-elevated" aria-label="Applications">
           <ProjectsPreview
             projects={[
               {
-                title: "Rooftop Solar – Delhi",
-                description: "Residential rooftop solar installation.",
-              },
-              {
-                title: "Commercial Solar – Noida",
-                description: "Large-scale commercial solar project.",
-              },
-              {
-                title: "Community Center – Gurgaon",
+                title: "Residential Energy Systems",
                 description:
-                  "Sustainable energy solution for public infrastructure.",
+                  "Solar inverters and batteries powering homes across India.",
+              },
+              {
+                title: "Commercial Power Backup",
+                description:
+                  "Hybrid inverter systems supporting commercial load stability.",
+              },
+              {
+                title: "Electric Mobility Charging",
+                description:
+                  "EV chargers supplied for e-rickshaw and electric scooter markets.",
               },
             ]}
           />
         </section>
       </ScrollReveal>
 
-      {/*Infinite marquee*/}
+      {/* INFINITE MARQUEE */}
       <ScrollReveal delay={0.12}>
-        <section className="bg-surface" aria-label="Services strip">
+        <section className="bg-surface" aria-label="Product categories strip">
           <InfiniteServicesMarquee />
         </section>
       </ScrollReveal>
@@ -186,9 +200,9 @@ export default async function Home() {
       {/* FINAL CTA */}
       <ScrollReveal delay={0.16}>
         <FinalCTA
-          heading="Ready to Go Solar?"
-          supportingText="Talk to our experts and start your solar journey today."
-          ctaLabel="Contact Us"
+          heading="Looking for Reliable Solar & EV Hardware?"
+          supportingText="Connect with Fujitek Solar Energy for bulk supply, dealership opportunities, and product inquiries."
+          ctaLabel="Contact Sales"
         />
       </ScrollReveal>
     </div>

@@ -29,31 +29,31 @@ export const metadata: Metadata = buildPageMetadata(pageSeo.about);
 const JOURNEY = [
   {
     year: "2015",
-    title: "Foundational Roots",
+    title: "Foundation",
     icon: Leaf,
     description:
-      "We began with a vision to empower rural India through affordable and sustainable solar-powered agricultural solutions.",
+      "Fujitek Solar Energy was established with a focus on manufacturing reliable renewable energy power electronics for Indian conditions.",
   },
   {
     year: "2017",
-    title: "Building Credibility",
+    title: "Product Development",
     icon: Handshake,
     description:
-      "Through consistent performance and service excellence, we earned trust across diverse regions and communities.",
+      "Expanded our inverter portfolio to include on-grid, off-grid, and hybrid systems designed for voltage stability and operational durability.",
   },
   {
     year: "2021",
-    title: "Strategic Partnerships",
+    title: "EV Charging Expansion",
     icon: TrendingUp,
     description:
-      "Collaborations with initiatives like MSKVY and PM Suryaghar Yojana helped accelerate solar adoption at scale.",
+      "Introduced lithium e-rickshaw chargers and electric scooty chargers to support India's electric mobility growth.",
   },
   {
     year: "2023",
-    title: "Technological Evolution",
+    title: "Dealer & OEM Network",
     icon: Rocket,
     description:
-      "Advanced monitoring systems, intelligent energy solutions, and optimized infrastructure defined this phase.",
+      "Strengthened pan-India dealer partnerships and bulk supply capability for distributors and institutional buyers.",
   },
 ];
 
@@ -62,20 +62,20 @@ export default function About() {
     {
       value: 500,
       suffix: "+",
-      label: "Projects Completed",
-      detail: "Across residential, commercial, and institutional sites.",
+      label: "Units & Systems Supplied",
+      detail: "Delivered across residential, commercial, and institutional energy applications.",
     },
     {
       value: 10,
       suffix: "K+",
-      label: "Happy Customers",
-      detail: "Supported by responsive service and long-term maintenance.",
+      label: "Customers & Dealers",
+      detail: "Supported through structured supply and technical product guidance.",
     },
     {
       value: 5,
       suffix: "MWh",
-      label: "Energy Generated",
-      detail: "Clean energy output enabled through reliable solar systems.",
+      label: "Energy Enabled",
+      detail: "Clean energy output supported through reliable hardware solutions.",
     },
   ];
 
@@ -83,28 +83,28 @@ export default function About() {
     {
       icon: Leaf,
       title: "Sustainability",
-      description: "Committed to environmental protection",
+      description: "Engineering products that enable cleaner and smarter energy adoption.",
       iconClass: "bg-primary/12 text-primary",
       surfaceClass: "from-primary/10 via-transparent to-transparent",
     },
     {
       icon: Star,
-      title: "Quality",
-      description: "Best materials and workmanship",
+      title: "Engineering Quality",
+      description: "Durable hardware built for Indian voltage and climate conditions.",
       iconClass: "bg-accent/18 text-primary",
       surfaceClass: "from-accent/25 via-transparent to-transparent",
     },
     {
       icon: Handshake,
-      title: "Integrity",
-      description: "Transparent and honest dealings",
+      title: "Trust & Transparency",
+      description: "Clear specifications and dependable dealer partnerships.",
       iconClass: "bg-navy/12 text-primary",
       surfaceClass: "from-navy/10 via-transparent to-transparent",
     },
     {
       icon: Rocket,
       title: "Innovation",
-      description: "Latest technology and solutions",
+      description: "Continuous improvement in power electronics and EV charging systems.",
       iconClass: "bg-primary/10 text-primary",
       surfaceClass: "from-primary/20 via-transparent to-transparent",
     },
@@ -115,15 +115,15 @@ export default function About() {
       <HeroSection
         badge="ABOUT US"
         title="About Fujitek Solar Energy"
-        highlight="Driven by Clean Energy Innovation"
-        description="Driving India’s transition to sustainable and intelligent solar energy solutions."
+        highlight="Powering India with Reliable Energy Hardware"
+        description="Manufacturer of solar inverters, EV chargers, smart charge controllers, and renewable energy power electronics."
       />
 
       <section className="relative overflow-hidden">
         <InfiniteGrid className="z-0 opacity-30" />
         <div className="relative z-10 mx-auto max-w-6xl px-6 py-section">
 
-        {/* ================= EXECUTION ASSURANCE ================= */}
+        {/* ================= COMPANY PROFILE ================= */}
         <section className="mb-section rounded-[28px] border border-border/70 bg-background px-6 py-8 shadow-sm lg:py-10">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
             <ScrollReveal className="lg:self-center">
@@ -131,7 +131,7 @@ export default function About() {
                 <div className="relative aspect-[1/1] overflow-hidden rounded-[18px]">
                   <Image
                     src="/solar_engineer.webp"
-                    alt="Fujitek engineering team reviewing rooftop solar execution plan"
+                    alt="Fujitek Solar engineering and manufacturing operations"
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) calc(100vw - 3rem), 560px"
@@ -140,67 +140,39 @@ export default function About() {
                 </div>
 
                 <Link
-                  href="/service"
-                  aria-label="Go to services page"
+                  href="/products"
+                  aria-label="Go to products page"
                   className="group absolute -bottom-5 -right-5 flex h-24 w-24 items-center justify-center rounded-full border-4 border-background bg-primary text-white shadow-lg transition-all duration-500 ease-out hover:scale-[1.06] hover:shadow-xl lg:h-28 lg:w-28"
                 >
                   <div className="absolute inset-0 rounded-full border border-white/35" />
-                  <div className="relative z-10 h-[84%] w-[84%] animate-[spin_12s_linear_infinite] transition-transform duration-500 ease-out group-hover:scale-[1.03]">
-                    <svg viewBox="0 0 100 100" className="h-full w-full">
-                      <defs>
-                        <path
-                          id="services-ring"
-                          d="M 50,50 m -34,0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0"
-                        />
-                      </defs>
-                      <text
-                        className="fill-white/90 text-[8px] font-semibold tracking-[3px]"
-                        dominantBaseline="middle"
-                      >
-                        <textPath href="#services-ring" startOffset="0%">
-                          SERVICES • SERVICES • SERVICES •
-                        </textPath>
-                      </text>
-                    </svg>
-                  </div>
-
-                  <div className="absolute inset-0 z-20 flex items-center justify-center">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent shadow-inner transition-all duration-500 ease-out group-hover:scale-105 group-hover:shadow-md lg:h-10 lg:w-10">
-                      <span
-                        className="ml-0.5 block h-0 w-0 border-y-[6px] border-y-transparent border-l-[10px] border-l-primary lg:border-y-[7px] lg:border-l-[11px]"
-                        aria-hidden="true"
-                      />
-                    </div>
+                  <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-accent shadow-inner">
+                    <span
+                      className="ml-0.5 block h-0 w-0 border-y-[6px] border-y-transparent border-l-[10px] border-l-primary"
+                      aria-hidden="true"
+                    />
                   </div>
                 </Link>
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={0.08}>
-              <div className="pt-1 lg:pt-0">
+              <div>
                 <span className="inline-flex rounded-full border border-primary/45 px-6 py-2 text-sm font-medium text-primary">
                   Who we are
                 </span>
 
-                <h2 className="mt-5 max-w-2xl text-[32px] font-semibold leading-[1.18] tracking-[-0.015em] text-foreground lg:text-[42px]">
-                  Fujitek Solar Energy is a process-driven{" "}
-                  <span className="highlight text-primary">solar EPC partner</span> for
-                  dependable long-term energy infrastructure.
+                <h2 className="mt-5 max-w-2xl text-[32px] font-semibold leading-[1.18] text-foreground lg:text-[42px]">
+                  Fujitek Solar Energy is an engineering-led{" "}
+                  <span className="highlight text-primary">power electronics manufacturer</span>{" "}
+                  focused on renewable energy and EV charging hardware.
                 </h2>
 
                 <p className="mt-5 max-w-2xl text-[16px] leading-7 text-secondary">
-                  We manage the full project lifecycle under one accountable team:
-                  technical assessment, system engineering, procurement,
-                  installation, commissioning, and post-installation support. This
-                  integrated model keeps delivery timelines clear and quality
-                  standards consistent.
+                  We design and manufacture solar inverters, EV chargers, lithium vehicle chargers, and smart PWM charge controllers built for Indian operating conditions and long-term electrical stability.
                 </p>
 
                 <p className="mt-4 max-w-2xl text-[16px] leading-7 text-secondary">
-                  From homes and commercial buildings to industrial facilities, we
-                  align every solution to site conditions, operating load, and
-                  compliance needs. The result is reliable system performance and a
-                  service relationship built for continuity.
+                  Our products are supplied to dealers, distributors, OEM partners, and institutional buyers with a focus on performance reliability and scalable supply capability.
                 </p>
               </div>
             </ScrollReveal>
@@ -215,50 +187,41 @@ export default function About() {
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
                   Mission & Vision
                 </p>
-                <h2 className="mt-4 text-[32px] font-semibold leading-[1.16] tracking-[-0.02em] text-foreground lg:text-[44px]">
-                  We deliver pragmatic,{" "}
-                  <span className="highlight text-primary">forward-thinking solutions</span>{" "}
-                  built for India&apos;s evolving energy needs.
+                <h2 className="mt-4 text-[32px] font-semibold leading-[1.16] text-foreground lg:text-[44px]">
+                  Reliable engineering,{" "}
+                  <span className="highlight text-primary">scalable manufacturing</span>{" "}
+                  for India’s growing energy demand.
                 </h2>
                 <p className="mt-5 max-w-[24rem] text-[16px] leading-7 text-secondary">
-                  Fujitek Solar Energy provides process-led solar EPC services for
-                  residential, commercial, and industrial projects across India.
+                  Fujitek Solar Energy manufactures dependable solar and EV power electronics solutions for long-term performance.
                 </p>
               </div>
             </ScrollReveal>
 
-            <div className="grid max-w-[920px] grid-cols-1 items-start gap-6 lg:self-start xl:grid-cols-2">
+            <div className="grid max-w-[920px] grid-cols-1 gap-6 xl:grid-cols-2">
               <ScrollReveal delay={0.06}>
-                <article className="relative mx-auto min-h-[280px] w-full max-w-[430px] overflow-hidden rounded-[28px] border border-primary/40 bg-primary p-7 text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg lg:p-8">
-                  <div className="pointer-events-none absolute right-0 top-0 z-10 h-24 w-24 rounded-bl-[28px] bg-surface lg:h-28 lg:w-28" />
-
-                  <div className="inline-flex rounded-full bg-white/18 px-5 py-2 text-base font-medium text-white backdrop-blur-sm">
+                <article className="relative mx-auto min-h-[280px] w-full max-w-[430px] overflow-hidden rounded-[28px] border border-primary/40 bg-primary p-7 text-white shadow-md">
+                  <div className="inline-flex rounded-full bg-white/18 px-5 py-2 text-base font-medium text-white">
                     Our Mission
                   </div>
-                  <p className="relative z-10 mt-6 max-w-md pr-10 text-[16px] font-medium leading-7 text-white/95 lg:pr-12">
-                    Deliver reliable solar EPC solutions that improve energy
-                    efficiency, reduce operating costs, and ensure long-term system
-                    performance.
+                  <p className="mt-6 text-[16px] leading-7 text-white/95">
+                    Deliver high-performance power electronics that strengthen renewable energy and electric mobility infrastructure.
                   </p>
-
-                  <div className="absolute right-2 top-2 z-20 flex h-20 w-20 items-center justify-center rounded-3xl bg-accent/25 text-accent shadow-sm lg:h-24 lg:w-24">
-                    <Target className="h-9 w-9 lg:h-10 lg:w-10" />
+                  <div className="absolute right-2 top-2 flex h-20 w-20 items-center justify-center rounded-3xl bg-accent/25 text-accent">
+                    <Target className="h-9 w-9" />
                   </div>
                 </article>
               </ScrollReveal>
 
               <ScrollReveal delay={0.12}>
-                <article className="relative mx-auto min-h-[280px] w-full max-w-[430px] overflow-hidden rounded-[28px] border border-border/70 bg-background p-7 text-foreground shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md lg:p-8">
+                <article className="relative mx-auto min-h-[280px] w-full max-w-[430px] overflow-hidden rounded-[28px] border border-border/70 bg-background p-7 shadow-sm">
                   <div className="inline-flex rounded-full bg-primary/10 px-5 py-2 text-base font-medium text-primary">
                     Our Vision
                   </div>
-                  <p className="mt-6 max-w-md text-[16px] font-medium leading-7 text-secondary">
-                    Accelerate India&apos;s clean energy transition through dependable
-                    solar infrastructure for homes, commercial properties, and
-                    industrial facilities.
+                  <p className="mt-6 text-[16px] leading-7 text-secondary">
+                    Become a trusted national brand in solar and EV power electronics manufacturing through innovation, quality standards, and strong dealer partnerships.
                   </p>
-
-                  <div className="absolute -right-3 -top-3 flex h-20 w-20 items-center justify-center rounded-3xl bg-accent/25 text-accent shadow-sm lg:h-24 lg:w-24">
+                  <div className="absolute -right-3 -top-3 flex h-20 w-20 items-center justify-center rounded-3xl bg-accent/25 text-accent">
                     <Lightbulb className="h-9 w-9" />
                   </div>
                 </article>
@@ -266,8 +229,7 @@ export default function About() {
             </div>
           </div>
         </section>
-
-        {/* ================= JOURNEY ================= */}
+                {/* ================= JOURNEY ================= */}
         <section className="mb-section relative">
           <h2 className="mb-14 text-center text-3xl text-strong text-foreground">
             <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
@@ -282,6 +244,7 @@ export default function About() {
               {JOURNEY.map((item, index) => {
                 const Icon = item.icon;
                 const isLeft = index % 2 === 0;
+
                 const journeyCard = (
                   <Card
                     className={`
@@ -308,10 +271,7 @@ export default function About() {
                 );
 
                 return (
-                  <div
-                    key={item.year}
-                    className="relative pl-12 md:pl-0"
-                  >
+                  <div key={item.year} className="relative pl-12 md:pl-0">
                     <div className="absolute left-0 top-6 flex md:hidden">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-background ring-2 ring-primary/30 shadow-md">
                         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white">
@@ -321,11 +281,7 @@ export default function About() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto_1fr] md:items-start md:gap-6">
-                      <div
-                        className={
-                          isLeft ? "md:pr-6 md:text-right" : "hidden md:block"
-                        }
-                      >
+                      <div className={isLeft ? "md:pr-6 md:text-right" : "hidden md:block"}>
                         {isLeft ? journeyCard : null}
                       </div>
 
@@ -357,74 +313,72 @@ export default function About() {
             <h2 className="mt-3 text-3xl text-strong text-foreground">
               Real-World{" "}
               <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
-                Solar Outcomes
+                Energy Impact
               </Highlighter>
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-secondary">
-              Tangible delivery outcomes from residential and commercial solar execution.
+              Measurable contribution to India’s renewable energy ecosystem through reliable hardware solutions.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
             <ScrollReveal delay={0.05} className="lg:col-span-6 lg:row-span-2">
-            <Card className="group relative h-full min-h-[280px] overflow-hidden border-primary/35 bg-primary transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/35 via-primary/15 to-accent/10" />
-              <CardContent className="relative flex h-full flex-col justify-between p-7 sm:p-8">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
-                    {stats[0].label}
-                  </p>
-                  <p className="mt-4 text-5xl font-extrabold leading-none text-accent sm:text-6xl">
-                    <NumberTicker value={stats[0].value} className="text-accent dark:text-accent" />
-                    <span>{stats[0].suffix}</span>
-                  </p>
-                  <p className="mt-3 max-w-sm text-sm text-white/80">
-                    Proven deployment across multi-site installations.
-                  </p>
-                </div>
-                <div className="border-t border-white/15 pt-4">
-                  <p className="max-w-sm text-sm leading-relaxed text-white/90">
-                    {stats[0].detail}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+              <Card className="group relative h-full min-h-[280px] overflow-hidden border-primary/35 bg-primary transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/35 via-primary/15 to-accent/10" />
+                <CardContent className="relative flex h-full flex-col justify-between p-7 sm:p-8">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
+                      {stats[0].label}
+                    </p>
+                    <p className="mt-4 text-5xl font-extrabold leading-none text-accent sm:text-6xl">
+                      <NumberTicker value={stats[0].value} />
+                      <span>{stats[0].suffix}</span>
+                    </p>
+                    <p className="mt-3 max-w-sm text-sm text-white/80">
+                      Trusted hardware supply across diverse renewable energy applications.
+                    </p>
+                  </div>
+                  <div className="border-t border-white/15 pt-4">
+                    <p className="max-w-sm text-sm leading-relaxed text-white/90">
+                      {stats[0].detail}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </ScrollReveal>
 
             <ScrollReveal delay={0.12} className="lg:col-span-6">
-            <Card className="group relative h-full min-h-[132px] overflow-hidden border-primary/25 bg-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-primary/40" />
-              <CardContent className="relative p-6 sm:p-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                  {stats[1].label}
-                </p>
-                <p className="mt-2 text-4xl font-extrabold leading-none text-primary">
-                  <NumberTicker value={stats[1].value} className="text-primary dark:text-primary" />
-                  <span>{stats[1].suffix}</span>
-                </p>
-                <p className="mt-2.5 text-sm leading-relaxed text-primary/80">
-                  {stats[1].detail}
-                </p>
-              </CardContent>
-            </Card>
+              <Card className="group relative h-full min-h-[132px] overflow-hidden border-primary/25 bg-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                <CardContent className="relative p-6 sm:p-7">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+                    {stats[1].label}
+                  </p>
+                  <p className="mt-2 text-4xl font-extrabold leading-none text-primary">
+                    <NumberTicker value={stats[1].value} />
+                    <span>{stats[1].suffix}</span>
+                  </p>
+                  <p className="mt-2.5 text-sm leading-relaxed text-primary/80">
+                    {stats[1].detail}
+                  </p>
+                </CardContent>
+              </Card>
             </ScrollReveal>
 
             <ScrollReveal delay={0.18} className="lg:col-span-6">
-            <Card className="group relative h-full min-h-[132px] overflow-hidden border-accent/35 bg-accent/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg lg:col-span-6">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-accent/60" />
-              <CardContent className="relative p-6 sm:p-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                  {stats[2].label}
-                </p>
-                <p className="mt-2 text-4xl font-extrabold leading-none text-primary">
-                  <NumberTicker value={stats[2].value} className="text-primary dark:text-primary" />
-                  <span className="ml-1">{stats[2].suffix}</span>
-                </p>
-                <p className="mt-2.5 text-sm leading-relaxed text-primary/80">
-                  {stats[2].detail}
-                </p>
-              </CardContent>
-            </Card>
+              <Card className="group relative h-full min-h-[132px] overflow-hidden border-accent/35 bg-accent/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                <CardContent className="relative p-6 sm:p-7 ">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+                    {stats[2].label}
+                  </p>
+                  <p className="mt-2 text-4xl font-extrabold leading-none text-primary">
+                    <NumberTicker value={stats[2].value} />
+                    <span className="ml-1">{stats[2].suffix}</span>
+                  </p>
+                  <p className="mt-2.5 text-sm leading-relaxed text-primary/80">
+                    {stats[2].detail}
+                  </p>
+                </CardContent>
+              </Card>
             </ScrollReveal>
           </div>
         </section>
@@ -439,7 +393,7 @@ export default function About() {
               </Highlighter>
             </h2>
             <p className="mt-3 text-base leading-relaxed text-secondary">
-              The principles that define how we design, deliver, and support every solar project.
+              The principles guiding our engineering, manufacturing standards, and long-term partnerships.
             </p>
           </div>
 
@@ -464,21 +418,18 @@ export default function About() {
         </section>
 
         </div>
-      <ScrollReveal delay={0.12}>
-        <FinalCTA
-          heading="Join the Solar Revolution"
-          supportingText="Let’s build a cleaner, smarter, and more sustainable future together with reliable solar systems and expert support."
-          ctaLabel="Get Started"
-          ctaHref="/contact"
-          ariaLabel="About page call to action"
-        />
-      </ScrollReveal>
-      </section>
 
+        <ScrollReveal delay={0.12}>
+          <FinalCTA
+            heading="Partner with Fujitek Solar Energy"
+            supportingText="Reliable solar inverters, EV chargers, and renewable energy power electronics built for performance and scale."
+            ctaLabel="Contact Sales"
+            ctaHref="/contact"
+            ariaLabel="About page call to action"
+          />
+        </ScrollReveal>
+
+      </section>
     </div>
   );
 }
-
-
-
-

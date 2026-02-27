@@ -9,34 +9,34 @@ interface FaqItem {
 
 const FAQS: FaqItem[] = [
   {
-    question: "What types of inverters does Fujitek offer?",
+    question: "What types of inverters does Fujitek manufacture?",
     answer:
-      "We provide string and hybrid inverters engineered for residential, commercial, and industrial solar installations, optimised for Indian grid conditions.",
+      "We manufacture on-grid, off-grid, and hybrid solar inverters engineered for stable power conversion under Indian grid conditions.",
   },
   {
-    question: "Do you provide installation and commissioning?",
+    question: "Do you provide installation services?",
     answer:
-      "Yes. Fujitek offers complete lifecycle support including site survey, installation, commissioning, and performance optimisation.",
+      "Fujitek Solar Energy focuses on manufacturing and product supply. Installation is handled by authorized dealers or third-party system integrators.",
   },
   {
-    question: "What warranties do you offer?",
+    question: "What warranties do your products include?",
     answer:
-      "All products include manufacturer warranties, supported by our dedicated after-sales and service network.",
+      "All Fujitek products are backed by manufacturer warranties along with structured after-sales technical support.",
   },
   {
-    question: "Can I monitor system performance remotely?",
+    question: "Do your inverters support remote monitoring?",
     answer:
-      "Most Fujitek inverters support real-time remote monitoring, analytics, and system health insights.",
+      "Selected inverter models support real-time monitoring and system diagnostics depending on configuration.",
   },
   {
-    question: "How fast is after-sales support?",
+    question: "Do you supply products in bulk?",
     answer:
-      "We maintain a strong national service network with prioritised response for critical issues.",
+      "Yes. We supply solar inverters, EV chargers, batteries, and charge controllers to dealers, distributors, and institutional buyers across India.",
   },
   {
-    question: "Do you handle industrial-scale projects?",
+    question: "What EV charging products do you offer?",
     answer:
-      "Yes. We design and execute scalable solar and inverter systems for large commercial and industrial facilities.",
+      "We manufacture lithium e-rickshaw chargers and electric scooty chargers designed for safe and efficient electric mobility charging.",
   },
 ];
 
@@ -47,37 +47,43 @@ export default function FaqSection() {
         <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-5">
           {/* ================= LEFT — FAQ ================= */}
           <div className="md:col-span-3">
-            {/* Section Header */}
             <SectionHeader
               badge="FAQs"
               title={
-                <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
-                  Frequently Asked Questions About Solar and Inverter Services
+                <Highlighter
+                  action="underline"
+                  color="var(--accent)"
+                  strokeWidth={2}
+                  animationDuration={700}
+                  iterations={1}
+                >
+                  Frequently Asked Questions About Our Solar & EV Products
                 </Highlighter>
               }
-              description="Clear answers to help you understand our solar and inverter solutions with confidence."
+              description="Clear answers about our solar inverters, EV chargers, batteries, and renewable energy hardware."
               className="mb-12"
               badgeClassName="text-sm font-medium normal-case tracking-normal"
               titleClassName="md:text-4xl text-strong"
             />
 
-            <FaqAccordion items={FAQS} className="max-w-3xl" singleOpen defaultOpenIndex={0} />
+            <FaqAccordion
+              items={FAQS}
+              className="max-w-3xl"
+              singleOpen
+              defaultOpenIndex={0}
+            />
           </div>
 
-          {/* ================= RIGHT — SUPPORT ================= */}
-          <div className="md:col-span-2">
-            <Card className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-primary/5 shadow-[0_22px_46px_rgba(29,92,156,0.14)]">
-              <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-primary/15 blur-2xl" />
-              <div className="pointer-events-none absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-accent/20 blur-3xl" />
-
-              <CardContent className="relative z-10 flex flex-col items-center p-8 text-center sm:p-10">
-                {/* Icon */}
+          {/* ================= RIGHT — SUPPORT CARD ================= */}
+          <div className="md:col-span-2 flex">
+            <Card className="flex w-full items-center justify-center rounded-3xl border border-primary/20 bg-primary shadow-lg">
+              <CardContent className="flex w-full flex-col items-center justify-center p-8 text-center sm:p-10">
                 <div
                   className="
                     mb-6 flex h-16 w-16 items-center justify-center
                     rounded-full
-                    border border-primary/20
-                    bg-background text-primary
+                    border border-white/20
+                    bg-white/10 text-white
                     shadow-sm
                   "
                 >
@@ -96,29 +102,27 @@ export default function FaqSection() {
                   </svg>
                 </div>
 
-                <h3 className="text-3xl font-bold tracking-tight text-foreground">
+                <h3 className="text-3xl font-bold tracking-tight text-white">
                   Still need clarity?
                 </h3>
 
-                <p className="mt-4 max-w-sm text-base leading-relaxed text-secondary">
-                  Our experts will help you choose the right solar and inverter
-                  solution for your needs.
+                <p className="mt-4 max-w-sm text-base leading-relaxed text-white/85">
+                  Connect with our team for inverter selection, EV charger details,
+                  bulk supply inquiries, and dealership opportunities.
                 </p>
 
-                <div className="mt-8 w-full max-w-sm">
-                  <Button asChild variant="explore" size="lg" className="w-full justify-center">
-                    <Link href="/contact">
-                      Talk to an Expert
-                    </Link>
+                <div className="mt-8">
+                  <Button asChild variant="exploreInverse" size="lg">
+                    <Link href="/contact">Contact Sales</Link>
                   </Button>
                 </div>
 
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-muted">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/80 px-2.5 py-1">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-white/80">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
                     Monday–Saturday
                   </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/80 px-2.5 py-1">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
                     Response within 24–48 hours
                   </span>
@@ -131,4 +135,3 @@ export default function FaqSection() {
     </section>
   );
 }
-

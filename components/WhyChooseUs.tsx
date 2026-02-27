@@ -1,14 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Lightning,
-  Wrench,
-  Handshake,
-} from "./ui";
+import { Lightning, Wrench, Handshake } from "./ui";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
 
@@ -23,30 +15,35 @@ interface WhyChooseUsProps {
 
 const DEFAULT_REASONS: Reason[] = [
   {
-    title: "Advanced Inverter Technology",
+    title: "Advanced Power Electronics Engineering",
     description:
-      "High-efficiency solar inverters engineered for Indian grid conditions, voltage fluctuations, and long operational life.",
+      "Our on-grid, off-grid, and hybrid solar inverters are engineered for high conversion efficiency, voltage stability, and long operational life under Indian grid conditions.",
   },
   {
-    title: "End-to-End Service Support",
+    title: "Integrated Solar & EV Product Portfolio",
     description:
-      "From system design and installation to commissioning, monitoring, and maintenance — we handle it all.",
+      "We manufacture solar panels, batteries, smart PWM charge controllers, and EV chargers — delivering a complete renewable energy hardware ecosystem.",
   },
   {
-    title: "Proven Industry Experience",
+    title: "OEM & Bulk Supply Capability",
     description:
-      "Years of on-ground experience delivering reliable solar and inverter solutions for residential, commercial, and industrial clients.",
+      "We support distributors, dealers, and institutional buyers with scalable production capacity and consistent product quality across categories.",
   },
   {
-    title: "Trusted After-Sales Network",
+    title: "Quality-Driven Manufacturing Standards",
     description:
-      "Fast response times, genuine spare parts, and trained technicians to ensure uninterrupted system performance.",
+      "Every product is built with strict quality controls to ensure reliability, durability, and long-term performance in demanding environments.",
   },
 ];
 
 export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
   const items = reasons && reasons.length > 0 ? reasons : DEFAULT_REASONS;
+  const featuredItems = items.slice(0, 2);
   const iconByIndex = [Lightning, Wrench, Handshake, Handshake];
+  const desktopCardStyles = [
+    "border-accent/35 bg-accent/80 text-foreground shadow-[0_10px_22px_rgba(17,24,39,0.12)]",
+    "border-primary/25 bg-primary/90 text-white shadow-[0_12px_26px_rgba(10,31,56,0.2)]",
+  ];
 
   return (
     <section className="relative w-full overflow-hidden bg-background py-section">
@@ -63,7 +60,7 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
             </p>
 
             <h2 className="text-[1.75rem] font-extrabold leading-[1.2] text-foreground sm:text-3xl md:text-4xl">
-              <span className="block">Reliable</span>
+              <span className="block">Engineered</span>
               <Highlighter
                 action="underline"
                 color="var(--accent)"
@@ -71,101 +68,156 @@ export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
                 animationDuration={700}
                 iterations={1}
               >
-                Solar and Inverter Solutions
+                Energy Solutions
               </Highlighter>
-              <span className="mt-1 block sm:mt-0">Backed by Real Support</span>
+              <span className="mt-1 block sm:mt-0">
+                Built for Performance and Scale
+              </span>
             </h2>
 
             <p className="mt-4 text-base leading-relaxed text-secondary">
-              We combine engineering expertise, high-efficiency components, and dependable
-              service so your system stays stable, efficient, and future-ready.
+              We design and manufacture high-performance solar inverters,
+              panels, batteries, and EV charging equipment built for
+              reliability, efficiency, and long-term durability.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <div className="inline-flex items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-4 py-3 shadow-sm">
-                <span className="text-2xl font-extrabold leading-none text-primary">98%</span>
-                <span className="text-sm text-muted">Efficiency maintained in real installs</span>
+                <span className="text-2xl font-extrabold leading-none text-primary">
+                  OEM
+                </span>
+                <span className="text-sm text-muted">
+                  Bulk Supply & Dealer Support
+                </span>
               </div>
               <div className="inline-flex items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-4 py-3 shadow-sm">
-                <span className="text-2xl font-extrabold leading-none text-primary">24/7</span>
-                <span className="text-sm text-muted">Monitoring and technical support</span>
+                <span className="text-2xl font-extrabold leading-none text-primary">
+                  High
+                </span>
+                <span className="text-sm text-muted">
+                  Conversion Efficiency Design
+                </span>
               </div>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-3">
               <Button asChild variant="explore">
-                <Link href="/service" aria-label="Explore our services">
-                  Explore Services
+                <Link href="/products" aria-label="Explore Fujitek products">
+                  Explore Products
                 </Link>
               </Button>
               <Button asChild variant="exploreInverse">
                 <Link href="/contact" aria-label="Contact Fujitek Solar">
-                  Get Free Consultation
+                  Get Bulk Pricing
                 </Link>
               </Button>
             </div>
           </div>
 
-          {/* RIGHT: IMAGE + FEATURE GRID */}
-          <div className="space-y-6">
-            <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-primary/5 shadow-sm">
-              <div className="absolute inset-0 bg-gradient-to-br from-white/35 via-transparent to-transparent" />
-              <Image
-                src="/solar_engineer.webp"
-                alt="Fujitek solar engineer working on inverter installation"
-                width={900}
-                height={680}
-                sizes="(max-width: 1024px) calc(100vw - 3rem), 560px"
-                quality={72}
-                className="h-full w-full object-cover"
-              />
+          {/* RIGHT: IMAGE + FLOATING FEATURE CARDS */}
+          <div>
+            <div className="relative md:py-20">
+              <div className="relative h-[460px] w-full overflow-hidden rounded-3xl border border-border/70 bg-primary/5 shadow-sm">
+                <Image
+                  src="/solar_engineer.webp"
+                  alt="Fujitek power electronics engineer working on solar inverter hardware"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 900px"
+                  quality={72}
+                  className="object-cover object-center"
+                />
+              </div>
+
+              {/* Desktop overlays: 50% inside image, 50% outside image boundary */}
+              {featuredItems[0] && (
+                <article
+                  className={`absolute left-0 top-0 z-20 hidden w-[min(18rem,calc(100%-2.5rem))] -translate-x-[18%] -translate-y-[24%] rounded-2xl border p-4 md:block ${desktopCardStyles[0]}`}
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-3">
+                      <h3 className="text-left text-xl font-semibold leading-tight text-foreground">
+                        {featuredItems[0].title}
+                      </h3>
+                      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/50 text-primary">
+                        {(() => {
+                          const Icon = iconByIndex[0] || Handshake;
+                          return <Icon className="h-4 w-4" />;
+                        })()}
+                      </div>
+                    </div>
+                    <p className="mt-1.5 text-left text-[0.825rem] leading-relaxed text-secondary/85">
+                      {featuredItems[0].description}
+                    </p>
+                  </div>
+                </article>
+              )}
+
+              {featuredItems[1] && (
+                <article
+                  className={`absolute bottom-0 right-0 z-20 hidden w-[min(18rem,calc(100%-2.5rem))] translate-x-[18%] translate-y-[22%] rounded-2xl border p-4 md:block ${desktopCardStyles[1]}`}
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-3">
+                      <h3 className="text-left text-xl font-semibold leading-tight text-white">
+                        {featuredItems[1].title}
+                      </h3>
+                      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/20 text-accent">
+                        {(() => {
+                          const Icon = iconByIndex[1] || Handshake;
+                          return <Icon className="h-4 w-4" />;
+                        })()}
+                      </div>
+                    </div>
+                    <p className="mt-1.5 text-left text-[0.825rem] leading-relaxed text-white/78">
+                      {featuredItems[1].description}
+                    </p>
+                  </div>
+                </article>
+              )}
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
-              {items.slice(0, 4).map((reason, idx) => {
-                const Icon = iconByIndex[idx] || Handshake;
-                const isAccent = idx % 2 === 1;
-                const spanClassByIndex = [
-                  "lg:col-span-3",
-                  "lg:col-span-3",
-                  "lg:col-span-2",
-                  "lg:col-span-4",
-                ];
+            {/* Mobile: no overlap, stacked below image */}
+            <div className="mt-5 space-y-4 md:hidden">
+              {featuredItems.map((item, index) => {
+                const Icon = iconByIndex[index] || Handshake;
 
                 return (
-                  <Card
-                    key={reason.title}
-                    className={[
-                      "group relative overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl",
-                      isAccent
-                        ? "border-accent/40 bg-accent/10 hover:border-accent/70 hover:shadow-accent/20"
-                        : "border-primary/25 bg-primary/5 hover:border-primary/50 hover:shadow-primary/20",
-                      spanClassByIndex[idx] || "lg:col-span-3",
-                    ].join(" ")}
+                  <article
+                    key={`${item.title}-${index}`}
+                    className={`rounded-2xl border p-4 shadow-[0_8px_20px_rgba(15,23,42,0.1)] ${
+                      index === 0
+                        ? "border-accent/35 bg-accent/80"
+                        : "border-primary/25 bg-primary/90"
+                    }`}
                   >
-                    <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <div className={["absolute -left-16 -top-16 h-44 w-44 rounded-full blur-2xl", isAccent ? "bg-primary/15" : "bg-accent/20"].join(" ")} />
-                      <div className={["absolute -right-20 -bottom-24 h-56 w-56 rounded-full blur-2xl", isAccent ? "bg-accent/15" : "bg-primary/15"].join(" ")} />
-                    </div>
-
-                    <CardHeader className="relative flex flex-row items-start gap-3 p-5 pb-3">
-                      <div className={[
-                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors duration-300",
-                        isAccent
-                          ? "bg-accent/20 text-primary group-hover:bg-accent group-hover:text-primary"
-                          : "bg-primary/15 text-primary group-hover:bg-primary group-hover:text-white",
-                      ].join(" ")}>
-                        <Icon className="h-4 w-4" />
+                    <div>
+                      <div className="flex items-start justify-between gap-3">
+                        <h3
+                          className={`text-left text-[1.1rem] font-semibold leading-tight ${
+                            index === 0 ? "text-foreground" : "text-white"
+                          }`}
+                        >
+                          {item.title}
+                        </h3>
+                        <div
+                          className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                            index === 0
+                              ? "bg-white/50 text-primary"
+                              : "bg-accent/20 text-accent"
+                          }`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </div>
                       </div>
-                      <CardTitle className="text-sm font-semibold leading-snug text-foreground sm:text-base">
-                        {reason.title}
-                      </CardTitle>
-                    </CardHeader>
-
-                    <CardContent className="relative px-5 pb-5 pt-0 text-sm leading-relaxed text-secondary">
-                      <p>{reason.description}</p>
-                    </CardContent>
-                  </Card>
+                      <p
+                        className={`mt-1.5 text-left text-[0.825rem] leading-relaxed ${
+                          index === 0 ? "text-secondary/85" : "text-white/78"
+                        }`}
+                      >
+                        {item.description}
+                      </p>
+                    </div>
+                  </article>
                 );
               })}
             </div>
