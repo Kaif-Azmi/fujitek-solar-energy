@@ -33,6 +33,7 @@ export const sectionNavItems: NavItem[] = [
   { id: "ev-chargers", label: "EV Chargers" },
   { id: "charge-controllers", label: "Charge Controllers" },
   { id: "oem-bulk-supply", label: "OEM Supply" },
+  { id: "process", label: "Process" },
   { id: "faqs", label: "FAQs" },
 ];
 
@@ -43,6 +44,27 @@ export const trustMetrics = [
   { value: "OEM", label: "Bulk manufacturing & dealer supply capability" },
   { value: "Tested", label: "Quality-controlled production standards" },
   { value: "Pan India", label: "Distribution-ready product supply" },
+];
+
+/* ================= PROCESS ================= */
+
+export const processSteps: ProcessStep[] = [
+  {
+    title: "Requirement Discovery",
+    description: "We capture your project load profile, target use-case, and supply volume needs.",
+  },
+  {
+    title: "Technical Mapping",
+    description: "Our team aligns inverter, panel, charger, and controller options to your deployment scope.",
+  },
+  {
+    title: "Commercial Structuring",
+    description: "You receive clear pricing, dealer/OEM terms, and supply timelines for execution planning.",
+  },
+  {
+    title: "Fulfillment & Support",
+    description: "Orders are dispatched through a structured supply process with post-order technical assistance.",
+  },
 ];
 
 /* ================= SECTIONS ================= */

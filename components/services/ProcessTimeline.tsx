@@ -6,21 +6,28 @@ type ProcessTimelineProps = {
 
 export default function ProcessTimeline({ steps }: ProcessTimelineProps) {
   return (
-    <ol className="mt-8 space-y-6 md:flex md:items-start md:space-y-0">
+    <ol className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       {steps.map((step, index) => (
-        <li key={step.title} className="relative md:flex-1">
-          <div className="flex items-start md:block">
-            <span className="relative z-10 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-background text-sm font-bold text-foreground">
-              {index + 1}
+        <li
+          key={step.title}
+          className="relative rounded-2xl border border-border/80 bg-background p-5 shadow-[0_8px_22px_rgba(15,23,42,0.06)]"
+        >
+          <div className="flex items-start gap-3">
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-sm font-bold text-primary">
+              {String(index + 1).padStart(2, "0")}
             </span>
-            {index < steps.length - 1 ? (
-              <span className="absolute left-5 top-10 h-[calc(100%-2rem)] w-px bg-border md:left-1/2 md:top-5 md:h-px md:w-full" aria-hidden />
-            ) : null}
-            <div className="ml-4 md:ml-0 md:mt-4 md:pr-5">
-              <h3 className="text-base font-semibold text-foreground">{step.title}</h3>
-              <p className="mt-2 max-w-xs text-sm leading-7 text-secondary md:max-w-none">{step.description}</p>
+            <div>
+              <h3 className="text-base font-semibold leading-tight text-foreground">{step.title}</h3>
+              <p className="mt-2 text-sm leading-7 text-secondary">{step.description}</p>
             </div>
           </div>
+
+          {index < steps.length - 1 ? (
+            <span
+              className="pointer-events-none absolute -right-2 top-1/2 hidden h-px w-4 -translate-y-1/2 bg-primary/35 xl:block"
+              aria-hidden
+            />
+          ) : null}
         </li>
       ))}
     </ol>

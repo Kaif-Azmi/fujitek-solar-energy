@@ -7,7 +7,7 @@ import { siteSeo } from "@/lib/seo";
 const QUICK_LINKS = [
   { href: "/", label: "Home" },
   { href: "/products", label: "Products" },
-  { href: "/service", label: "Service" },
+  { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];

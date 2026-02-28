@@ -172,7 +172,7 @@ export default function BlogContent({ post }: BlogContentProps) {
           <h2 className="text-lg font-semibold text-foreground">Internal Resources</h2>
           <ul className="mt-3 space-y-2">
             <li>
-              <Link href="/service" className="text-sm text-primary underline-offset-4 hover:underline">
+              <Link href="/services" className="text-sm text-primary underline-offset-4 hover:underline">
                 Explore solar installation and maintenance services
               </Link>
             </li>

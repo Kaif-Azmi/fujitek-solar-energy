@@ -19,7 +19,7 @@ interface Banner {
 const CTA_LINK_OPTIONS = [
   { label: "Contact Page", value: "/contact" },
   { label: "Products Page", value: "/products" },
-  { label: "Service Page", value: "/service" },
+  { label: "Services Page", value: "/services" },
   { label: "Blog Page", value: "/blog" },
   { label: "About Page", value: "/about" },
   { label: "Home Page", value: "/" },

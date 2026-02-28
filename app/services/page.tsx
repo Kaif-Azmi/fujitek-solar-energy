@@ -8,19 +8,21 @@ import Button from "@/components/ui/button";
 import {
   CTASection,
   FAQAccordion,
+  ProcessTimeline,
   ServiceHero,
   ServiceSection,
   StickySectionNav,
   TrustMetricsStrip,
 } from "@/components/services";
-import type { ServiceSectionContent } from "@/app/service/content";
+import type { ServiceSectionContent } from "@/app/services/content";
 import {
   faqs,
   heroContent,
+  processSteps,
   sectionNavItems,
   serviceSections,
   trustMetrics,
-} from "@/app/service/content";
+} from "@/app/services/content";
 import type { ExpandableDetails } from "@/components/services/types";
 import { buildPageMetadata, pageSeo, siteSeo } from "@/lib/seo";
 
@@ -30,7 +32,7 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: siteSeo.name,
-  url: `${siteSeo.url}/service`,
+  url: `${siteSeo.url}/services`,
   contactPoint: {
     "@type": "ContactPoint",
     telephone: siteSeo.business.phone,
@@ -94,6 +96,16 @@ export default function ServicesPage() {
         <InfiniteGrid className="z-0 opacity-30" />
 
         <div className="relative z-10">
+          <section className="border-b border-border/60 bg-background">
+            <div className="mx-auto max-w-6xl px-6 py-8">
+              <p className="text-xs font-bold uppercase tracking-[0.13em] text-primary">Service Overview</p>
+              <p className="mt-2 max-w-3xl text-sm leading-7 text-secondary sm:text-base">
+                Built for long-term reliability, our services are designed to support dealers, OEM partners, and
+                commercial buyers with practical product selection, scalable supply, and dependable technical support.
+              </p>
+            </div>
+          </section>
+
           <TrustMetricsStrip items={trustMetrics} />
           <StickySectionNav items={sectionNavItems} />
 
@@ -136,6 +148,20 @@ export default function ServicesPage() {
               }
             />
           ))}
+
+          <section id="process" className="scroll-mt-32 border-t border-border/60 bg-surface">
+            <div className="mx-auto max-w-6xl px-6 py-14 sm:py-18">
+              <p className="text-xs font-bold uppercase tracking-[0.13em] text-primary">Execution Model</p>
+              <h2 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
+                How We Deliver Projects and Bulk Orders
+              </h2>
+              <p className="mt-3 max-w-3xl text-base leading-8 text-secondary">
+                From technical discovery to commercial closure and fulfillment, we follow a structured workflow that
+                keeps communication clear and delivery predictable.
+              </p>
+              <ProcessTimeline steps={processSteps} />
+            </div>
+          </section>
 
           <section id="faqs" className="scroll-mt-32 border-t border-border/60 bg-background">
             <div className="mx-auto max-w-6xl px-6 py-14 sm:py-18">

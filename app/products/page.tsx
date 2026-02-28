@@ -104,7 +104,7 @@ export default async function ProductsPage() {
               <p className="mb-4 text-secondary">
                 Need help choosing components? Explore our{" "}
                 <Link
-                  href="/service"
+                  href="/services"
                   className="text-primary underline-offset-4 hover:underline"
                 >
                   solar installation and maintenance services

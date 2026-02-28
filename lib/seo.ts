@@ -103,7 +103,7 @@ export const pageSeo: Record<string, SeoPage> = {
       "Solar Inverters, EV Chargers & Energy Hardware | Fujitek",
     description:
       "Fujitek Solar Energy manufactures high-performance solar inverters, batteries, smart charge controllers, and EV chargers for dealers and bulk buyers.",
-    canonicalPath: "/service",
+    canonicalPath: "/services",
   },
 
   about: {

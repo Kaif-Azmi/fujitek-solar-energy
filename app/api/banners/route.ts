@@ -7,7 +7,8 @@ import { requireAdminRequest } from "@/lib/admin-route-auth";
 import { withNoStore, withPublicCache } from "@/lib/security";
 
 const DEFAULT_BANNER_CTA_LINK = "/contact";
-const ALLOWED_BANNER_CTA_LINKS = new Set(["/", "/contact", "/products", "/service", "/blog", "/about"]);
+// Keep legacy "/service" accepted so existing banner records remain valid.
+const ALLOWED_BANNER_CTA_LINKS = new Set(["/", "/contact", "/products", "/services", "/service", "/blog", "/about"]);
 
 function normalizeBannerCtaLink(value: unknown) {
   if (typeof value !== "string") return DEFAULT_BANNER_CTA_LINK;

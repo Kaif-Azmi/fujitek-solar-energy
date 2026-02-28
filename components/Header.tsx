@@ -9,7 +9,7 @@ import { Phone } from "lucide-react";
 const NAV_ITEMS = [
   { id: "home", href: "/", label: "Home" },
   { id: "products", href: "/products", label: "Products" },
-  { id: "service", href: "/service", label: "Service" },
+  { id: "services", href: "/services", label: "Services" },
   { id: "blog", href: "/blog", label: "Blog" },
   { id: "about", href: "/about", label: "About" },
   { id: "contact", href: "/contact", label: "Contact" },

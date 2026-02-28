@@ -27,7 +27,7 @@ const SERVICES_PREVIEW_DEFAULTS = {
   description:
     "End-to-end solar and inverter services designed to deliver consistent performance, safety, and long-term value.",
   badgeLabel: "Services",
-  ctaHref: "/service",
+  ctaHref: "/services",
   ctaLabel: "Explore solar services",
 };
 
