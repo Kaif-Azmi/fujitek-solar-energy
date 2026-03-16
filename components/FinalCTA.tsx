@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { PublicIcon } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,7 @@ interface FinalCTAProps {
   supportingText?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  benefits?: string[];
   ariaLabel?: string;
   sectionClassName?: string;
   panelClassName?: string;
@@ -23,7 +24,7 @@ const FINAL_CTA_DEFAULTS = {
   ariaLabel: "Fujitek solar call to action",
 };
 
-const BENEFITS = [
+const DEFAULT_BENEFITS = [
   "High-Efficiency Solar Panels",
   "Long-Term Cost Savings",
   "Certified Installation Experts",
@@ -36,6 +37,7 @@ export default function FinalCTA({
   supportingText = FINAL_CTA_DEFAULTS.supportingText,
   ctaLabel = FINAL_CTA_DEFAULTS.ctaLabel,
   ctaHref = FINAL_CTA_DEFAULTS.ctaHref,
+  benefits = DEFAULT_BENEFITS,
   ariaLabel = FINAL_CTA_DEFAULTS.ariaLabel,
   sectionClassName,
   panelClassName,
@@ -71,10 +73,10 @@ export default function FinalCTA({
 
           <div className="rounded-xl border border-white/20 bg-white/10 p-6 md:p-8">
             <ul className="space-y-4">
-              {BENEFITS.map((benefit) => (
+              {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-3">
                   <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-primary">
-                    <Check className="h-4 w-4" />
+                    <PublicIcon name="shield" className="h-4 w-4" />
                   </span>
                   <p className="text-sm font-medium text-white md:text-base">{benefit}</p>
                 </li>

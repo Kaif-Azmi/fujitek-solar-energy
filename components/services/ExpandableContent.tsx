@@ -1,7 +1,6 @@
 "use client";
 
 import { useId, useState } from "react";
-import { ChevronDown } from "lucide-react";
 import Button from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -80,7 +79,12 @@ export default function ExpandableContent({
         className="mt-2 w-full gap-2 rounded-full sm:w-auto"
       >
         {isExpanded ? collapseLabel : expandLabel}
-        <ChevronDown className={cn("h-4 w-4 transition-transform", isExpanded ? "rotate-180" : "")} aria-hidden />
+        <span
+          aria-hidden
+          className={cn("text-xs font-semibold transition-transform", isExpanded ? "rotate-180" : "")}
+        >
+          v
+        </span>
       </Button>
     </div>
   );

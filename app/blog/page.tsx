@@ -76,7 +76,7 @@ export async function generateMetadata({ searchParams }: BlogPageProps): Promise
       siteName: siteSeo.name,
       images: [
         {
-          url: toAbsoluteUrl("/different_solar_energy_systems.webp"),
+          url: toAbsoluteUrl("/images/different_solar_energy_systems.webp"),
           alt: "Solar energy blog insights by Fujitek Solar Energy",
         },
       ],
@@ -85,7 +85,7 @@ export async function generateMetadata({ searchParams }: BlogPageProps): Promise
       card: "summary_large_image",
       title,
       description,
-      images: [toAbsoluteUrl("/different_solar_energy_systems.webp")],
+      images: [toAbsoluteUrl("/images/different_solar_energy_systems.webp")],
     },
   };
 }

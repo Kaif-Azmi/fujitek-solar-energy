@@ -12,6 +12,8 @@ import { getDb } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 import { getOptimizedCloudinaryUrl } from "@/lib/image";
 import { getProductListSchema } from "@/lib/structured-data";
+import { defaultLocale, withLocalePath, type Locale } from "@/lib/i18n";
+import { getTranslator } from "@/lib/i18n-server";
 
 type ProductCategory = "Panel" | "Inverter" | "Battery" | "EV Charger";
 
@@ -47,8 +49,13 @@ async function getActiveProducts() {
   }));
 }
 
-export default async function ProductsPage() {
+type ProductsPageProps = {
+  locale?: Locale;
+};
+
+export default async function ProductsPage({ locale = defaultLocale }: ProductsPageProps = {}) {
   const products = await getActiveProducts();
+  const t = await getTranslator(locale);
   const productListSchema =
     products.length > 0
       ? getProductListSchema(
@@ -66,10 +73,10 @@ export default async function ProductsPage() {
     <div className="min-h-screen bg-surface">
       {productListSchema ? <JsonLd data={productListSchema} /> : null}
       <HeroSection
-        badge="OUR PRODUCTS"
-        title="Complete Solar Product Lineup"
-        highlight="Engineered for Lasting Performance"
-        description="Explore active Fujitek solar products designed for reliable, efficient, and future-ready energy systems."
+        badge={t("productsPage.hero.badge")}
+        title={t("productsPage.hero.title")}
+        highlight={t("productsPage.hero.highlight")}
+        description={t("productsPage.hero.description")}
       />
 
       <section className="relative overflow-hidden">
@@ -78,9 +85,9 @@ export default async function ProductsPage() {
           {products.length === 0 ? (
             <ScrollReveal>
               <div className="rounded-2xl border border-dashed border-border bg-background p-10 text-center">
-                <p className="text-lg font-semibold text-foreground">No active products available</p>
+                <p className="text-lg font-semibold text-foreground">{t("productsPage.empty.title")}</p>
                 <p className="mt-2 text-sm text-secondary">
-                  Please check back soon for updated product listings.
+                  {t("productsPage.empty.description")}
                 </p>
               </div>
             </ScrollReveal>
@@ -93,6 +100,16 @@ export default async function ProductsPage() {
                     category={product.category}
                     price={product.price}
                     imageUrl={product.imageUrl}
+                    locale={locale}
+                    contactHref={withLocalePath(locale, "/contact")}
+                    labels={{
+                      categoryPanel: t("productsPage.card.categoryPanel"),
+                      categoryInverter: t("productsPage.card.categoryInverter"),
+                      categoryBattery: t("productsPage.card.categoryBattery"),
+                      categoryEvCharger: t("productsPage.card.categoryEvCharger"),
+                      installationReady: t("productsPage.card.installationReady"),
+                      getQuote: t("productsPage.card.getQuote"),
+                    }}
                   />
                 </ScrollReveal>
               ))}
@@ -102,19 +119,19 @@ export default async function ProductsPage() {
           <ScrollReveal delay={0.08}>
             <div className="mt-16 text-center">
               <p className="mb-4 text-secondary">
-                Need help choosing components? Explore our{" "}
+                {t("productsPage.assistance.prefix")}{" "}
                 <Link
-                  href="/services"
+                  href={withLocalePath(locale, "/services")}
                   className="text-primary underline-offset-4 hover:underline"
                 >
-                  solar installation and maintenance services
+                  {t("productsPage.assistance.linkLabel")}
                 </Link>{" "}
-                or speak with our team.
+                {t("productsPage.assistance.suffix")}
               </p>
 
-              <Link href="/contact">
+              <Link href={withLocalePath(locale, "/contact")}>
                 <Button variant="default" size="lg">
-                  Talk to a Solar Consultant
+                  {t("productsPage.assistance.buttonLabel")}
                 </Button>
               </Link>
             </div>
@@ -122,11 +139,18 @@ export default async function ProductsPage() {
         </div>
       <ScrollReveal delay={0.12}>
         <FinalCTA
-          heading="Ready to Go Solar?"
-          supportingText="Get expert guidance on the right panels, inverters, batteries, and EV charging solutions for your needs."
-          ctaLabel="Contact Us"
-          ctaHref="/contact"
-          ariaLabel="Products page call to action"
+          heading={t("productsPage.finalCta.heading")}
+          supportingText={t("productsPage.finalCta.supportingText")}
+          ctaLabel={t("productsPage.finalCta.ctaLabel")}
+          ctaHref={withLocalePath(locale, "/contact")}
+          ariaLabel={t("productsPage.finalCta.ariaLabel")}
+          benefits={[
+            t("productsPage.finalCta.benefit1"),
+            t("productsPage.finalCta.benefit2"),
+            t("productsPage.finalCta.benefit3"),
+            t("productsPage.finalCta.benefit4"),
+            t("productsPage.finalCta.benefit5"),
+          ]}
         />
       </ScrollReveal>
       </section>

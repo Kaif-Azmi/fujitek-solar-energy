@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { ImagePlus, UploadCloud, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 
 type UploadResult = {
   secureUrl: string;
@@ -19,6 +19,15 @@ export default function ImageUploader({ folder, value, onChange, onUploadingChan
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const previewUrl = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
+  const previewSrc = previewUrl || value?.secureUrl || null;
+  const isPreview = Boolean(previewUrl);
+
+  useEffect(() => {
+    if (!previewUrl) return;
+    return () => {
+      URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
   async function readJsonSafe(response: Response) {
     const text = await response.text();
@@ -85,7 +94,6 @@ export default function ImageUploader({ folder, value, onChange, onUploadingChan
     <div className="space-y-3">
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4">
         <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
-          <ImagePlus className="h-4 w-4" />
           Upload Image
         </label>
         <input
@@ -104,21 +112,26 @@ export default function ImageUploader({ folder, value, onChange, onUploadingChan
               disabled={loading}
               className="inline-flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-hover"
             >
-              <UploadCloud className="h-3.5 w-3.5" />
               {loading ? "Uploading..." : "Upload"}
             </button>
           </div>
         )}
       </div>
 
-      {(previewUrl || value?.secureUrl) && (
+      {previewSrc && (
         <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-white">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={previewUrl || value?.secureUrl}
-            alt="Preview"
-            className="h-40 w-full object-cover"
-          />
+          <div className="relative h-40 w-full">
+            <Image
+              src={previewSrc}
+              alt="Preview"
+              fill
+              sizes="(max-width: 640px) 100vw, 480px"
+              className="object-cover"
+              unoptimized={isPreview}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
           {!!value?.secureUrl && (
             <button
               type="button"
@@ -126,7 +139,7 @@ export default function ImageUploader({ folder, value, onChange, onUploadingChan
               className="absolute right-2 top-2 rounded-full bg-white/90 p-1 text-slate-700 shadow hover:bg-white"
               aria-label="Remove image"
             >
-              <X className="h-4 w-4" />
+              <span className="text-xs font-semibold">x</span>
             </button>
           )}
         </div>

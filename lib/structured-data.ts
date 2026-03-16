@@ -26,7 +26,7 @@ export function getOrganizationSchema() {
     "@id": ORG_ID,
     name: siteSeo.name,
     url: siteSeo.url,
-    logo: `${siteSeo.url}/fujitek-logo-tab.svg`,
+    logo: `${siteSeo.url}/images/logos/fujitek-logo-tab.svg`,
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -47,7 +47,7 @@ export function getLocalBusinessSchema() {
     "@type": "LocalBusiness",
     "@id": LOCAL_BUSINESS_ID,
     name: siteSeo.name,
-    image: `${siteSeo.url}/fujitek-logo-tab.svg`,
+    image: `${siteSeo.url}/images/logos/fujitek-logo-tab.svg`,
     url: siteSeo.url,
     telephone: siteSeo.business.phone,
     email: siteSeo.business.email,

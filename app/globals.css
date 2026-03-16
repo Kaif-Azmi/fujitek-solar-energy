@@ -7,48 +7,82 @@
 @layer base {
   :root {
     /* ===============================
-       BRAND CORE (UPDATED)
+       CORE PALETTE
+       Semantic tokens first, legacy aliases below.
        =============================== */
-    --brand: #1d5c9c;
-    --brand-hover: #174a7d;
-    --brand-muted: #e6f0fa;
+    --color-brand-500: #1d5c9c;
+    --color-brand-600: #174a7d;
+    --color-brand-700: #123d66;
+    --color-brand-050: #e6f0fa;
+    --color-brand-100: #d7e7f7;
 
-    --secondary: #4e5269;
-    --secondary-muted: #eef0f5;
+    --color-accent-400: #8de683;
+    --color-accent-500: #6fd85f;
+    --color-accent-050: #edfbea;
 
-    --accent: #8de683;
-    --accent-hover: #6fd85f;
+    --color-ink-900: #1f2933;
+    --color-ink-700: #4e5269;
+    --color-ink-500: #6b7280;
+
+    --color-surface-page: #ffffff;
+    --color-surface-elevated: #ffffff;
+    --color-surface-subtle: #f8fafc;
+    --color-surface-soft: #f4f8fb;
+    --color-surface-hover: #f1f5f9;
+    --color-surface-muted: #f1f5f9;
+
+    --color-border-soft: #e2e8f0;
+    --color-border-strong: #cbd5e1;
+
+    --color-success-400: #8de683;
+    --color-success-050: #edfbea;
+    --color-danger-500: #dc2626;
+    --color-danger-050: #fee2e2;
+
+    /* ===============================
+       LEGACY ALIASES
+       Keep these so existing classes keep working.
+       =============================== */
+    --brand: var(--color-brand-500);
+    --brand-hover: var(--color-brand-600);
+    --brand-muted: var(--color-brand-050);
+
+    --secondary: var(--color-ink-700);
+    --secondary-muted: var(--color-surface-muted);
+
+    --accent: var(--color-accent-400);
+    --accent-hover: var(--color-accent-500);
 
     /* ===============================
        NEUTRALS
        =============================== */
-    --bg-page: #ffffff;
+    --bg-page: var(--color-surface-page);
     --bg-app: var(--bg-subtle);
     --bg-pattern-opacity: 0.04;
-    --bg-subtle: #f8fafc;
-    --bg-hover: #f1f5f9;
-    --bg-muted: #f1f5f9;
+    --bg-subtle: var(--color-surface-subtle);
+    --bg-hover: var(--color-surface-hover);
+    --bg-muted: var(--color-surface-muted);
 
     /* ===============================
        TEXT
        =============================== */
-    --text-primary: #1f2933;
-    --text-secondary: #4e5269;
-    --text-muted: #6b7280;
+    --text-primary: var(--color-ink-900);
+    --text-secondary: var(--color-ink-700);
+    --text-muted: var(--color-ink-500);
 
     /* ===============================
        BORDERS
        =============================== */
-    --border-subtle: #e2e8f0;
-    --border-strong: #cbd5e1;
+    --border-subtle: var(--color-border-soft);
+    --border-strong: var(--color-border-strong);
 
     /* ===============================
        STATUS
        =============================== */
-    --success: #8de683;
-    --success-bg: #edfbea;
-    --destructive: #dc2626;
-    --destructive-bg: #fee2e2;
+    --success: var(--color-success-400);
+    --success-bg: var(--color-success-050);
+    --destructive: var(--color-danger-500);
+    --destructive-bg: var(--color-danger-050);
 
     /* ===============================
        INTERACTION DEPTH
@@ -279,6 +313,43 @@
   .marquee-ltr:hover,
   .marquee-rtl:hover {
     animation-play-state: paused;
+  }
+
+  @keyframes testimonial-marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - var(--marquee-gap) / 2)); }
+  }
+
+  .testimonial-marquee {
+    --marquee-gap: 1.5rem;
+    gap: var(--marquee-gap);
+    animation: testimonial-marquee 42s linear infinite;
+    will-change: transform;
+  }
+
+  .testimonial-fade {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 20%,
+      #000 80%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 20%,
+      #000 80%,
+      transparent 100%
+    );
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .testimonial-marquee {
+      animation: none;
+    }
   }
 
   .blog-rich-content {

@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { BlogDetailItem } from "@/lib/blog";
 import { cn } from "@/lib/utils";
@@ -109,7 +108,12 @@ export default function BlogContent({ post }: BlogContentProps) {
             aria-controls="blog-toc-nav"
           >
             Table of Contents
-            <ChevronDown className={cn("h-4 w-4 transition-transform", isTocOpen ? "rotate-180" : "")} />
+            <span
+              aria-hidden
+              className={cn("text-xs font-semibold transition-transform", isTocOpen ? "rotate-180" : "")}
+            >
+              v
+            </span>
           </button>
           <h2 className="hidden text-sm font-semibold uppercase tracking-[0.12em] text-primary lg:block">
             Table of Contents

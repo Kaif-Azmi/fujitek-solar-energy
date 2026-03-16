@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { Asterisk, Eye, EyeOff, Mail } from "lucide-react";
 import { Button, Alert, AlertDescription } from "@/components/ui";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
@@ -140,14 +139,13 @@ function AdminLoginContent() {
               Email
             </label>
             <div className="relative">
-              <Mail className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted" />
               <input
                 id="admin-email"
                 type="email"
                 autoComplete="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="h-11 w-full rounded-lg border border-border bg-background pl-9 pr-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
+                className="h-11 w-full rounded-lg border border-border bg-background pl-3 pr-3 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
                 placeholder="admin@company.com"
                 required
               />
@@ -159,14 +157,13 @@ function AdminLoginContent() {
               Password
             </label>
             <div className="relative">
-              <Asterisk className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted" />
               <input
                 id="admin-password"
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="h-11 w-full rounded-lg border border-border bg-background pl-9 pr-11 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
+                className="h-11 w-full rounded-lg border border-border bg-background pl-3 pr-16 text-foreground outline-none transition focus:ring-2 focus:ring-primary/40"
                 placeholder="Enter admin password"
                 required
                 minLength={12}
@@ -177,7 +174,9 @@ function AdminLoginContent() {
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 className="absolute right-2 top-1.5 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted transition hover:bg-hover hover:text-primary"
               >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                <span className="text-[10px] font-semibold uppercase">
+                  {showPassword ? "Hide" : "Show"}
+                </span>
               </button>
             </div>
           </div>

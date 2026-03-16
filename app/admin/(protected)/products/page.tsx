@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ImageIcon, PackageOpen, Pencil, Search } from "lucide-react";
 import Image from "next/image";
 import AdminCard from "@/components/admin/AdminCard";
 import ConfirmDeleteModal from "@/components/admin/ConfirmDeleteModal";
@@ -13,6 +12,7 @@ import ProductForm, {
 } from "@/components/admin/ProductForm";
 import StatusToggle from "@/components/admin/StatusToggle";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { PublicIcon } from "@/components/ui/icons";
 
 type ProductItem = {
   id: string;
@@ -292,12 +292,11 @@ export default function ProductsAdminPage() {
         <AdminCard>
         <div className="mb-4 grid grid-cols-1 gap-3 md:grid-cols-[1fr_auto_auto]">
           <div className="relative w-full">
-            <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by product name..."
-              className="w-full rounded-lg border border-slate-200 py-2 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-primary/40"
+              className="w-full rounded-lg border border-slate-200 py-2 pl-3 pr-3 text-sm outline-none focus:ring-2 focus:ring-primary/40"
             />
           </div>
 
@@ -329,7 +328,7 @@ export default function ProductsAdminPage() {
           <p className="text-sm text-slate-500">Loading products...</p>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 py-12 text-center">
-            <PackageOpen className="h-10 w-10 text-slate-400" />
+            <PublicIcon name="solar-panel" className="h-10 w-10" />
             <p className="mt-3 text-sm font-medium text-slate-700">No products found</p>
             <p className="text-xs text-slate-500">
               Try adjusting filters or add a new product.
@@ -350,11 +349,13 @@ export default function ProductsAdminPage() {
                       width={640}
                       height={320}
                       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover"
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center text-slate-400">
-                      <ImageIcon className="h-5 w-5" />
+                      <PublicIcon name="solar-panel" className="h-6 w-6" />
                     </div>
                   )}
                 </div>
@@ -390,7 +391,6 @@ export default function ProductsAdminPage() {
                         onClick={() => beginEdit(item)}
                         className="inline-flex items-center gap-1 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
                       >
-                        <Pencil className="h-3.5 w-3.5" />
                         Edit
                       </button>
                       <button

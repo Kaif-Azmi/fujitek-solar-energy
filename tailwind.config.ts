@@ -34,16 +34,18 @@ const config: Config = {
 
       colors: {
         /* ===============================
-           CORE SURFACES
+           SEMANTIC SURFACES
            =============================== */
         background: "var(--bg-page)",
         surface: "var(--bg-subtle)",
         hover: "var(--bg-hover)",
         "muted-bg": "var(--bg-muted)",
-
-        /* Elevated layers (for contrast depth) */
-        "surface-elevated": "#ffffff",
-        "surface-soft": "#f4f7fb",
+        canvas: "var(--color-surface-page)",
+        "surface-page": "var(--color-surface-page)",
+        "surface-elevated": "var(--color-surface-elevated)",
+        "surface-subtle": "var(--color-surface-subtle)",
+        "surface-soft": "var(--color-surface-soft)",
+        "surface-hover": "var(--color-surface-hover)",
 
         /* ===============================
            TEXT HIERARCHY
@@ -51,39 +53,45 @@ const config: Config = {
         foreground: "var(--text-primary)",
         secondary: "var(--text-secondary)",
         muted: "var(--text-muted)",
-        "text-strong": "#0f172a",
+        "text-strong": "var(--color-ink-900)",
+        ink: "var(--color-ink-900)",
+        "ink-soft": "var(--color-ink-700)",
+        "ink-muted": "var(--color-ink-500)",
 
         /* ===============================
            BORDERS
            =============================== */
         border: "var(--border-subtle)",
         "border-strong": "var(--border-strong)",
-        "border-soft": "#e5eaf1",
+        "border-soft": "var(--color-border-soft)",
 
         /* ===============================
-           PRIMARY BRAND (BLUE)
+           BRAND BLUE
            =============================== */
         primary: "var(--brand)",
         "primary-hover": "var(--brand-hover)",
         "primary-muted": "var(--brand-muted)",
+        brand: "var(--color-brand-500)",
+        "brand-hover": "var(--color-brand-600)",
+        "brand-soft": "var(--color-brand-050)",
 
         /* Added stronger depth tones */
-        "primary-soft": "#e6f0fa",
-        "primary-deep": "#163f6d",
+        "primary-soft": "var(--color-brand-100)",
+        "primary-deep": "var(--color-brand-700)",
 
         /* ===============================
-           SECONDARY (NAVY / ELECTRICAL)
+           LEGACY NAVY ALIASES
            =============================== */
         navy: "var(--secondary)",
         "navy-muted": "var(--secondary-muted)",
-        "navy-deep": "#2e3142",
+        "navy-deep": "#2f3c4d",
 
         /* ===============================
-           ACCENT (GREEN / ENERGY)
+           ENERGY ACCENT
            =============================== */
         accent: "var(--accent)",
         "accent-hover": "var(--accent-hover)",
-        "accent-soft": "#edfbea",
+        "accent-soft": "var(--color-accent-050)",
 
         /* ===============================
            STATUS

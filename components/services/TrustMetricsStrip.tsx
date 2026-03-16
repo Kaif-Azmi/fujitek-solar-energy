@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { BadgeCheck } from "lucide-react";
 import { Card, CardContent } from "@/components/ui";
+import { PublicIcon } from "@/components/ui/icons";
 
 type MetricItem = {
   value: string;
@@ -37,7 +37,7 @@ export default function TrustMetricsStrip({ items }: TrustMetricsStripProps) {
                         : "border-primary-deep/20 bg-white/45 text-primary-deep",
                     )}
                   >
-                    <BadgeCheck className="h-4 w-4" aria-hidden />
+                    <PublicIcon name="shield" className="h-4 w-4" />
                     <p
                       className={cn(
                         "text-xs font-bold uppercase tracking-[0.12em] leading-none",

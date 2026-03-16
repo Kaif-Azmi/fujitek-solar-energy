@@ -2,11 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, MessageCircle, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { PersonIcon } from "@radix-ui/react-icons";
+import { PublicIcon } from "@/components/ui/icons";
 
 type LeadStage = "initial" | "qualification" | "calculation" | "capture";
 
@@ -170,13 +169,13 @@ function FloatingTrigger({ isOpen, onToggle }: FloatingTriggerProps) {
         onClick={onToggle}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.96 }}
-        className="relative flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-xl"
+        className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary via-primary-hover to-primary-deep text-white shadow-[0_18px_40px_rgba(12,38,79,0.35)] ring-2 ring-white/20"
         aria-label={isOpen ? "Close solar AI advisor" : "Open solar AI advisor"}
         aria-expanded={isOpen}
       >
-        <Bot className="h-8 w-8" />
-        <span className="absolute -right-0.5 -top-0.5 rounded-full border border-background bg-accent p-1 text-primary">
-          <MessageCircle className="h-3.5 w-3.5" />
+        <PublicIcon name="support" className="h-9 w-9" />
+        <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full border border-background bg-accent text-primary">
+          <span className="h-2.5 w-2.5 rounded-full bg-primary" />
         </span>
       </motion.button>
       <div className="pointer-events-none absolute -top-10 left-1/2 hidden -translate-x-1/2 rounded-md border border-border bg-background px-2 py-1 text-xs font-medium text-foreground opacity-0 shadow-sm transition duration-200 group-hover:opacity-100 md:block">
@@ -513,20 +512,20 @@ export default function AIAssistant() {
             className="fixed bottom-24 left-3 right-3 z-50 sm:left-auto sm:right-6 sm:w-[360px]"
           >
             <Card
-              className="flex h-[min(76vh,620px)] max-h-[min(76vh,620px)] w-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-xl hover:translate-y-0"
+              className="flex h-[min(76vh,620px)] max-h-[min(76vh,620px)] w-full flex-col overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-b from-white via-surface to-surface shadow-[0_24px_60px_rgba(12,38,79,0.28)] hover:translate-y-0"
               role="dialog"
               aria-modal="true"
               aria-label="Fujitek Solar AI Advisor"
             >
-              <div className="flex items-center justify-between gap-3 border-b border-border bg-primary px-4 py-3 text-white">
+              <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-gradient-to-r from-primary via-primary-hover to-primary-deep px-4 py-3 text-white">
                 <div className="flex items-center gap-3">
-                  <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary-hover">
-                    <PersonIcon className="h-5 w-5" />
+                  <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/20">
+                    <PublicIcon name="support" className="h-6 w-6" />
                     <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-white bg-accent" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold leading-tight text-white">Sam</p>
-                    <p className="text-xs text-slate-100">We're online · {stageLabel}</p>
+                    <p className="text-xs text-slate-100">We&apos;re online · {stageLabel}</p>
                   </div>
                 </div>
                 <button
@@ -535,13 +534,13 @@ export default function AIAssistant() {
                   className="relative inline-flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-primary-hover after:absolute after:-inset-2 after:content-['']"
                   aria-label="Close assistant"
                 >
-                  <X className="h-4 w-4" />
+                  <span className="text-sm font-semibold">x</span>
                 </button>
               </div>
 
               <div
                 ref={scrollRef}
-                className="min-h-0 flex-1 space-y-3 overflow-y-auto bg-accent px-4 py-3 scroll-smooth"
+                className="min-h-0 flex-1 space-y-3 overflow-y-auto bg-gradient-to-b from-accent/10 via-surface to-surface px-4 py-3 scroll-smooth"
               >
                 {messages.map((message) => {
                   if (message.role === "user") {
@@ -553,7 +552,7 @@ export default function AIAssistant() {
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className="flex justify-end"
                       >
-                        <div className="max-w-[86%] rounded-2xl bg-primary px-4 py-2 text-sm text-white">
+                        <div className="max-w-[86%] rounded-2xl bg-primary px-4 py-2 text-sm text-white shadow-[0_12px_28px_rgba(12,38,79,0.25)]">
                           {message.text}
                         </div>
                       </motion.div>
@@ -585,7 +584,7 @@ export default function AIAssistant() {
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className="flex justify-start"
                       >
-                        <div className="max-w-[90%] whitespace-pre-line rounded-2xl border border-border bg-card px-4 py-2 text-sm text-foreground">
+                        <div className="max-w-[90%] whitespace-pre-line rounded-2xl border border-border/70 bg-white px-4 py-2 text-sm text-foreground shadow-sm">
                           {message.text}
                         </div>
                       </motion.div>
@@ -601,7 +600,7 @@ export default function AIAssistant() {
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className="flex justify-start"
                       >
-                        <div className="max-w-[90%] rounded-2xl border border-border bg-card px-4 py-2 text-sm">
+                        <div className="max-w-[90%] rounded-2xl border border-border/70 bg-white px-4 py-2 text-sm shadow-sm">
                           <p className="text-sm font-semibold text-foreground">{message.text}</p>
                           <p className="mt-1 text-xs uppercase tracking-wide text-muted">Lead category: {message.category}</p>
                         </div>
@@ -614,10 +613,10 @@ export default function AIAssistant() {
                       key={message.id}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="flex justify-start"
-                    >
-                      <div className="max-w-[90%] rounded-2xl border border-border bg-card px-4 py-2 text-sm text-foreground">
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="flex justify-start"
+                      >
+                      <div className="max-w-[90%] rounded-2xl border border-border/70 bg-white px-4 py-2 text-sm text-foreground shadow-sm">
                         {message.text}
                         {message.showQuickActions ? (
                           <div className="mt-2 flex flex-wrap gap-2">
@@ -628,7 +627,7 @@ export default function AIAssistant() {
                                 variant="outline"
                                 onClick={() => handleQuickAction(action)}
                                 disabled={disableInputs}
-                                className="relative h-auto rounded-full px-3 py-1 text-xs after:absolute after:-inset-y-2.5 after:-inset-x-1.5 after:content-['']"
+                                className="relative h-auto rounded-full border-primary/20 bg-white/90 px-3 py-1 text-xs text-primary shadow-sm hover:bg-primary/10 after:absolute after:-inset-y-2.5 after:-inset-x-1.5 after:content-['']"
                               >
                                 {action}
                               </Button>
@@ -644,7 +643,7 @@ export default function AIAssistant() {
                   <motion.div
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="inline-flex rounded-2xl border border-border bg-card px-4 py-2 text-sm text-muted"
+                    className="inline-flex rounded-2xl border border-border/70 bg-white px-4 py-2 text-sm text-muted shadow-sm"
                   >
                     Advisor is typing{typingDots}
                   </motion.div>
@@ -672,23 +671,23 @@ export default function AIAssistant() {
               </div>
 
               {!awaitingContact ? (
-                <div className="flex items-center gap-2 border-t border-border bg-accent p-3">
+                <div className="flex items-center gap-2 border-t border-border/70 bg-white/90 p-3 backdrop-blur">
                   <Input
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
                     onKeyDown={onInputKeyDown}
                     placeholder="Ask about savings..."
                     disabled={disableInputs}
-                    className="h-10 flex-1 rounded-full border border-border bg-white px-4 text-sm text-foreground placeholder:text-muted"
+                    className="h-10 flex-1 rounded-full border border-border bg-white px-4 text-sm text-foreground placeholder:text-muted shadow-sm"
                   />
                   <Button
                     type="button"
                     onClick={handleSend}
                     disabled={disableInputs}
-                    className="relative h-10 w-10 rounded-full bg-primary p-0 text-white hover:bg-primary-hover after:absolute after:-inset-1 after:content-['']"
+                    className="relative h-10 w-10 rounded-full bg-primary p-0 text-white shadow-[0_12px_26px_rgba(12,38,79,0.25)] hover:bg-primary-hover after:absolute after:-inset-1 after:content-['']"
                     aria-label="Send message"
                   >
-                    <Send className="h-4 w-4" />
+                    <span className="text-sm font-semibold">{">"}</span>
                   </Button>
                 </div>
               ) : null}

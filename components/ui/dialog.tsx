@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type DialogContextValue = {
@@ -140,7 +139,7 @@ const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>(
         }}
         {...props}
       >
-        {children ?? <X className="h-4 w-4" />}
+        {children ?? <span className="text-sm font-semibold">x</span>}
       </button>
     );
   }

@@ -1,10 +1,28 @@
 import Link from "next/link";
 import { Card, CardContent, Button, FaqAccordion, SectionHeader } from "./ui";
 import { Highlighter } from "@/components/ui/highlighter";
+import { PublicIcon } from "@/components/ui/icons";
 
 interface FaqItem {
   question: string;
   answer: string;
+}
+
+type FaqSupportCopy = {
+  title: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
+  scheduleOne: string;
+  scheduleTwo: string;
+};
+
+interface FaqSectionProps {
+  items?: FaqItem[];
+  badgeLabel?: string;
+  heading?: string;
+  description?: string;
+  supportCopy?: FaqSupportCopy;
 }
 
 const FAQS: FaqItem[] = [
@@ -40,15 +58,30 @@ const FAQS: FaqItem[] = [
   },
 ];
 
-export default function FaqSection() {
+const DEFAULT_SUPPORT_COPY: FaqSupportCopy = {
+  title: "Still need clarity?",
+  description:
+    "Connect with our team for inverter selection, EV charger details, bulk supply inquiries, and dealership opportunities.",
+  ctaLabel: "Contact Sales",
+  ctaHref: "/contact",
+  scheduleOne: "Monday-Saturday",
+  scheduleTwo: "Response within 24-48 hours",
+};
+
+export default function FaqSection({
+  items = FAQS,
+  badgeLabel = "FAQs",
+  heading = "Frequently Asked Questions About Our Solar and EV Products",
+  description = "Clear answers about our solar inverters, EV chargers, batteries, and renewable energy hardware.",
+  supportCopy = DEFAULT_SUPPORT_COPY,
+}: FaqSectionProps) {
   return (
     <section className="relative w-full bg-surface">
       <div className="mx-auto max-w-7xl px-6 py-section">
         <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-5">
-          {/* ================= LEFT — FAQ ================= */}
           <div className="md:col-span-3">
             <SectionHeader
-              badge="FAQs"
+              badge={badgeLabel}
               title={
                 <Highlighter
                   action="underline"
@@ -57,24 +90,23 @@ export default function FaqSection() {
                   animationDuration={700}
                   iterations={1}
                 >
-                  Frequently Asked Questions About Our Solar & EV Products
+                  {heading}
                 </Highlighter>
               }
-              description="Clear answers about our solar inverters, EV chargers, batteries, and renewable energy hardware."
+              description={description}
               className="mb-12"
               badgeClassName="text-sm font-medium normal-case tracking-normal"
               titleClassName="md:text-4xl text-strong"
             />
 
             <FaqAccordion
-              items={FAQS}
+              items={items}
               className="max-w-3xl"
               singleOpen
               defaultOpenIndex={0}
             />
           </div>
 
-          {/* ================= RIGHT — SUPPORT CARD ================= */}
           <div className="md:col-span-2 flex">
             <Card className="flex w-full items-center justify-center rounded-3xl border border-primary/20 bg-primary shadow-lg">
               <CardContent className="flex w-full flex-col items-center justify-center p-8 text-center sm:p-10">
@@ -87,44 +119,31 @@ export default function FaqSection() {
                     shadow-sm
                   "
                 >
-                  <svg
-                    className="h-8 w-8"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 21l1.8-4.2A8.01 8.01 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                    />
-                  </svg>
+                  <PublicIcon name="support" className="h-9 w-9" />
                 </div>
 
                 <h3 className="text-3xl font-bold tracking-tight text-white">
-                  Still need clarity?
+                  {supportCopy.title}
                 </h3>
 
                 <p className="mt-4 max-w-sm text-base leading-relaxed text-white/85">
-                  Connect with our team for inverter selection, EV charger details,
-                  bulk supply inquiries, and dealership opportunities.
+                  {supportCopy.description}
                 </p>
 
                 <div className="mt-8">
                   <Button asChild variant="exploreInverse" size="lg">
-                    <Link href="/contact">Contact Sales</Link>
+                    <Link href={supportCopy.ctaHref}>{supportCopy.ctaLabel}</Link>
                   </Button>
                 </div>
 
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-white/80">
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Monday–Saturday
+                    {supportCopy.scheduleOne}
                   </span>
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Response within 24–48 hours
+                    {supportCopy.scheduleTwo}
                   </span>
                 </div>
               </CardContent>

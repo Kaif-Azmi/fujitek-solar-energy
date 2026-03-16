@@ -4,24 +4,38 @@ import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslation } from "@/components/i18n-provider";
 import { Phone } from "lucide-react";
+import {
+  defaultLocale,
+  getLocaleFromPathname,
+  stripLocaleFromPathname,
+  withLocalePath,
+} from "@/lib/i18n";
 
 const NAV_ITEMS = [
-  { id: "home", href: "/", label: "Home" },
-  { id: "products", href: "/products", label: "Products" },
-  { id: "services", href: "/services", label: "Services" },
-  { id: "blog", href: "/blog", label: "Blog" },
-  { id: "about", href: "/about", label: "About" },
-  { id: "contact", href: "/contact", label: "Contact" },
-];
+  { id: "home", href: "/", labelKey: "common.nav.home" },
+  { id: "products", href: "/products", labelKey: "common.nav.products" },
+  { id: "services", href: "/services", labelKey: "common.nav.services" },
+  { id: "blog", href: "/blog", labelKey: "common.nav.blog" },
+  { id: "about", href: "/about", labelKey: "common.nav.about" },
+  { id: "contact", href: "/contact", labelKey: "common.nav.contact" },
+] as const;
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
+  const pathnameWithoutLocale = stripLocaleFromPathname(pathname);
+  const currentLocale = getLocaleFromPathname(pathname) ?? defaultLocale;
+  const { t } = useTranslation();
+
   const PHONE_NUMBER = "+918447097751";
   const WHATSAPP_MESSAGE = encodeURIComponent(
     "Hi Fujitek Solar Energy, I am interested in your solar solutions. Please share details.",
   );
+
+  const localizeHref = (href: string) => withLocalePath(currentLocale, href);
 
   const mobileLinkBase =
     "block rounded-lg px-4 py-3 text-base font-semibold transition-colors duration-200 no-underline";
@@ -29,19 +43,19 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur relative">
       <div className="relative mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6 sm:py-3">
-        {/* Logo */}
-        <Link href="/" className="flex items-center no-underline">
+        <Link href={localizeHref("/")} className="flex items-center no-underline">
           <Image
-            src="/fujitek-solar-energy-logo.svg"
+            src="/images/logos/fujitek-solar-energy-logo.svg"
             alt="Fujitek Solar Energy logo"
             width={220}
             height={70}
-            priority
+            loading="eager"
+            decoding="async"
+            sizes="(max-width: 640px) 160px, (max-width: 1024px) 200px, 220px"
             className="h-14 sm:h-16 md:h-20 w-auto"
           />
         </Link>
 
-        {/* ===== Desktop Navbar ===== */}
         <nav
           className="absolute left-1/2 hidden -translate-x-1/2 md:flex"
           aria-label="Primary"
@@ -50,13 +64,13 @@ export default function Header() {
             {NAV_ITEMS.map((item) => {
               const isActive =
                 item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
+                  ? pathnameWithoutLocale === "/"
+                  : pathnameWithoutLocale.startsWith(item.href);
 
               return (
                 <Link
                   key={item.id}
-                  href={item.href}
+                  href={localizeHref(item.href)}
                   aria-current={isActive ? "page" : undefined}
                   className={`
                     relative z-10 px-5 py-2 text-sm font-medium rounded-full
@@ -69,7 +83,7 @@ export default function Header() {
                     }
                   `}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
 
                   {isActive && (
                     <span className="absolute inset-0 -z-10 rounded-full bg-primary shadow-sm" />
@@ -80,24 +94,23 @@ export default function Header() {
           </div>
         </nav>
 
-        {/* Right actions */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Call */}
+          <LanguageSwitcher className="hidden md:inline-flex" />
+
           <a
             href={`tel:${PHONE_NUMBER}`}
             className="relative inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-primary transition hover:bg-hover hover:text-primary-hover no-underline sm:h-9 sm:w-9 after:absolute after:-inset-1.5 after:content-['']"
-            aria-label="Call Fujitek Solar Energy"
+            aria-label={t("common.header.callAria")}
           >
             <Phone className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
           </a>
 
-          {/* WhatsApp */}
           <a
             href={`https://wa.me/918447097751?text=${WHATSAPP_MESSAGE}`}
             target="_blank"
             rel="noopener noreferrer"
             className="relative inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-[#25D366] transition hover:bg-hover hover:text-[#1ebe57] no-underline sm:h-9 sm:w-9 after:absolute after:-inset-1.5 after:content-['']"
-            aria-label="Chat with Fujitek Solar on WhatsApp"
+            aria-label={t("common.header.whatsappAria")}
           >
             <svg
               className="h-4.5 w-4.5 sm:h-5 sm:w-5"
@@ -109,7 +122,6 @@ export default function Header() {
             </svg>
           </a>
 
-          {/* Mobile Toggle */}
           <button
             type="button"
             onClick={() => setIsMenuOpen((p) => !p)}
@@ -118,7 +130,7 @@ export default function Header() {
                 ? "border-primary bg-primary text-white hover:bg-primary-hover hover:text-white"
                 : "border-border text-secondary hover:bg-hover hover:text-primary"
             }`}
-            aria-label="Toggle menu"
+            aria-label={t("common.header.toggleMenu")}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
           >
@@ -141,7 +153,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* ===== Mobile Menu (Absolute Dropdown) ===== */}
       <div
         id="mobile-navigation"
         className={`absolute left-0 top-full w-full md:hidden transition-all duration-300 ${
@@ -151,17 +162,21 @@ export default function Header() {
         }`}
       >
         <div className="mx-3 mb-3 mt-2.5 max-w-md rounded-xl border border-primary/25 bg-primary shadow-xl sm:mx-auto sm:mb-4 sm:mt-3">
-          <nav className="flex flex-col gap-1 p-4" aria-label="Mobile">
+          <div className="px-4 pt-4 pb-2">
+            <LanguageSwitcher className="text-white [&_.text-secondary]:text-white" />
+          </div>
+
+          <nav className="flex flex-col gap-1 p-4 pt-1" aria-label={t("common.header.mobileAria")}>
             {NAV_ITEMS.map((item) => {
               const isActive =
                 item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
+                  ? pathnameWithoutLocale === "/"
+                  : pathnameWithoutLocale.startsWith(item.href);
 
               return (
                 <Link
                   key={item.id}
-                  href={item.href}
+                  href={localizeHref(item.href)}
                   className={`${mobileLinkBase} ${
                     isActive
                       ? "bg-accent text-primary"
@@ -169,7 +184,7 @@ export default function Header() {
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
               );
             })}

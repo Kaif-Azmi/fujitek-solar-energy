@@ -1,10 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BatteryCharging, Car, Sun, Zap } from "lucide-react";
 import { Card, CardContent, CardTitle } from "./ui/card";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
 import SectionHeader from "@/components/ui/section-header";
+import { PublicIcon, type PublicIconName } from "@/components/ui/icons";
 
 interface Product {
   name: string;
@@ -32,21 +32,21 @@ const PRODUCTS_PREVIEW_DEFAULTS = {
   ctaLabel: "Explore product catalog",
 };
 
-function iconForProductName(name: string) {
+function iconForProductName(name: string): PublicIconName {
   const n = name.toLowerCase();
-  if (n.includes("panel")) return Sun;
-  if (n.includes("inverter")) return Zap;
-  if (n.includes("batter")) return BatteryCharging;
-  if (n.includes("ev") || n.includes("charger")) return Car;
-  return Sun;
+  if (n.includes("panel")) return "solar-panel";
+  if (n.includes("inverter")) return "microchip";
+  if (n.includes("batter")) return "battery";
+  if (n.includes("ev") || n.includes("charger")) return "car";
+  return "sun";
 }
 
 function imageForProductName(name: string) {
   const n = name.toLowerCase();
-  if (n.includes("panel")) return "/solar_panels.webp";
-  if (n.includes("inverter")) return "/inverters.webp";
-  if (n.includes("batter")) return "/batteries.webp";
-  return "/solar_panels.webp";
+  if (n.includes("panel")) return "/images/solar_panels.webp";
+  if (n.includes("inverter")) return "/images/inverters.webp";
+  if (n.includes("batter")) return "/images/batteries.webp";
+  return "/images/solar_panels.webp";
 }
 
 export default function ProductsPreview({
@@ -65,17 +65,17 @@ export default function ProductsPreview({
           {
             name: "Solar Panels",
             description: "High-efficiency panels for residential and commercial use.",
-            imageSrc: "/solar_panels.webp",
+            imageSrc: "/images/solar_panels.webp",
           },
           {
             name: "Inverters",
             description: "Reliable inverters designed for stable power conversion.",
-            imageSrc: "/inverters.webp",
+            imageSrc: "/images/inverters.webp",
           },
           {
             name: "Batteries",
             description: "Advanced energy storage for uninterrupted power supply.",
-            imageSrc: "/batteries.webp",
+            imageSrc: "/images/batteries.webp",
           },
         ];
 
@@ -86,7 +86,13 @@ export default function ProductsPreview({
           <SectionHeader
             badge={badgeLabel}
             title={
-              <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
+              <Highlighter
+                action="underline"
+                color="var(--accent)"
+                strokeWidth={2}
+                animationDuration={700}
+                iterations={1}
+              >
                 {heading}
               </Highlighter>
             }
@@ -102,8 +108,9 @@ export default function ProductsPreview({
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {items.map((product, index) => {
-            const Icon = iconForProductName(product.name);
+            const iconName = iconForProductName(product.name);
             const imageSrc = product.imageSrc ?? imageForProductName(product.name);
+
             return (
               <article key={`${product.name}-${index}`}>
                 <Card className="group relative h-full overflow-hidden rounded-2xl border border-border/70 bg-background shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/10">
@@ -126,6 +133,8 @@ export default function ProductsPreview({
                         fill
                         sizes="(max-width: 768px) 50vw, 224px"
                         quality={72}
+                        loading="lazy"
+                        decoding="async"
                         className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                       />
                     </div>
@@ -133,7 +142,7 @@ export default function ProductsPreview({
                     <div className="mb-4 flex items-start justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
-                          <Icon className="h-6 w-6" aria-hidden />
+                          <PublicIcon name={iconName} className="h-6 w-6" />
                         </div>
                         <div>
                           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
@@ -146,7 +155,9 @@ export default function ProductsPreview({
                       </div>
 
                       <div className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/60 text-secondary transition-colors duration-300 group-hover:border-primary/20 group-hover:text-primary">
-                        <ArrowRight className="h-4 w-4" aria-hidden />
+                        <span className="text-sm font-semibold" aria-hidden>
+                          {">"}
+                        </span>
                       </div>
                     </div>
 

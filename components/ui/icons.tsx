@@ -1,67 +1,89 @@
-// components/ui/icons.tsx
-import {
-  Zap,
-  Wrench as LucideWrench,
-  Handshake as LucideHandshake,
-  MapPin as LucideMapPin,
-  Phone as LucidePhone,
-  Mail as LucideMail,
-  Sun as LucideSun,
-  Leaf as LucideLeaf,
-  Star as LucideStar,
-  Rocket as LucideRocket,
-} from "lucide-react";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-type IconProps = {
+const ICON_MAP = {
+  translator: "/images/icons/language_translator.svg",
+  "solar-panel": "/images/icons/solar_panel_in_sunlight.svg",
+  sun: "/images/icons/shining_sun.svg",
+  savings: "/images/icons/savings_of_money.svg",
+  battery: "/images/icons/ecology-battery.svg",
+  microchip: "/images/icons/microchip-for_inverters.svg",
+  shield: "/images/icons/shield_for_safety.svg",
+  handshake: "/images/icons/partnership_handshake.svg",
+  network: "/images/icons/networking_of_people.svg",
+  truck: "/images/icons/delivery-truck.svg",
+  car: "/images/icons/electric-car.svg",
+  support: "/images/icons/customer_support_person.svg",
+} as const;
+
+export type PublicIconName = keyof typeof ICON_MAP;
+
+type PublicIconProps = {
+  name: PublicIconName;
   className?: string;
+  alt?: string;
+  decorative?: boolean;
 };
 
-/* ⚡ Energy / Power */
-export const Lightning = (props: IconProps) => (
-  <Zap {...props} />
-);
+export function PublicIcon({
+  name,
+  className,
+  alt,
+  decorative = true,
+}: PublicIconProps) {
+  const src = ICON_MAP[name];
 
-/* 🔧 Service / Inverter */
-export const Wrench = (props: IconProps) => (
-  <LucideWrench {...props} />
-);
+  return (
+    <span
+      className={cn(
+        "relative inline-flex h-6 w-6 shrink-0 items-center justify-center",
+        className,
+      )}
+      aria-hidden={decorative ? true : undefined}
+    >
+      <Image
+        src={src}
+        alt={decorative ? "" : (alt ?? name)}
+        fill
+        sizes="64px"
+        loading="lazy"
+        decoding="async"
+        className="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)] saturate-110 contrast-125"
+      />
+    </span>
+  );
+}
 
-/* 🤝 Trust / Partnership */
-export const Handshake = (props: IconProps) => (
-  <LucideHandshake {...props} />
+export const SolarPanelIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="solar-panel" {...props} />
 );
-
-/* 📍 Location */
-export const MapPin = (props: IconProps) => (
-  <LucideMapPin {...props} />
+export const SunIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="sun" {...props} />
 );
-
-/* 📞 Phone */
-export const Phone = (props: IconProps) => (
-  <LucidePhone {...props} />
+export const SavingsIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="savings" {...props} />
 );
-
-/* ✉️ Mail */
-export const Mail = (props: IconProps) => (
-  <LucideMail {...props} />
+export const BatteryIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="battery" {...props} />
 );
-
-/* ☀️ Solar */
-export const Sun = (props: IconProps) => (
-  <LucideSun {...props} />
+export const MicrochipIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="microchip" {...props} />
 );
-
-/* 🍃 Environment */
-export const Leaf = (props: IconProps) => (
-  <LucideLeaf {...props} />
+export const ShieldIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="shield" {...props} />
 );
-
-/* ⭐ Highlight */
-export const Star = (props: IconProps) => (
-  <LucideStar {...props} />
+export const HandshakeIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="handshake" {...props} />
 );
-
-/* 🚀 Growth / Future */
-export const Rocket = (props: IconProps) => (
-  <LucideRocket {...props} />
+export const NetworkIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="network" {...props} />
+);
+export const TruckIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="truck" {...props} />
+);
+export const CarIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="car" {...props} />
+);
+export const SupportIcon = (props: Omit<PublicIconProps, "name">) => (
+  <PublicIcon name="support" {...props} />
 );

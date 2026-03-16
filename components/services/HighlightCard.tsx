@@ -1,6 +1,6 @@
-import { CheckCircle2 } from "lucide-react";
 import type { HighlightItem } from "@/components/services/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
+import { PublicIcon } from "@/components/ui/icons";
 
 type HighlightCardProps = {
   title: string;
@@ -19,7 +19,7 @@ export default function HighlightCard({ title, description, items }: HighlightCa
         <ul className="space-y-3">
           {items.map((item) => (
             <li key={item.label} className="flex items-start gap-3">
-              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+              <PublicIcon name="shield" className="mt-0.5 h-4 w-4 shrink-0" />
               <p className="text-[0.98rem] leading-7 text-secondary">
                 <span className="font-semibold text-foreground">{item.label}: </span>
                 {item.value}

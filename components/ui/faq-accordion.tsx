@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type FaqAccordionItem = {
@@ -93,7 +92,7 @@ export default function FaqAccordion({
                 )}
                 aria-hidden
               >
-                {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                <span className="text-sm font-semibold">{isOpen ? "-" : "+"}</span>
               </span>
             </button>
 

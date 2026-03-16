@@ -1,16 +1,70 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Lightning, Wrench, Handshake } from "./ui";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
+import WhyChooseFlow from "@/components/WhyChooseFlow";
 
 interface Reason {
   title: string;
   description: string;
 }
 
+type WhyChooseUsCopy = {
+  badge: string;
+  titleLine1: string;
+  titleHighlight: string;
+  titleLine2: string;
+  description: string;
+  kpiOneValue: string;
+  kpiOneLabel: string;
+  kpiTwoValue: string;
+  kpiTwoLabel: string;
+  primaryCtaLabel: string;
+  primaryCtaHref: string;
+  secondaryCtaLabel: string;
+  secondaryCtaHref: string;
+};
+
 interface WhyChooseUsProps {
   reasons?: Reason[];
+  copy?: WhyChooseUsCopy;
+}
+
+function simplifyReason(title: string | undefined, description: string | undefined) {
+  const normalizedTitle = (title ?? "").toLowerCase();
+
+  if (normalizedTitle.includes("power electronics")) {
+    return {
+      title: "Power Electronics",
+      description: "On-grid, off-grid, and hybrid inverter platforms.",
+    };
+  }
+
+  if (normalizedTitle.includes("product portfolio")) {
+    return {
+      title: "Solar + EV Portfolio",
+      description: "Panels, batteries, controllers, and EV chargers.",
+    };
+  }
+
+  if (normalizedTitle.includes("bulk supply")) {
+    return {
+      title: "OEM + Bulk Supply",
+      description: "Structured support for dealers and institutions.",
+    };
+  }
+
+  if (normalizedTitle.includes("manufacturing")) {
+    return {
+      title: "Quality Standards",
+      description: "Built with strict quality control and durability focus.",
+    };
+  }
+
+  return {
+    title: title ?? "",
+    description: description ?? "",
+  };
 }
 
 const DEFAULT_REASONS: Reason[] = [
@@ -22,7 +76,7 @@ const DEFAULT_REASONS: Reason[] = [
   {
     title: "Integrated Solar & EV Product Portfolio",
     description:
-      "We manufacture solar panels, batteries, smart PWM charge controllers, and EV chargers — delivering a complete renewable energy hardware ecosystem.",
+      "We manufacture solar panels, batteries, smart PWM charge controllers, and EV chargers - delivering a complete renewable energy hardware ecosystem.",
   },
   {
     title: "OEM & Bulk Supply Capability",
@@ -36,190 +90,218 @@ const DEFAULT_REASONS: Reason[] = [
   },
 ];
 
-export default function WhyChooseUs({ reasons }: WhyChooseUsProps) {
+const DEFAULT_COPY: WhyChooseUsCopy = {
+  badge: "Why Choose Fujitek",
+  titleLine1: "Engineered",
+  titleHighlight: "Energy Solutions",
+  titleLine2: "Built for Performance and Scale",
+  description:
+    "We design and manufacture high-performance solar inverters, panels, batteries, and EV charging equipment built for reliability, efficiency, and long-term durability.",
+  kpiOneValue: "OEM",
+  kpiOneLabel: "Bulk Supply & Dealer Support",
+  kpiTwoValue: "High",
+  kpiTwoLabel: "Conversion Efficiency Design",
+  primaryCtaLabel: "Explore Products",
+  primaryCtaHref: "/products",
+  secondaryCtaLabel: "Get Bulk Pricing",
+  secondaryCtaHref: "/contact",
+};
+
+export default function WhyChooseUs({
+  reasons,
+  copy = DEFAULT_COPY,
+}: WhyChooseUsProps) {
   const items = reasons && reasons.length > 0 ? reasons : DEFAULT_REASONS;
-  const featuredItems = items.slice(0, 2);
-  const iconByIndex = [Lightning, Wrench, Handshake, Handshake];
-  const desktopCardStyles = [
-    "border-accent/35 bg-accent/80 text-foreground shadow-[0_10px_22px_rgba(17,24,39,0.12)]",
-    "border-primary/25 bg-primary/90 text-white shadow-[0_12px_26px_rgba(10,31,56,0.2)]",
+  const simplifiedItems = items.map((item) => simplifyReason(item.title, item.description));
+  const leftItems = [
+    {
+      title: simplifiedItems[0]?.title ?? "Power Electronics",
+      description: simplifiedItems[0]?.description ?? "On-grid, off-grid, and hybrid inverter platforms.",
+    },
+    {
+      title: simplifiedItems[1]?.title ?? "Solar + EV Portfolio",
+      description: simplifiedItems[1]?.description ?? "Panels, batteries, controllers, and EV chargers.",
+    },
+  ];
+  const rightItems = [
+    {
+      title: simplifiedItems[2]?.title ?? "OEM + Bulk Supply",
+      description: simplifiedItems[2]?.description ?? "Structured support for dealers and institutions.",
+    },
+    {
+      title: simplifiedItems[3]?.title ?? "Quality Standards",
+      description: simplifiedItems[3]?.description ?? "Built with strict quality control and durability focus.",
+    },
   ];
 
   return (
-    <section className="relative w-full overflow-hidden bg-background py-section">
-      <div className="pointer-events-none absolute inset-0 bg-dot-pattern opacity-50" />
-      <div className="pointer-events-none absolute -left-24 top-24 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-24 bottom-24 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
+    <section className="relative overflow-hidden bg-gradient-to-b from-surface to-background py-section">
+      <div className="pointer-events-none absolute inset-0 bg-dot-pattern opacity-[0.2]" />
+      <div className="pointer-events-none absolute -left-20 top-16 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute right-[-6rem] top-24 h-[30rem] w-[30rem] rounded-full bg-accent/15 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:items-center">
-          {/* LEFT: COPY + CTA */}
-          <div className="max-w-xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Why Choose Fujitek
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-stretch">
+          <div className="rounded-[2rem] border border-border/70 bg-white/96 p-7 shadow-soft backdrop-blur sm:p-8 lg:p-10">
+            <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-primary/90">
+              <span className="h-2 w-2 rounded-full bg-accent" />
+              {copy.badge}
             </p>
 
-            <h2 className="text-[1.75rem] font-extrabold leading-[1.2] text-foreground sm:text-3xl md:text-4xl">
-              <span className="block">Engineered</span>
-              <Highlighter
-                action="underline"
-                color="var(--accent)"
-                strokeWidth={2}
-                animationDuration={700}
-                iterations={1}
-              >
-                Energy Solutions
-              </Highlighter>
-              <span className="mt-1 block sm:mt-0">
-                Built for Performance and Scale
+            <h2 className="mt-5 text-[2.2rem] font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-[2.95rem]">
+              <span className="block">{copy.titleLine1}</span>
+              <span className="block">
+                <Highlighter
+                  action="underline"
+                  color="var(--accent)"
+                  strokeWidth={2}
+                  animationDuration={700}
+                  iterations={1}
+                >
+                  {copy.titleHighlight}
+                </Highlighter>
               </span>
+              <span className="mt-2 block text-foreground">{copy.titleLine2}</span>
             </h2>
 
-            <p className="mt-4 text-base leading-relaxed text-secondary">
-              We design and manufacture high-performance solar inverters,
-              panels, batteries, and EV charging equipment built for
-              reliability, efficiency, and long-term durability.
+            <p className="mt-6 max-w-xl text-base leading-8 text-secondary sm:text-lg">
+              {copy.description}
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <div className="inline-flex items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-4 py-3 shadow-sm">
-                <span className="text-2xl font-extrabold leading-none text-primary">
-                  OEM
-                </span>
-                <span className="text-sm text-muted">
-                  Bulk Supply & Dealer Support
-                </span>
+            <div className="mt-8 flex flex-wrap gap-2.5">
+              <span className="rounded-full border border-primary/20 bg-primary-soft px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-primary-deep">
+                Solar inverters
+              </span>
+              <span className="rounded-full border border-primary/20 bg-primary-soft px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-primary-deep">
+                EV charging
+              </span>
+              <span className="rounded-full border border-primary/20 bg-primary-soft px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-primary-deep">
+                OEM supply
+              </span>
+            </div>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[1.5rem] border border-border/80 bg-gradient-to-br from-surface-elevated to-primary-soft/35 p-5 shadow-sm">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                  Supply Model
+                </p>
+                <div className="mt-4 flex items-end gap-2.5">
+                  <span className="text-[2.35rem] font-extrabold leading-none tracking-tight text-primary sm:text-[2.5rem]">
+                    {copy.kpiOneValue}
+                  </span>
+                  <span className="mb-1.5 h-2 w-2 rounded-full bg-accent" />
+                </div>
+                <p className="mt-2.5 max-w-[15rem] text-sm leading-6 text-secondary">
+                  {copy.kpiOneLabel}
+                </p>
               </div>
-              <div className="inline-flex items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-4 py-3 shadow-sm">
-                <span className="text-2xl font-extrabold leading-none text-primary">
-                  High
-                </span>
-                <span className="text-sm text-muted">
-                  Conversion Efficiency Design
-                </span>
+
+              <div className="rounded-[1.5rem] border border-border/80 bg-gradient-to-br from-surface-elevated to-primary-soft/35 p-5 shadow-sm">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                  Engineering Focus
+                </p>
+                <div className="mt-4 flex items-end gap-2.5">
+                  <span className="text-[2.35rem] font-extrabold leading-none tracking-tight text-primary sm:text-[2.5rem]">
+                    {copy.kpiTwoValue}
+                  </span>
+                  <span className="mb-1.5 h-2 w-2 rounded-full bg-accent" />
+                </div>
+                <p className="mt-2.5 max-w-[15rem] text-sm leading-6 text-secondary">
+                  {copy.kpiTwoLabel}
+                </p>
               </div>
             </div>
 
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="explore">
-                <Link href="/products" aria-label="Explore Fujitek products">
-                  Explore Products
+                <Link href={copy.primaryCtaHref} aria-label={copy.primaryCtaLabel}>
+                  {copy.primaryCtaLabel}
                 </Link>
               </Button>
               <Button asChild variant="exploreInverse">
-                <Link href="/contact" aria-label="Contact Fujitek Solar">
-                  Get Bulk Pricing
+                <Link href={copy.secondaryCtaHref} aria-label={copy.secondaryCtaLabel}>
+                  {copy.secondaryCtaLabel}
                 </Link>
               </Button>
             </div>
           </div>
 
-          {/* RIGHT: IMAGE + FLOATING FEATURE CARDS */}
-          <div>
-            <div className="relative md:py-20">
-              <div className="relative h-[460px] w-full overflow-hidden rounded-3xl border border-border/70 bg-primary/5 shadow-sm">
-                <Image
-                  src="/solar_engineer.webp"
-                  alt="Fujitek power electronics engineer working on solar inverter hardware"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 900px"
-                  quality={72}
-                  className="object-cover object-center"
-                />
-              </div>
+          <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary-deep via-primary to-primary-hover p-4 shadow-strong sm:p-5">
+            <div className="grid h-full gap-4 lg:grid-rows-[minmax(0,1.25fr)_minmax(0,0.95fr)]">
+              <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(220px,0.8fr)]">
+                <div className="relative overflow-hidden rounded-[1.7rem] border border-white/15 bg-white/10">
+                  <div className="absolute left-4 top-4 z-20 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur">
+                    Built for Indian conditions
+                  </div>
 
-              {/* Desktop overlays: 50% inside image, 50% outside image boundary */}
-              {featuredItems[0] && (
-                <article
-                  className={`absolute left-0 top-0 z-20 hidden w-[min(18rem,calc(100%-2.5rem))] -translate-x-[18%] -translate-y-[24%] rounded-2xl border p-4 md:block ${desktopCardStyles[0]}`}
-                >
-                  <div>
-                    <div className="flex items-start justify-between gap-3">
-                      <h3 className="text-left text-xl font-semibold leading-tight text-foreground">
-                        {featuredItems[0].title}
-                      </h3>
-                      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/50 text-primary">
-                        {(() => {
-                          const Icon = iconByIndex[0] || Handshake;
-                          return <Icon className="h-4 w-4" />;
-                        })()}
-                      </div>
-                    </div>
-                    <p className="mt-1.5 text-left text-[0.825rem] leading-relaxed text-secondary/85">
-                      {featuredItems[0].description}
+                  <div className="absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-primary-deep/80 via-primary-deep/25 to-transparent" />
+
+                  <div className="relative h-[320px] sm:h-[420px]">
+                    <Image
+                      src="/images/solar_engineer.webp"
+                      alt="Fujitek power electronics engineer working on solar inverter hardware"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 720px"
+                      quality={72}
+                      loading="lazy"
+                      decoding="async"
+                      className="object-cover object-center"
+                    />
+                  </div>
+
+                  <div className="absolute inset-x-4 bottom-4 z-20 rounded-[1.4rem] border border-white/20 bg-primary-deep/88 p-4 text-white shadow-[0_18px_45px_rgba(8,23,43,0.38)] backdrop-blur-md">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-accent">
+                      Product reliability
+                    </p>
+                    <p className="mt-2 text-lg font-semibold leading-tight text-white">
+                      Hardware platforms designed for stable output and long-term serviceability.
                     </p>
                   </div>
-                </article>
-              )}
+                </div>
 
-              {featuredItems[1] && (
-                <article
-                  className={`absolute bottom-0 right-0 z-20 hidden w-[min(18rem,calc(100%-2.5rem))] translate-x-[18%] translate-y-[22%] rounded-2xl border p-4 md:block ${desktopCardStyles[1]}`}
-                >
-                  <div>
-                    <div className="flex items-start justify-between gap-3">
-                      <h3 className="text-left text-xl font-semibold leading-tight text-white">
-                        {featuredItems[1].title}
-                      </h3>
-                      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/20 text-accent">
-                        {(() => {
-                          const Icon = iconByIndex[1] || Handshake;
-                          return <Icon className="h-4 w-4" />;
-                        })()}
-                      </div>
-                    </div>
-                    <p className="mt-1.5 text-left text-[0.825rem] leading-relaxed text-white/78">
-                      {featuredItems[1].description}
+                <div className="grid gap-4">
+                  <div className="rounded-[1.5rem] border border-white/15 bg-primary-deep/55 p-5 text-white shadow-[0_18px_45px_rgba(8,23,43,0.22)]">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-accent">
+                      Deployment profile
+                    </p>
+                    <p className="mt-3 text-2xl font-bold leading-tight text-black">
+                      Residential, commercial, and institutional.
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-white/75">
+                      Built to support specification clarity and installation-readiness across use cases.
                     </p>
                   </div>
-                </article>
-              )}
-            </div>
 
-            {/* Mobile: no overlap, stacked below image */}
-            <div className="mt-5 space-y-4 md:hidden">
-              {featuredItems.map((item, index) => {
-                const Icon = iconByIndex[index] || Handshake;
-
-                return (
-                  <article
-                    key={`${item.title}-${index}`}
-                    className={`rounded-2xl border p-4 shadow-[0_8px_20px_rgba(15,23,42,0.1)] ${
-                      index === 0
-                        ? "border-accent/35 bg-accent/80"
-                        : "border-primary/25 bg-primary/90"
-                    }`}
-                  >
+                  <div className="grid gap-3 rounded-[1.5rem] border border-white/15 bg-primary-deep/55 p-5 text-white shadow-[0_18px_45px_rgba(8,23,43,0.22)]">
                     <div>
-                      <div className="flex items-start justify-between gap-3">
-                        <h3
-                          className={`text-left text-[1.1rem] font-semibold leading-tight ${
-                            index === 0 ? "text-foreground" : "text-white"
-                          }`}
-                        >
-                          {item.title}
-                        </h3>
-                        <div
-                          className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                            index === 0
-                              ? "bg-white/50 text-primary"
-                              : "bg-accent/20 text-accent"
-                          }`}
-                        >
-                          <Icon className="h-4 w-4" />
-                        </div>
-                      </div>
-                      <p
-                        className={`mt-1.5 text-left text-[0.825rem] leading-relaxed ${
-                          index === 0 ? "text-secondary/85" : "text-white/78"
-                        }`}
-                      >
-                        {item.description}
+                      <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-accent">
+                        Capability stack
                       </p>
                     </div>
-                  </article>
-                );
-              })}
+                    <div className="flex flex-wrap gap-2">
+                      <span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90">
+                        Inverters
+                      </span>
+                      <span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90">
+                        Batteries
+                      </span>
+                      <span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90">
+                        Charge controllers
+                      </span>
+                      <span className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90">
+                        EV chargers
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <WhyChooseFlow
+                leftLabel="Engineering and Product Scope"
+                rightLabel="Execution and Quality Standards"
+                leftItems={leftItems}
+                rightItems={rightItems}
+              />
             </div>
           </div>
         </div>

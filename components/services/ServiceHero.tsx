@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { BadgeCheck } from "lucide-react";
 import Button from "@/components/ui/button";
 import type { CtaLink } from "@/components/services/types";
+import { PublicIcon } from "@/components/ui/icons";
 
 type ServiceHeroProps = {
   title: string;
@@ -83,7 +83,7 @@ export default function ServiceHero({ title, intro, ctas }: ServiceHeroProps) {
                 "Supportive post-order communication for smoother execution.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
-                  <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                  <PublicIcon name="shield" className="mt-0.5 h-4 w-4 shrink-0" />
                   <p className="text-sm font-medium leading-6 text-primary-deep">{item}</p>
                 </li>
               ))}

@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "layout": {
+      "title": "Fujitek Solar Energy",
+      "description": "Solar inverters, EV chargers, batteries, and renewable energy hardware solutions."
+    },
+    "home": {
+      "title": "Solar Inverter, EV Charger & Renewable Energy Solutions",
+      "description": "Explore Fujitek Solar Energy products and services for homes, businesses, dealers, and OEM partners."
+    },
+    "products": {
+      "title": "Solar Products | Fujitek Solar Energy",
+      "description": "Explore Fujitek solar inverters, EV chargers, panels, and batteries."
+    },
+    "services": {
+      "title": "Services | Fujitek Solar Energy",
+      "description": "Manufacturing-led service and support for solar and EV hardware buyers."
+    },
+    "about": {
+      "title": "About Fujitek Solar Energy",
+      "description": "Learn about Fujitek Solar Energy and our manufacturing capabilities."
+    },
+    "contact": {
+      "title": "Contact Fujitek Solar Energy",
+      "description": "Get in touch for product inquiries, bulk orders, and dealership opportunities."
+    },
+    "blog": {
+      "title": "Solar Energy Blog | Fujitek Solar Energy",
+      "description": "Practical solar insights, guides, and product knowledge from Fujitek."
+    }
+  },
+  "common": {
+    "language": {
+      "label": "Language",
+      "english": "English",
+      "hindi": "Hindi"
+    },
+    "nav": {
+      "home": "Home",
+      "products": "Products",
+      "services": "Services",
+      "blog": "Blog",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "header": {
+      "callAria": "Call Fujitek Solar Energy",
+      "whatsappAria": "Chat with Fujitek Solar on WhatsApp",
+      "toggleMenu": "Toggle menu",
+      "mobileAria": "Mobile"
+    }
+  },
+  "home": {
+    "srOnly": "Solar Inverter, EV Charger and Renewable Energy Equipment Manufacturer in India",
+    "hero": {
+      "badge": "Fujitek Solar Energy",
+      "titleLine1": "Sustainable Energy",
+      "titleLine2": "Solutions for Tomorrow",
+      "carouselLabel": "Featured solar promotions",
+      "previousSlide": "Previous slide",
+      "nextSlide": "Next slide",
+      "goToSlide": "Go to slide {index}",
+      "ctaLabel": "Contact Sales"
+    },
+    "whyChoose": {
+      "badge": "Why Choose Fujitek",
+      "titleLine1": "Engineered",
+      "titleHighlight": "Energy Solutions",
+      "titleLine2": "Built for Performance and Scale",
+      "description": "We design and manufacture high-performance solar inverters, panels, batteries, and EV charging equipment built for reliability, efficiency, and long-term durability.",
+      "kpiOneValue": "OEM",
+      "kpiOneLabel": "Bulk Supply and Dealer Support",
+      "kpiTwoValue": "High",
+      "kpiTwoLabel": "Conversion Efficiency Design",
+      "primaryCta": "Explore Products",
+      "secondaryCta": "Get Bulk Pricing",
+      "reason1Title": "Advanced Power Electronics Engineering",
+      "reason1Description": "Our on-grid, off-grid, and hybrid solar inverters are engineered for high conversion efficiency, voltage stability, and long operational life under Indian grid conditions.",
+      "reason2Title": "Integrated Solar and EV Product Portfolio",
+      "reason2Description": "We manufacture solar panels, batteries, smart PWM charge controllers, and EV chargers, delivering a complete renewable energy hardware ecosystem.",
+      "reason3Title": "OEM and Bulk Supply Capability",
+      "reason3Description": "We support distributors, dealers, and institutional buyers with scalable production capacity and consistent product quality across categories.",
+      "reason4Title": "Quality-Driven Manufacturing Standards",
+      "reason4Description": "Every product is built with strict quality controls to ensure reliability, durability, and long-term performance in demanding environments."
+    },
+    "products": {
+      "ariaLabel": "Solar products",
+      "badge": "Products",
+      "heading": "Solar Products for Reliable Energy Production",
+      "description": "Reliable solar and inverter solutions engineered for performance and long-term efficiency.",
+      "cta": "Explore product catalog",
+      "item1Title": "Solar Panels",
+      "item1Description": "High-efficiency solar panels engineered for long-term durability and consistent energy generation.",
+      "item2Title": "On-Grid, Off-Grid and Hybrid Inverters",
+      "item2Description": "Advanced inverter technology designed for Indian grid conditions and voltage stability.",
+      "item3Title": "Batteries and Charge Controllers",
+      "item3Description": "Reliable energy storage and smart PWM charge controllers for optimized system performance.",
+      "item4Title": "EV Chargers",
+      "item4Description": "Lithium e-rickshaw chargers and electric scooty chargers built for safe and efficient mobility charging."
+    },
+    "solarBenefits": {
+      "badge": "Why Go Solar",
+      "heading": "Benefits of Switching to Solar Energy",
+      "description": "Practical gains across savings, reliability, and sustainability for homes and businesses.",
+      "previewTitle": "Solar impact preview",
+      "previewSubtitle": "Savings, reliability, and clean-energy value",
+      "previewTag": "Overview",
+      "previewCaption": "On-grid, off-grid, and hybrid solar configurations",
+      "paybackValue": "4-6 yrs",
+      "paybackLabel": "Typical payback period",
+      "lifespanValue": "25+ yrs",
+      "lifespanLabel": "Long-term output life",
+      "item1Title": "Lower monthly bills",
+      "item1Description": "Generate power on-site and reduce dependence on utility rates.",
+      "item2Title": "Subsidy support",
+      "item2Description": "Leverage central and state incentives to lower setup cost.",
+      "item3Title": "Long-term returns",
+      "item3Description": "Reliable production and savings over 25+ years of operation.",
+      "item4Title": "Energy resilience",
+      "item4Description": "Pair with storage to maintain power during outages and peaks.",
+      "item5Title": "Cleaner footprint",
+      "item5Description": "Cut emissions while supporting a sustainable energy mix.",
+      "item6Title": "Low upkeep",
+      "item6Description": "Durable systems with straightforward servicing and monitoring."
+    },
+    "video": {
+      "badge": "Clean Energy for Modern Homes",
+      "headlineHighlight": "Reliable Power for Your Home",
+      "headlineRest": "— Even During Grid Outages",
+      "description": "Solar panels paired with smart inverters and battery backup provide steady electricity, reduce monthly bills, and give families independence from unstable grid power.",
+      "feature1": "Lower monthly electricity bills",
+      "feature2": "Continuous power during outages",
+      "feature3": "Sustainable and eco-friendly energy",
+      "ctaPrimary": "Get Free Solar Consultation",
+      "ctaSecondary": "See Installation Process",
+      "posterAlt": "Solar energy video preview",
+      "playLabel": "Play solar story video",
+      "videoLabel": "Solar energy empowers Indian homes video"
+    },
+    "testimonials": {
+      "badge": "Testimonials",
+      "heading": "Trusted by teams powering solar growth",
+      "description": "Real feedback from partners who rely on Fujitek for reliable solar solutions and ongoing support.",
+      "cardLabel": "Testimonial"
+    },
+    "services": {
+      "ariaLabel": "Product support services",
+      "badge": "Services",
+      "heading": "Solar Services Built for Reliability",
+      "description": "End-to-end solar and inverter services designed to deliver consistent performance, safety, and long-term value.",
+      "cta": "Explore solar services",
+      "panelLabel": "Service Desk",
+      "panelTitle": "Plan your complete solar execution roadmap",
+      "panelDescription": "From sizing to post-install support, get a practical deployment plan tailored to your site.",
+      "cardLabel": "Service",
+      "tag1": "Residential",
+      "tag2": "Commercial",
+      "tag3": "Ongoing Support",
+      "item1Title": "Bulk Supply and Dealership",
+      "item1Description": "Manufacturer-direct supply for distributors, dealers, and institutional buyers.",
+      "item2Title": "OEM Solutions",
+      "item2Description": "Low-cost smart PWM charge controllers and custom power electronics for OEM partners.",
+      "item3Title": "Technical Product Guidance",
+      "item3Description": "Capacity planning and inverter selection support based on electrical requirements.",
+      "item4Title": "After-Sales Assistance",
+      "item4Description": "Warranty-backed product support with responsive technical communication.",
+      "item5Title": "EV Charging Hardware",
+      "item5Description": "Reliable chargers for electric rickshaws and electric scooters.",
+      "item6Title": "Pan-India Distribution",
+      "item6Description": "Scalable supply capability across India with structured dealer network."
+    },
+    "projects": {
+      "ariaLabel": "Applications",
+      "badge": "Applications",
+      "heading": "Recent Solar Installations",
+      "description": "A snapshot of deployments across residential, commercial, and mobility use cases.",
+      "cta": "Discuss a similar project",
+      "item1Title": "Residential Energy Systems",
+      "item1Description": "Solar inverters and batteries powering homes across India.",
+      "item2Title": "Commercial Power Backup",
+      "item2Description": "Hybrid inverter systems supporting commercial load stability.",
+      "item3Title": "Electric Mobility Charging",
+      "item3Description": "EV chargers supplied for e-rickshaw and electric scooter markets."
+    },
+    "marquee": {
+      "ariaLabel": "Solar inverters, batteries, charge controllers and EV charger manufacturing",
+      "srOnlyTitle": "Solar Inverter, Battery and EV Charger Manufacturer in India",
+      "item1": "On-Grid Solar Inverters",
+      "item2": "Off-Grid Solar Inverters",
+      "item3": "Hybrid Solar Inverters",
+      "item4": "Solar Panels",
+      "item5": "Solar Batteries",
+      "item6": "Smart PWM Charge Controllers",
+      "item7": "Low-Cost Smart PWM Controllers (OEM)",
+      "item8": "Lithium E-Rickshaw Chargers",
+      "item9": "Electric Scooty Chargers"
+    },
+    "faq": {
+      "badge": "FAQs",
+      "heading": "Frequently Asked Questions About Our Solar and EV Products",
+      "description": "Clear answers about our solar inverters, EV chargers, batteries, and renewable energy hardware.",
+      "supportTitle": "Still need clarity?",
+      "supportDescription": "Connect with our team for inverter selection, EV charger details, bulk supply inquiries, and dealership opportunities.",
+      "supportCta": "Contact Sales",
+      "supportSchedule1": "Monday-Saturday",
+      "supportSchedule2": "Response within 24-48 hours",
+      "item1Question": "What types of inverters does Fujitek manufacture?",
+      "item1Answer": "We manufacture on-grid, off-grid, and hybrid solar inverters engineered for stable power conversion under Indian grid conditions.",
+      "item2Question": "Do you provide installation services?",
+      "item2Answer": "Fujitek Solar Energy focuses on manufacturing and product supply. Installation is handled by authorized dealers or third-party system integrators.",
+      "item3Question": "What warranties do your products include?",
+      "item3Answer": "All Fujitek products are backed by manufacturer warranties along with structured after-sales technical support.",
+      "item4Question": "Do your inverters support remote monitoring?",
+      "item4Answer": "Selected inverter models support real-time monitoring and system diagnostics depending on configuration.",
+      "item5Question": "Do you supply products in bulk?",
+      "item5Answer": "Yes. We supply solar inverters, EV chargers, batteries, and charge controllers to dealers, distributors, and institutional buyers across India.",
+      "item6Question": "What EV charging products do you offer?",
+      "item6Answer": "We manufacture lithium e-rickshaw chargers and electric scooty chargers designed for safe and efficient electric mobility charging."
+    },
+    "finalCta": {
+      "heading": "Looking for Reliable Solar and EV Hardware?",
+      "supportingText": "Connect with Fujitek Solar Energy for bulk supply, dealership opportunities, and product inquiries.",
+      "ctaLabel": "Contact Sales",
+      "ariaLabel": "Fujitek solar call to action",
+      "benefit1": "High-Efficiency Solar Panels",
+      "benefit2": "Long-Term Cost Savings",
+      "benefit3": "Certified Installation Experts",
+      "benefit4": "Advanced Inverter Technology",
+      "benefit5": "Reliable After-Sales Support"
+    }
+  },
+  "productsPage": {
+    "hero": {
+      "badge": "OUR PRODUCTS",
+      "title": "Complete Solar Product Lineup",
+      "highlight": "Engineered for Lasting Performance",
+      "description": "Explore active Fujitek solar products designed for reliable, efficient, and future-ready energy systems."
+    },
+    "empty": {
+      "title": "No active products available",
+      "description": "Please check back soon for updated product listings."
+    },
+    "assistance": {
+      "prefix": "Need help choosing components? Explore our",
+      "linkLabel": "solar installation and maintenance services",
+      "suffix": "or speak with our team.",
+      "buttonLabel": "Talk to a Solar Consultant"
+    },
+    "card": {
+      "categoryPanel": "Solar Panels",
+      "categoryInverter": "Inverters",
+      "categoryBattery": "Batteries",
+      "categoryEvCharger": "EV Chargers",
+      "installationReady": "Installation-ready hardware",
+      "getQuote": "Get Quote"
+    },
+    "finalCta": {
+      "heading": "Ready to Go Solar?",
+      "supportingText": "Get expert guidance on the right panels, inverters, batteries, and EV charging solutions for your needs.",
+      "ctaLabel": "Contact Us",
+      "ariaLabel": "Products page call to action",
+      "benefit1": "High-Efficiency Solar Panels",
+      "benefit2": "Long-Term Cost Savings",
+      "benefit3": "Certified Installation Experts",
+      "benefit4": "Advanced Inverter Technology",
+      "benefit5": "Reliable After-Sales Support"
+    }
+  },
+  "footer": {
+    "description": "Reliable and sustainable solar solutions built for long-term impact and energy independence.",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "whatsApp": "WhatsApp Chat",
+    "homeAria": "Go to homepage"
+  }
+}

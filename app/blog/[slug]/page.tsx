@@ -14,6 +14,9 @@ import {
 } from "@/lib/blog";
 import { siteSeo } from "@/lib/seo";
 
+const HERO_BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YxZjVmOSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2U2ZWZmNyIvPjwvbGluZWFyR3JhZGllbnQ+PHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjEyIiBmaWxsPSJ1cmwoI2cpIi8+PC9zdmc+";
+
 type BlogPostPageProps = {
   params: Promise<{
     slug: string;
@@ -114,7 +117,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       name: siteSeo.name,
       logo: {
         "@type": "ImageObject",
-        url: toAbsoluteUrl("/fujitek-logo-tab.svg"),
+        url: toAbsoluteUrl("/images/logos/fujitek-logo-tab.svg"),
       },
     },
     image: imageUrl,
@@ -194,6 +197,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             sizes="(max-width: 1024px) 100vw, 1100px"
             quality={72}
             priority
+            fetchPriority="high"
+            decoding="async"
+            placeholder="blur"
+            blurDataURL={HERO_BLUR_DATA_URL}
             className="object-cover"
           />
         </div>

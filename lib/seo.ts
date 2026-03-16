@@ -125,8 +125,15 @@ export const pageSeo: Record<string, SeoPage> = {
 
 /* ================= METADATA BUILDER ================= */
 
+const DEFAULT_OG_IMAGE_PATH = "/images/solar_panels.webp";
+
+function toAbsoluteUrl(pathname: string): string {
+  return new URL(pathname, siteSeo.url).toString();
+}
+
 export function buildPageMetadata(page: SeoPage): Metadata {
   const canonicalUrl = `${siteSeo.url}${page.canonicalPath ?? ""}`;
+  const ogImageUrl = toAbsoluteUrl(DEFAULT_OG_IMAGE_PATH);
 
   return {
     metadataBase: new URL(siteSeo.url),
@@ -150,12 +157,21 @@ export function buildPageMetadata(page: SeoPage): Metadata {
       type: "website",
       siteName: siteSeo.name,
       locale: "en_IN",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${siteSeo.name} solar solutions`,
+        },
+      ],
     },
 
     twitter: {
       card: "summary_large_image",
       title: page.title,
       description: page.description,
+      images: [ogImageUrl],
     },
 
     robots: {

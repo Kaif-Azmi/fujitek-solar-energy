@@ -54,7 +54,7 @@ export default function BannersPage() {
         const rows = Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
         if (!mounted) return;
         setBanners(Array.isArray(rows) ? rows : []);
-      } catch (err) {
+      } catch {
         setError('Failed to load banners');
         setBanners([]);
       } finally {
@@ -230,6 +230,8 @@ export default function BannersPage() {
                       width={640}
                       height={320}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -266,7 +268,7 @@ export default function BannersPage() {
                           });
                           if (!res.ok) throw new Error('Delete failed');
                           setBanners((prev) => prev.filter((x) => x._id !== b._id));
-                        } catch (err) {
+                        } catch {
                           alert('Failed to delete banner');
                         } finally {
                           setActionLoading(null);
@@ -343,7 +345,7 @@ export default function BannersPage() {
                               if (!res.ok) throw new Error('Update failed');
                               setBanners((prev) => prev.map((x) => (x._id === b._id ? { ...x, ...form } as Banner : x)));
                               setEditingId(null);
-                            } catch (err) {
+                            } catch {
                               alert('Failed to update banner');
                             } finally {
                               setActionLoading(null);

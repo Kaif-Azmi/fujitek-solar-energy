@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="Operator">
+  <g fill="#000000" class="color000000 svgShape">
+    <path fill="#595bd4" d="M51,26H49V18A13.015,13.015,0,0,0,36,5H28A13.015,13.015,0,0,0,15,18v8H13V18A15.017,15.017,0,0,1,28,3h8A15.017,15.017,0,0,1,51,18Z" class="color787680 svgShape"></path>
+    <path fill="#f1cba2" d="M28,47H39V41H25v6Z" class="colorf1cfa2 svgShape"></path>
+    <rect width="32" height="32" x="16" y="10" fill="#a97e50" rx="12.512" ry="12.512" class="colora97c50 svgShape"></rect>
+    <rect width="14" height="3" x="25" y="41" fill="#e0bc95" class="colore0c095 svgShape"></rect>
+    <path fill="#53d86a" d="M11,28v3a3,3,0,0,0,3,3h4V25H14A3,3,0,0,0,11,28Z" class="color85eceb svgShape"></path>
+    <polygon fill="#ffbd77" points="30 50.5 30.67 50 32 49 33.33 50 34 50.5 36 52 36 47 28 47 28 52 30 50.5" class="colorffc477 svgShape"></polygon>
+    <path fill="#ffd6aa" d="M42,22H21V35a6.97,6.97,0,0,0,4,6.32A6.844,6.844,0,0,0,28,42h8a6.844,6.844,0,0,0,3-.68A7,7,0,0,0,43,35V22Z" class="colorffdaaa svgShape"></path>
+    <path fill="#53d86a" d="M53,31V28a3,3,0,0,0-3-3H46v9h4A3,3,0,0,0,53,31Z" class="color85eceb svgShape"></path>
+    <path fill="#006def" d="M48 47H36v5l-2-1.5V54l1 7H60V59A12 12 0 0 0 48 47zM28 52V47H16A12 12 0 0 0 4 59v2H29l1-7V50.5z" class="color00aeef svgShape"></path>
+    <polygon fill="#d48532" points="30 54 29 61 35 61 34 54 30 54" class="colord43237 svgShape"></polygon>
+    <polygon fill="#cd6900" points="33.33 50 32 49 30.67 50 30 50.5 30 54 34 54 34 50.5 33.33 50" class="colorcd2a00 svgShape"></polygon>
+    <path fill="#fe9526" d="M46.969,39H34V37H46.969a1,1,0,0,0,1-1.016l-.031-1.968,2-.032.031,1.969a3,3,0,0,1-3,3.047Z" class="colorff7956 svgShape"></path>
+    <rect width="2" height="4" x="31" y="18" fill="#8b653c" class="color8b5e3c svgShape"></rect>
+    <rect width="2" height="4" x="26" y="18" fill="#8b653c" class="color8b5e3c svgShape"></rect>
+    <rect width="2" height="4" x="21" y="18" fill="#8b653c" class="color8b5e3c svgShape"></rect>
+    <rect width="2" height="4" x="36" y="18" fill="#8b653c" class="color8b5e3c svgShape"></rect>
+    <rect width="2" height="4" x="41" y="18" fill="#8b653c" class="color8b5e3c svgShape"></rect>
+    <rect width="2" height="6" x="49" y="55" fill="#167ffc" class="color1e81ce svgShape"></rect>
+    <rect width="2" height="6" x="13" y="55" fill="#167ffc" class="color1e81ce svgShape"></rect>
+  </g>
+</svg>

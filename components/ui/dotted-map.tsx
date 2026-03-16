@@ -40,29 +40,27 @@ export function DottedMap({
   const processedMarkers = addMarkers(markers)
 
   // Compute stagger helpers in a single, simple pass
-  const { xStep, yToRowIndex } = React.useMemo(() => {
-    const sorted = [...points].sort((a, b) => a.y - b.y || a.x - b.x)
-    const rowMap = new Map<number, number>()
-    let step = 0
-    let prevY = Number.NaN
-    let prevXInRow = Number.NaN
+  const sorted = [...points].sort((a, b) => a.y - b.y || a.x - b.x)
+  const yToRowIndex = new Map<number, number>()
+  let xStep = 0
+  let prevY = Number.NaN
+  let prevXInRow = Number.NaN
 
-    for (const p of sorted) {
-      if (p.y !== prevY) {
-        // new row
-        prevY = p.y
-        prevXInRow = Number.NaN
-        if (!rowMap.has(p.y)) rowMap.set(p.y, rowMap.size)
-      }
-      if (!Number.isNaN(prevXInRow)) {
-        const delta = p.x - prevXInRow
-        if (delta > 0) step = step === 0 ? delta : Math.min(step, delta)
-      }
-      prevXInRow = p.x
+  for (const p of sorted) {
+    if (p.y !== prevY) {
+      // new row
+      prevY = p.y
+      prevXInRow = Number.NaN
+      if (!yToRowIndex.has(p.y)) yToRowIndex.set(p.y, yToRowIndex.size)
     }
+    if (!Number.isNaN(prevXInRow)) {
+      const delta = p.x - prevXInRow
+      if (delta > 0) xStep = xStep === 0 ? delta : Math.min(xStep, delta)
+    }
+    prevXInRow = p.x
+  }
 
-    return { xStep: step || 1, yToRowIndex: rowMap }
-  }, [points])
+  if (xStep === 0) xStep = 1
 
   return (
     <svg

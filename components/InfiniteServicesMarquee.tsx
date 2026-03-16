@@ -1,6 +1,12 @@
-import { Zap } from "lucide-react";
+import { PublicIcon, type PublicIconName } from "@/components/ui/icons";
 
-const PRODUCTS = [
+interface InfiniteServicesMarqueeProps {
+  items?: string[];
+  ariaLabel?: string;
+  srOnlyTitle?: string;
+}
+
+const DEFAULT_PRODUCTS = [
   "On-Grid Solar Inverters",
   "Off-Grid Solar Inverters",
   "Hybrid Solar Inverters",
@@ -12,37 +18,37 @@ const PRODUCTS = [
   "Electric Scooty Chargers",
 ];
 
-const LOOPED_PRODUCTS = [...PRODUCTS, ...PRODUCTS];
+export default function InfiniteServicesMarquee({
+  items = DEFAULT_PRODUCTS,
+  ariaLabel = "Solar inverters, batteries, charge controllers and EV charger manufacturing",
+  srOnlyTitle = "Solar Inverter, Battery and EV Charger Manufacturer in India",
+}: InfiniteServicesMarqueeProps) {
+  const loopedProducts = [...items, ...items];
 
-export default function InfiniteServicesMarquee() {
   return (
     <section
       className="relative w-full overflow-hidden bg-surface py-section"
-      aria-label="Solar inverters, batteries, charge controllers and EV charger manufacturing"
+      aria-label={ariaLabel}
     >
-      <h2 className="sr-only">
-        Solar Inverter, Battery and EV Charger Manufacturer in India
-      </h2>
+      <h2 className="sr-only">{srOnlyTitle}</h2>
 
-      {/* STRIP 1 */}
       <div className="relative -rotate-2 bg-primary shadow-md">
         <div
           className="marquee-ltr flex w-max items-center gap-20 py-5"
           aria-hidden="true"
         >
-          {LOOPED_PRODUCTS.map((item, i) => (
+          {loopedProducts.map((item, i) => (
             <ProductItem key={`ltr-${i}`} label={item} variant="primary" />
           ))}
         </div>
       </div>
 
-      {/* STRIP 2 */}
       <div className="relative mt-12 rotate-2 bg-accent shadow-md">
         <div
           className="marquee-rtl flex w-max items-center gap-20 py-5"
           aria-hidden="true"
         >
-          {LOOPED_PRODUCTS.map((item, i) => (
+          {loopedProducts.map((item, i) => (
             <ProductItem key={`rtl-${i}`} label={item} variant="accent" />
           ))}
         </div>
@@ -58,17 +64,35 @@ function ProductItem({
   label: string;
   variant: "primary" | "accent";
 }) {
-  const textColor =
-    variant === "primary" ? "text-white" : "text-primary";
-  const iconColor =
-    variant === "primary" ? "text-accent" : "text-primary";
+  const textColor = "text-black";
+  const iconColor = "text-black";
+  const iconName = getIconNameForLabel(label);
 
   return (
     <div
-      className={`flex items-center gap-4 whitespace-nowrap text-lg font-semibold tracking-wide ${textColor} sm:text-xl`}
+      className={`flex items-center gap-4 whitespace-nowrap text-lg font-bold tracking-wide ${textColor} sm:text-xl`}
     >
-      <Zap className={`h-6 w-6 ${iconColor}`} aria-hidden="true" />
+      <PublicIcon name={iconName} className={`h-6 w-6 ${iconColor}`} />
       <span>{label}</span>
     </div>
   );
+}
+
+function getIconNameForLabel(label: string): PublicIconName {
+  const normalized = label.toLowerCase();
+  if (normalized.includes("panel")) return "solar-panel";
+  if (normalized.includes("batter")) return "battery";
+  if (
+    normalized.includes("charger") ||
+    normalized.includes("ev") ||
+    normalized.includes("scooty") ||
+    normalized.includes("rickshaw")
+  ) {
+    return "car";
+  }
+  if (normalized.includes("controller") || normalized.includes("pwm")) {
+    return "microchip";
+  }
+  if (normalized.includes("inverter")) return "microchip";
+  return "sun";
 }

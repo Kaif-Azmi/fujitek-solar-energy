@@ -2,29 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Box,
-  BriefcaseBusiness,
-  FileText,
-  FolderKanban,
-  ImageIcon,
-  LayoutDashboard,
-  LifeBuoy,
-  LogOut,
-} from "lucide-react";
+import { PublicIcon, type PublicIconName } from "@/components/ui/icons";
 
 type Props = {
   children: React.ReactNode;
 };
 
 const NAV_ITEMS = [
-  { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/products", label: "Products", icon: Box },
-  { href: "/admin/services", label: "Services", icon: BriefcaseBusiness },
-  { href: "/admin/projects", label: "Projects", icon: FolderKanban },
-  { href: "/admin/banners", label: "Banners", icon: ImageIcon },
-  { href: "/admin/blog", label: "Blog", icon: FileText },
-  { href: "/admin/leads", label: "Leads", icon: LifeBuoy },
+  { href: "/admin/dashboard", label: "Dashboard", iconName: "network" },
+  { href: "/admin/products", label: "Products", iconName: "solar-panel" },
+  { href: "/admin/services", label: "Services", iconName: "support" },
+  { href: "/admin/projects", label: "Projects", iconName: "truck" },
+  { href: "/admin/banners", label: "Banners", iconName: "solar-panel" },
+  { href: "/admin/blog", label: "Blog", iconName: "savings" },
+  { href: "/admin/leads", label: "Leads", iconName: "support" },
 ];
 
 export default function AdminLayoutShell({ children }: Props) {
@@ -41,7 +32,6 @@ export default function AdminLayoutShell({ children }: Props) {
 
           <nav className="space-y-1">
             {NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
               const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <Link
@@ -53,7 +43,7 @@ export default function AdminLayoutShell({ children }: Props) {
                       : "text-slate-700 hover:bg-slate-50"
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <PublicIcon name={item.iconName as PublicIconName} className="h-4 w-4" />
                   {item.label}
                 </Link>
               );
@@ -66,7 +56,7 @@ export default function AdminLayoutShell({ children }: Props) {
                 type="submit"
                 className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
               >
-                <LogOut className="h-4 w-4" />
+                <PublicIcon name="support" className="h-4 w-4" />
                 Logout
               </button>
             </form>

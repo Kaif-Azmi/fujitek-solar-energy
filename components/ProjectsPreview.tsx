@@ -1,13 +1,16 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Briefcase, Factory, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui";
 import { Highlighter } from "@/components/ui/highlighter";
 import SectionHeader from "@/components/ui/section-header";
+import { PublicIcon, type PublicIconName } from "@/components/ui/icons";
 
 interface Project {
   title: string;
   description: string;
+  imageSrc: string;
+  imageAlt?: string;
 }
 
 interface ProjectsPreviewProps {
@@ -30,10 +33,13 @@ const PROJECTS_PREVIEW_DEFAULTS = {
   ctaLabel: "Discuss a similar solar project",
 };
 
+const PROJECT_IMAGE_BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZThlZWY2Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZDNlMmYwIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIvPjwvc3ZnPg==";
+
 function ProjectIcon({ index }: { index: number }) {
-  const icons = [Home, Factory, Briefcase] as const;
-  const Icon = icons[index % icons.length];
-  return <Icon className="h-6 w-6" strokeWidth={1.8} aria-hidden />;
+  const icons: PublicIconName[] = ["solar-panel", "microchip", "network"];
+  const name = icons[index % icons.length];
+  return <PublicIcon name={name} className="h-6 w-6" />;
 }
 
 function ProjectTag({ index }: { index: number }) {
@@ -59,7 +65,13 @@ export default function ProjectsPreview({
           <SectionHeader
             badge={badgeLabel}
             title={
-              <Highlighter action="underline" color="var(--accent)" strokeWidth={2} animationDuration={700} iterations={1}>
+              <Highlighter
+                action="underline"
+                color="var(--accent)"
+                strokeWidth={2}
+                animationDuration={700}
+                iterations={1}
+              >
                 {heading}
               </Highlighter>
             }
@@ -89,6 +101,20 @@ export default function ProjectsPreview({
                 />
 
                 <CardContent className="relative flex h-full flex-col p-6">
+                  <div className="relative mb-5 overflow-hidden rounded-2xl border border-border/60 bg-muted/30">
+                    <div className="relative aspect-[16/10] w-full">
+                      <Image
+                        src={project.imageSrc}
+                        alt={project.imageAlt ?? `${project.title} installation`}
+                        fill
+                        sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 360px"
+                        quality={72}
+                        placeholder="blur"
+                        blurDataURL={PROJECT_IMAGE_BLUR_DATA_URL}
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                      />
+                    </div>
+                  </div>
                   <div className="mb-4 flex items-start justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
@@ -105,7 +131,9 @@ export default function ProjectsPreview({
                     </div>
 
                     <div className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/60 text-secondary transition-colors duration-300 group-hover:border-primary/20 group-hover:text-primary">
-                      <ArrowRight className="h-4 w-4" aria-hidden />
+                      <span className="text-sm font-semibold" aria-hidden>
+                        {">"}
+                      </span>
                     </div>
                   </div>
 

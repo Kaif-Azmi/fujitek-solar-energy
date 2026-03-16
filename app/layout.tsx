@@ -1,12 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import AIAssistantLazy from "../components/AIAssistantLazy";
-import { siteSeo } from "@/lib/seo";
 import JsonLd from "@/components/seo/JsonLd";
-import { getOrganizationSchema, getWebsiteSchema } from "@/lib/structured-data";
+import { defaultLocale, normalizeLocale } from "@/lib/i18n";
+import { siteSeo } from "@/lib/seo";
+import { getLocalBusinessSchema, getOrganizationSchema, getWebsiteSchema } from "@/lib/structured-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,44 +26,32 @@ export const metadata: Metadata = {
   keywords: siteSeo.keywords,
   metadataBase: new URL(siteSeo.url),
   icons: {
-    icon: "/fujitek-logo-tab.svg",
-    shortcut: "/fujitek-logo-tab.svg",
-    apple: "/fujitek-logo-tab.svg",
-  },
-  openGraph: {
-    title: `${siteSeo.name} | Solar & Inverter Solutions`,
-    description: siteSeo.description,
-    type: "website",
-    siteName: siteSeo.name,
-    url: siteSeo.url,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${siteSeo.name} | Solar & Inverter Solutions`,
-    description: siteSeo.description,
+    icon: "/images/logos/fujitek-logo-tab.svg",
+    shortcut: "/images/logos/fujitek-logo-tab.svg",
+    apple: "/images/logos/fujitek-logo-tab.svg",
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const requestHeaders = await headers();
+  const localeFromHeader = normalizeLocale(requestHeaders.get("x-locale"));
+  const lang = localeFromHeader ?? defaultLocale;
   const organizationSchema = getOrganizationSchema();
   const webSiteSchema = getWebsiteSchema();
+  const localBusinessSchema = getLocalBusinessSchema();
 
   return (
-    <html lang="en">
+    <html lang={lang} suppressHydrationWarning>
       <body className={`bg-app ${geistSans.variable} ${geistMono.variable} antialiased`}>
         <JsonLd data={organizationSchema} />
         <JsonLd data={webSiteSchema} />
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <AIAssistantLazy />
+        <JsonLd data={localBusinessSchema} />
+        {children}
       </body>
     </html>
   );
 }
-
-
