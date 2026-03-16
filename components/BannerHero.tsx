@@ -150,8 +150,8 @@ export default function BannerHero({
               <div className="relative h-full w-full overflow-hidden">
                 <Image
                   src={getOptimizedCloudinaryUrl(banner.imageUrl, {
-                    width: 1800,
-                    quality: 72,
+                    width: 1200,
+                    quality: 60,
                     crop: 'fill',
                   })}
                   alt={banner.title}
@@ -172,8 +172,8 @@ export default function BannerHero({
               <div className="relative inline-block overflow-hidden rounded-2xl">
                 <Image
                   src={getOptimizedCloudinaryUrl(banner.imageUrl, {
-                    width: 1920,
-                    quality: 72,
+                    width: 1400,
+                    quality: 60,
                     crop: 'fit',
                   })}
                   alt={banner.title}
@@ -181,7 +181,7 @@ export default function BannerHero({
                   height={1080}
                   priority
                   fetchPriority="high"
-                  sizes="(max-width: 1023px) 0px, 100vw"
+                  sizes="(min-width: 1024px) 85vw, 100vw"
                   decoding="async"
                   placeholder="blur"
                   blurDataURL={HERO_BLUR_DATA_URL}

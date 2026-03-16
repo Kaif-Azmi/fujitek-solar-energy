@@ -108,7 +108,7 @@ export default function FaqSection({
           </div>
 
           <div className="md:col-span-2 flex">
-            <Card className="flex w-full items-center justify-center rounded-3xl border border-primary/20 bg-primary shadow-lg">
+            <Card className="flex w-full items-center justify-center rounded-3xl border border-primary/30 bg-primary-deep shadow-lg">
               <CardContent className="flex w-full flex-col items-center justify-center p-8 text-center sm:p-10">
                 <div
                   className="
@@ -126,7 +126,7 @@ export default function FaqSection({
                   {supportCopy.title}
                 </h3>
 
-                <p className="mt-4 max-w-sm text-base leading-relaxed text-white/85">
+                <p className="mt-4 max-w-sm text-base leading-relaxed text-white/90">
                   {supportCopy.description}
                 </p>
 
@@ -136,12 +136,12 @@ export default function FaqSection({
                   </Button>
                 </div>
 
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-white/80">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1">
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-white/90">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-white">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
                     {supportCopy.scheduleOne}
                   </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-white">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" />
                     {supportCopy.scheduleTwo}
                   </span>

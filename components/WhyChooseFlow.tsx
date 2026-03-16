@@ -41,7 +41,7 @@ function IconNode({
     <div
       ref={nodeRef}
       className={cn(
-        "absolute z-10 flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-gradient-to-br from-white/30 via-white/20 to-white/10 text-white shadow-[0_12px_30px_rgba(8,23,42,0.28)] ring-1 ring-white/10 backdrop-blur-sm transition-transform duration-300 ease-out hover:scale-105 sm:h-16 sm:w-16",
+        "absolute z-10 flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-gradient-to-br from-white/30 via-white/20 to-white/10 text-white shadow-[0_12px_30px_rgba(8,23,42,0.28)] ring-1 ring-white/10 backdrop-blur-sm transition-transform duration-300 ease-out hover:scale-105 sm:h-16 sm:w-16",
         className,
       )}
     >
@@ -67,8 +67,8 @@ function IconNode({
           </text>
         </g>
       </svg>
-      <span className="z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/35 bg-white/85 text-brand shadow-[0_10px_24px_rgba(8,23,42,0.35)] ring-1 ring-white/60 sm:h-10 sm:w-10">
-        <PublicIcon name={icon} className="h-7 w-7 sm:h-8 sm:w-8" />
+      <span className="z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/35 bg-white/85 text-brand shadow-[0_10px_24px_rgba(8,23,42,0.35)] ring-1 ring-white/60 sm:h-10 sm:w-10">
+        <PublicIcon name={icon} className="h-6 w-6 sm:h-8 sm:w-8" />
       </span>
       <span className="sr-only">{label}</span>
     </div>
@@ -91,54 +91,54 @@ export default function WhyChooseFlow({
   const rightBottomRef = React.useRef<HTMLDivElement>(null);
 
   return (
-    <div className="relative rounded-2xl border border-white/12 bg-primary-deep/68 px-6 py-8 shadow-[0_18px_45px_rgba(8,23,43,0.28)] sm:px-8 sm:py-10">
-      <div className="pointer-events-none absolute left-1/2 top-0 z-20 -translate-x-1/2 rounded-xl border border-white/15 bg-white/8 px-4 py-2 text-center text-[0.72rem] font-semibold tracking-[0.12em] text-accent shadow-[0_10px_26px_rgba(6,22,42,0.42)] backdrop-blur">
+    <div className="relative rounded-2xl border border-white/12 bg-primary-deep/68 px-5 pb-8 pt-12 shadow-[0_18px_45px_rgba(8,23,43,0.28)] sm:px-8 sm:pb-10 sm:pt-12">
+      <div className="pointer-events-none absolute left-1/2 -bottom-12 z-20 w-[92%] -translate-x-1/2 rounded-xl border border-white/15 bg-primary-deep px-3 py-2 text-center text-[0.68rem] font-semibold tracking-[0.12em] text-accent shadow-[0_10px_26px_rgba(6,22,42,0.42)] sm:top-4 sm:bottom-auto sm:w-auto sm:px-4 sm:text-[0.72rem]">
         Fujitek Solar · {leftLabel} + {rightLabel}
       </div>
       <div
         ref={containerRef}
-        className="relative mx-auto h-[18rem] w-full max-w-[44rem] sm:h-[20rem]"
+        className="relative mx-auto h-[19rem] w-full max-w-[44rem] sm:h-[21rem]"
       >
         <IconNode
           icon="solar-panel"
           label="Solar systems"
           nodeRef={leftUpperRef}
-          className="left-0 top-0 sm:left-2 sm:top-0"
+          className="left-1 top-2 sm:left-2 sm:top-0"
         />
         <IconNode
           icon="microchip"
           label={leftItems[0]?.title ?? "Power Electronics"}
           nodeRef={leftTopRef}
-          className="left-0 top-1/2 -translate-y-1/2 sm:left-2"
+          className="left-1 top-1/2 -translate-y-1/2 sm:left-2"
         />
         <IconNode
           icon="battery"
           label={leftItems[1]?.title ?? "Solar and EV Portfolio"}
           nodeRef={leftBottomRef}
-          className="bottom-0 left-0 sm:bottom-0 sm:left-2"
+          className="bottom-2 left-1 sm:bottom-0 sm:left-2"
         />
         <IconNode
           icon="truck"
           label="Supply logistics"
           nodeRef={rightUpperRef}
-          className="right-0 top-0 sm:right-2 sm:top-0"
+          className="right-1 top-2 sm:right-2 sm:top-0"
         />
         <IconNode
           icon="handshake"
           label={rightItems[0]?.title ?? "OEM and Bulk Supply"}
           nodeRef={rightTopRef}
-          className="right-0 top-1/2 -translate-y-1/2 sm:right-2"
+          className="right-1 top-1/2 -translate-y-1/2 sm:right-2"
         />
         <IconNode
           icon="shield"
           label={rightItems[1]?.title ?? "Quality Standards"}
           nodeRef={rightBottomRef}
-          className="bottom-0 right-0 sm:bottom-0 sm:right-2"
+          className="bottom-2 right-1 sm:bottom-0 sm:right-2"
         />
 
         <div
           ref={coreRef}
-          className="absolute left-1/2 top-1/2 z-20 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-white/80 via-white/40 to-white/10 p-4 shadow-[0_14px_40px_rgba(8,23,42,0.28)] ring-1 ring-white/10 backdrop-blur-sm sm:h-24 sm:w-24"
+          className="absolute left-1/2 top-1/2 z-20 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-white/80 via-white/40 to-white/10 p-3 shadow-[0_14px_40px_rgba(8,23,42,0.28)] ring-1 ring-white/10 backdrop-blur-sm sm:h-24 sm:w-24 sm:p-4"
         >
           <Image
             src="/images/logos/fujitek-logo-tab.svg"
@@ -148,7 +148,7 @@ export default function WhyChooseFlow({
             sizes="(max-width: 640px) 40px, 48px"
             loading="lazy"
             decoding="async"
-            className="h-auto w-10 sm:w-12"
+            className="h-auto w-9 sm:w-12"
           />
           <span className="sr-only">Fujitek Core</span>
         </div>

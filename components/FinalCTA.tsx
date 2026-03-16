@@ -46,7 +46,7 @@ export default function FinalCTA({
     <section className={cn("px-6 py-section", sectionClassName)} aria-label={ariaLabel}>
       <div
         className={cn(
-          "mx-auto max-w-7xl rounded-2xl bg-primary px-8 py-12 text-white md:px-12 md:py-14",
+          "mx-auto max-w-7xl rounded-2xl bg-primary-deep px-8 py-12 text-white md:px-12 md:py-14",
           panelClassName,
         )}
       >
@@ -63,7 +63,7 @@ export default function FinalCTA({
                 {heading}
               </Highlighter>
             </h2>
-            <p className="mt-4 max-w-xl text-base text-white md:text-lg">{supportingText}</p>
+            <p className="mt-4 max-w-xl text-base text-white/90 md:text-lg">{supportingText}</p>
             <div className="mt-8">
               <Button asChild variant="exploreInverse">
                 <Link href={ctaHref}>{ctaLabel}</Link>
@@ -75,7 +75,7 @@ export default function FinalCTA({
             <ul className="space-y-4">
               {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-3">
-                  <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-primary">
+                  <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-primary-deep">
                     <PublicIcon name="shield" className="h-4 w-4" />
                   </span>
                   <p className="text-sm font-medium text-white md:text-base">{benefit}</p>

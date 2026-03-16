@@ -1,6 +1,7 @@
- "use client";
+"use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Highlighter } from "@/components/ui/highlighter";
 import { PublicIcon, type PublicIconName } from "@/components/ui/icons";
 
@@ -87,7 +88,17 @@ export default function SolarBenefitsBento({
   benefits,
 }: SolarBenefitsProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (!isVideoReady) return;
+    const el = videoRef.current;
+    if (!el) return;
+    el.play().catch(() => {
+      // Ignore autoplay restrictions; user can tap again.
+    });
+  }, [isVideoReady]);
 
   const mergedBenefits = DEFAULT_BENEFITS.map((item, index) => ({
     ...item,
@@ -100,6 +111,10 @@ export default function SolarBenefitsBento({
     if (!el) return;
 
     try {
+      if (!isVideoReady) {
+        setIsVideoReady(true);
+        return;
+      }
       if (el.paused) {
         await el.play();
         setIsPlaying(true);
@@ -158,8 +173,8 @@ export default function SolarBenefitsBento({
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
           <div className="rounded-[2rem] border border-border/70 bg-white/92 p-6 shadow-[0_26px_70px_rgba(15,23,42,0.08)] backdrop-blur sm:p-7">
-            <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(220px,0.55fr)]">
-              <div className="space-y-4">
+            <div className="grid min-h-[560px] gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(220px,0.55fr)]">
+              <div className="flex h-full flex-col gap-4">
                 <div className="flex items-start justify-between gap-3 rounded-[1.6rem] border border-border/70 bg-gradient-to-br from-surface-elevated to-primary-soft/30 p-4 shadow-sm">
                   <div className="flex items-start gap-3">
                     <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/12 text-primary ring-1 ring-primary/15">
@@ -176,56 +191,80 @@ export default function SolarBenefitsBento({
                   </span>
                 </div>
 
-                <div className="relative overflow-hidden rounded-[1.8rem] border border-border/70 bg-white shadow-sm">
+                <div className="relative flex-1 overflow-hidden rounded-[1.8rem] bg-white shadow-sm">
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-primary/10 to-transparent" />
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-primary/[0.08] to-transparent" />
 
-                  <div className="relative p-5 sm:p-6">
-                    <div className="relative overflow-hidden rounded-[1.4rem] border border-border/60 bg-surface p-5">
-                      <video
-                        ref={videoRef}
-                        className="h-auto max-h-[560px] w-full rounded-[1.1rem] object-contain"
-                        poster="/images/different_solar_energy_systems.webp"
-                        preload="metadata"
-                        muted
-                        playsInline
-                        aria-label="On-grid, off-grid, and hybrid solar system types"
-                        onPlay={() => setIsPlaying(true)}
-                        onPause={() => setIsPlaying(false)}
-                        onEnded={() => setIsPlaying(false)}
-                        onClick={handleVideoToggle}
-                      >
-                        <source src="/videos/solar_system_types_ongrid_offgrid_hybrid.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-
-                      {!isPlaying && (
-                        <button
-                          type="button"
+                  <div className="relative h-full p-5 sm:p-6">
+                    <div className="relative h-full overflow-hidden rounded-[1.4rem] bg-surface p-0">
+                      <div className="relative h-full min-h-[260px] w-full overflow-hidden rounded-[1.1rem] sm:min-h-[320px]">
+                        {!isPlaying && (
+                          <>
+                            <div className="absolute inset-0 z-10 bg-primary/20" />
+                            <div className="absolute inset-0 z-20 grid place-items-center text-center text-white">
+                              <div className="space-y-2 px-6">
+                                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/90">
+                                  Solar System Types
+                                </p>
+                                <p className="text-lg font-semibold text-white">
+                                  On-grid, off-grid, and hybrid
+                                </p>
+                                <p className="text-sm text-white/85">
+                                  Tap to preview the differences in one quick clip.
+                                </p>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                        <video
+                          ref={videoRef}
+                          className={[
+                            "absolute inset-0 h-full w-full object-contain transition-opacity duration-300",
+                            isPlaying ? "opacity-100" : "opacity-0",
+                          ].join(" ")}
+                          preload="none"
+                          muted
+                          playsInline
+                          aria-label="On-grid, off-grid, and hybrid solar system types"
+                          onPlay={() => setIsPlaying(true)}
+                          onPause={() => setIsPlaying(false)}
+                          onEnded={() => setIsPlaying(false)}
                           onClick={handleVideoToggle}
-                          className="absolute inset-0 flex items-center justify-center bg-black/10 text-white transition hover:bg-black/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                          aria-label="Play solar system types video"
                         >
-                          <span className="grid h-14 w-14 place-items-center rounded-full border border-white/70 bg-white/15 text-white shadow-lg backdrop-blur">
-                            ▶
-                          </span>
-                        </button>
-                      )}
+                          {isVideoReady && (
+                            <source
+                              src="/videos/solar_system_types_ongrid_offgrid_hybrid.mp4"
+                              type="video/mp4"
+                            />
+                          )}
+                          Your browser does not support the video tag.
+                        </video>
+
+                        {!isPlaying && (
+                          <button
+                            type="button"
+                            onClick={handleVideoToggle}
+                            className="absolute inset-0 z-30 flex items-center justify-center bg-black/5 text-white transition hover:bg-black/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                            aria-label="Play solar system types video"
+                          >
+                            <span className="grid h-14 w-14 place-items-center rounded-full border border-white/70 bg-white/15 text-white shadow-lg backdrop-blur">
+                              ▶
+                            </span>
+                          </button>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                      <p className="text-sm leading-6 text-secondary">{copy.previewCaption}</p>
-                      <div className="flex flex-wrap gap-2">
-                        <span className="rounded-full border border-border/70 bg-surface px-3 py-1 text-xs font-medium text-primary-deep">
-                          Off-grid
-                        </span>
-                        <span className="rounded-full border border-border/70 bg-surface px-3 py-1 text-xs font-medium text-primary-deep">
-                          On-grid
-                        </span>
-                        <span className="rounded-full border border-border/70 bg-surface px-3 py-1 text-xs font-medium text-primary-deep">
-                          Hybrid
-                        </span>
-                      </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <span className="rounded-full border border-border/70 bg-surface px-3 py-1 text-xs font-medium text-primary-deep">
+                        Off-grid
+                      </span>
+                      <span className="rounded-full border border-border/70 bg-surface px-3 py-1 text-xs font-medium text-primary-deep">
+                        On-grid
+                      </span>
+                      <span className="rounded-full border border-border/70 bg-surface px-3 py-1 text-xs font-medium text-primary-deep">
+                        Hybrid
+                      </span>
                     </div>
                   </div>
                 </div>

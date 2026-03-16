@@ -64,8 +64,8 @@ function ProductItem({
   label: string;
   variant: "primary" | "accent";
 }) {
-  const textColor = "text-black";
-  const iconColor = "text-black";
+  const textColor = variant === "primary" ? "text-white/95" : "text-foreground";
+  const iconColor = variant === "primary" ? "text-white/90" : "text-foreground";
   const iconName = getIconNameForLabel(label);
 
   return (

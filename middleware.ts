@@ -50,6 +50,11 @@ export async function middleware(request: NextRequest) {
   const forwardedProto = request.headers.get("x-forwarded-proto");
   const isAdminPagePath = pathname.startsWith("/admin");
   const isAdminApiPath = pathname.startsWith("/api/admin");
+  const isNextImage = pathname.startsWith("/_next/image");
+
+  if (isNextImage) {
+    return NextResponse.next();
+  }
 
   const isProductionHost =
     host === "fujiteksolar.com" || host === "www.fujiteksolar.com";

@@ -65,7 +65,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       "focus-visible:ring-primary/40";
 
     const exploreInverseVariantClasses =
-      "relative rounded-full bg-accent text-primary border border-accent " +
+      "relative rounded-full bg-accent text-primary-deep border border-accent " +
       "shadow-md hover:shadow-lg " +
       "hover:bg-accent-hover hover:border-accent-hover font-semibold " +
       "focus-visible:ring-accent/40";

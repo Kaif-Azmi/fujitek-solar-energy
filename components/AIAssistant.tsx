@@ -281,8 +281,8 @@ function ContactCaptureCard({
   );
 }
 
-export default function AIAssistant() {
-  const [open, setOpen] = useState(false);
+export default function AIAssistant({ startOpen = false }: { startOpen?: boolean }) {
+  const [open, setOpen] = useState(startOpen);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: messageId("assistant"),

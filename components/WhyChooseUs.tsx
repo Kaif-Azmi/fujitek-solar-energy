@@ -226,7 +226,7 @@ export default function WhyChooseUs({
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary-deep via-primary to-primary-hover p-4 shadow-strong sm:p-5">
+          <div className="overflow-visible rounded-[2rem] bg-gradient-to-br from-primary-deep via-primary to-primary-hover p-4 shadow-strong sm:overflow-hidden sm:p-5">
             <div className="grid h-full gap-4 lg:grid-rows-[minmax(0,1.25fr)_minmax(0,0.95fr)]">
               <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(220px,0.8fr)]">
                 <div className="relative overflow-hidden rounded-[1.7rem] border border-white/15 bg-white/10">
