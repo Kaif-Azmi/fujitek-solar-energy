@@ -246,19 +246,26 @@ export default function BannerHero({
       </div>
 
       {banners.length > 1 && (
-        <div className="absolute bottom-6 sm:bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-3">
+        <div className="absolute bottom-6 sm:bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-3.5">
           {banners.map((_, i) => (
             <button
               key={i}
               type="button"
               onClick={() => setCurrentIndex(i)}
               aria-label={buildSlideLabel(uiText.goToSlide, i + 1)}
-              className={`relative h-2 rounded-full transition-all duration-300 after:absolute after:-inset-y-5 after:-inset-x-3 after:content-[''] ${
+              className={`relative flex min-h-[3.25rem] min-w-[3.25rem] touch-manipulation items-center justify-center rounded-full border backdrop-blur-md transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${
                 i === currentIndex
-                  ? 'w-8 bg-white'
-                  : 'w-2 bg-white/40 hover:bg-white/70'
+                  ? 'border-white/35 bg-white/18 shadow-[0_14px_30px_rgba(8,23,43,0.24)]'
+                  : 'border-white/18 bg-black/30 hover:border-white/28 hover:bg-black/40'
               }`}
-            />
+            >
+              <span
+                aria-hidden
+                className={`rounded-full transition-all duration-300 ${
+                  i === currentIndex ? 'h-3 w-8 bg-white' : 'h-3 w-3 bg-white/82'
+                }`}
+              />
+            </button>
           ))}
         </div>
       )}

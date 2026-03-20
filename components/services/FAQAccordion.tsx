@@ -10,7 +10,6 @@ export default function FAQAccordion({ items }: FAQAccordionProps) {
     <SharedFaqAccordion
       items={items}
       className="mt-8"
-      schema
       singleOpen
       defaultOpenIndex={0}
     />

@@ -161,16 +161,65 @@ export default function ServicesPage({ locale = defaultLocale }: ServicesPagePro
             />
           ))}
 
-          <section id="process" className="scroll-mt-32 border-t border-border/60 bg-surface">
-            <div className="mx-auto max-w-6xl px-6 py-14 sm:py-18">
-              <p className="text-xs font-bold uppercase tracking-[0.13em] text-primary">{executionModel.label}</p>
-              <h2 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
-                {executionModel.title}
-              </h2>
-              <p className="mt-3 max-w-3xl text-base leading-8 text-secondary">
-                {executionModel.description}
-              </p>
-              <ProcessTimeline steps={processSteps} />
+          <section
+            id="process"
+            className="relative isolate scroll-mt-32 overflow-hidden border-t border-border/60 bg-[linear-gradient(180deg,#f6f9fd_0%,#eef4fb_100%)]"
+          >
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-primary/10 to-transparent" />
+            <div className="pointer-events-none absolute -left-20 top-12 h-56 w-56 rounded-full bg-primary/15 blur-3xl" />
+            <div className="pointer-events-none absolute -right-16 bottom-8 h-56 w-56 rounded-full bg-accent/25 blur-3xl" />
+
+            <div className="relative mx-auto max-w-6xl px-6 py-14 sm:py-18">
+              <div className="relative overflow-hidden rounded-[2rem] border border-border/70 bg-white/80 p-6 shadow-[0_28px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8 lg:p-10">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-primary/[0.08] to-transparent" />
+
+                <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.78fr)] lg:items-start">
+                  <div className="max-w-3xl">
+                    <p className="inline-flex rounded-full border border-primary/15 bg-primary-soft/80 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-primary-deep">
+                      {executionModel.label}
+                    </p>
+                    <h2 className="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-extrabold leading-[1.02] tracking-tight text-foreground">
+                      {executionModel.title}
+                    </h2>
+                    <p className="mt-4 max-w-3xl text-base leading-8 text-secondary sm:text-lg">
+                      {executionModel.description}
+                    </p>
+                  </div>
+
+                  <aside className="hidden rounded-[1.75rem] border border-primary/15 bg-gradient-to-br from-background via-surface-elevated to-primary/10 p-5 shadow-sm lg:block">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-[0.68rem] font-bold uppercase tracking-[0.18em] text-primary-deep/70">
+                          {executionModel.label}
+                        </p>
+                        <p className="mt-3 text-5xl font-extrabold leading-none text-primary-deep">
+                          {String(processSteps.length).padStart(2, "0")}
+                        </p>
+                      </div>
+
+                      <div className="grid h-14 w-14 place-items-center rounded-[1.25rem] border border-primary/15 bg-white/90 shadow-sm">
+                        <PublicIcon name="network" className="h-7 w-7" />
+                      </div>
+                    </div>
+
+                    <div className="mt-5 grid gap-2.5">
+                      {processSteps.map((step, index) => (
+                        <div
+                          key={step.title}
+                          className="flex items-center gap-3 rounded-2xl border border-border/70 bg-white/85 px-3.5 py-3 shadow-[0_8px_24px_rgba(15,23,42,0.05)]"
+                        >
+                          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-primary/15 bg-primary-soft text-xs font-bold text-primary-deep">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <p className="text-sm font-semibold leading-6 text-foreground">{step.title}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </aside>
+                </div>
+
+                <ProcessTimeline steps={processSteps} />
+              </div>
             </div>
           </section>
 

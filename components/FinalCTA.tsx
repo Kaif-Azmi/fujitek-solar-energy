@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { PublicIcon } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
-import { Highlighter } from "@/components/ui/highlighter";
 import { cn } from "@/lib/utils";
 
 interface FinalCTAProps {
@@ -46,24 +45,23 @@ export default function FinalCTA({
     <section className={cn("px-6 py-section", sectionClassName)} aria-label={ariaLabel}>
       <div
         className={cn(
-          "mx-auto max-w-7xl rounded-2xl bg-primary-deep px-8 py-12 text-white md:px-12 md:py-14",
+          "relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,#0b2744_0%,#123d66_48%,#153f67_100%)] px-8 py-12 text-white shadow-[0_28px_80px_rgba(8,23,43,0.24)] md:px-12 md:py-14",
           panelClassName,
         )}
       >
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white/8 to-transparent" />
+        <div className="pointer-events-none absolute -left-16 top-8 h-40 w-40 rounded-full bg-white/8 blur-3xl" />
+        <div className="pointer-events-none absolute -right-10 bottom-0 h-44 w-44 rounded-full bg-accent/18 blur-3xl" />
+
+        <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="flex flex-col justify-center">
-            <h2 className="text-3xl font-extrabold leading-tight md:text-4xl">
-              <Highlighter
-                action="underline"
-                color="var(--accent)"
-                strokeWidth={2}
-                animationDuration={700}
-                iterations={1}
-              >
-                {heading}
-              </Highlighter>
+            <p className="inline-flex w-fit rounded-full border border-white/15 bg-white/8 px-3.5 py-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white/88">
+              Fujitek Solar Energy
+            </p>
+            <h2 className="mt-5 max-w-xl text-3xl font-extrabold leading-[1.08] text-white md:text-4xl">
+              {heading}
             </h2>
-            <p className="mt-4 max-w-xl text-base text-white/90 md:text-lg">{supportingText}</p>
+            <p className="mt-4 max-w-xl text-base text-white md:text-lg">{supportingText}</p>
             <div className="mt-8">
               <Button asChild variant="exploreInverse">
                 <Link href={ctaHref}>{ctaLabel}</Link>
@@ -71,11 +69,11 @@ export default function FinalCTA({
             </div>
           </div>
 
-          <div className="rounded-xl border border-white/20 bg-white/10 p-6 md:p-8">
+          <div className="rounded-[1.6rem] border border-white/15 bg-white/[0.08] p-6 backdrop-blur-sm md:p-8">
             <ul className="space-y-4">
               {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-3">
-                  <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-primary-deep">
+                  <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/18 bg-accent text-primary-deep shadow-[0_10px_24px_rgba(8,23,43,0.22)]">
                     <PublicIcon name="shield" className="h-4 w-4" />
                   </span>
                   <p className="text-sm font-medium text-white md:text-base">{benefit}</p>

@@ -14,7 +14,6 @@ type FaqAccordionProps = {
   itemClassName?: string;
   defaultOpenIndex?: number;
   singleOpen?: boolean;
-  schema?: boolean;
 };
 
 export default function FaqAccordion({
@@ -23,7 +22,6 @@ export default function FaqAccordion({
   itemClassName,
   defaultOpenIndex = 0,
   singleOpen = true,
-  schema = false,
 }: FaqAccordionProps) {
   const [openIndexes, setOpenIndexes] = useState<number[]>(
     items.length > 0 && defaultOpenIndex >= 0 ? [defaultOpenIndex] : [],
@@ -39,30 +37,12 @@ export default function FaqAccordion({
     });
   };
 
-  const wrapperProps = schema
-    ? ({ itemScope: true, itemType: "https://schema.org/FAQPage" } as const)
-    : {};
-
   return (
-    <div className={cn("space-y-4", className)} {...wrapperProps}>
+    <div className={cn("space-y-4", className)}>
       {items.map((item, index) => {
         const isOpen = openIndexes.includes(index);
         const panelId = `faq-panel-${index}`;
         const triggerId = `faq-trigger-${index}`;
-        const itemProps = schema
-          ? ({
-              itemScope: true,
-              itemProp: "mainEntity",
-              itemType: "https://schema.org/Question",
-            } as const)
-          : {};
-        const answerProps = schema
-          ? ({
-              itemScope: true,
-              itemProp: "acceptedAnswer",
-              itemType: "https://schema.org/Answer",
-            } as const)
-          : {};
 
         return (
           <article
@@ -72,7 +52,6 @@ export default function FaqAccordion({
               isOpen ? "border-primary" : "",
               itemClassName,
             )}
-            {...itemProps}
           >
             <button
               id={triggerId}
@@ -82,7 +61,7 @@ export default function FaqAccordion({
               aria-expanded={isOpen}
               aria-controls={panelId}
             >
-              <span className="text-base font-semibold leading-7 text-foreground" itemProp={schema ? "name" : undefined}>
+              <span className="text-base font-semibold leading-7 text-foreground">
                 {item.question}
               </span>
               <span
@@ -105,8 +84,8 @@ export default function FaqAccordion({
                 isOpen ? "mt-3 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-60",
               )}
             >
-              <div className="overflow-hidden" {...answerProps}>
-                <p className="text-sm leading-7 text-secondary" itemProp={schema ? "text" : undefined}>
+              <div className="overflow-hidden">
+                <p className="text-sm leading-7 text-secondary">
                   {item.answer}
                 </p>
               </div>

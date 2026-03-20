@@ -16,39 +16,17 @@ const MOBILE_PROGRESS_TOP = 56;
 export default function BlogContent({ post }: BlogContentProps) {
   const articleRef = useRef<HTMLElement | null>(null);
   const frameRef = useRef<number | null>(null);
+  const articleMetricsRef = useRef({ top: 0, height: 0 });
   const tocIds = useMemo(() => post.toc.map((item) => item.id), [post.toc]);
   const [activeHeadingId, setActiveHeadingId] = useState<string>(tocIds[0] ?? "");
   const [readingProgress, setReadingProgress] = useState(0);
   const [isTocOpen, setIsTocOpen] = useState(false);
 
-  const updateActiveHeading = useCallback(() => {
-    if (tocIds.length === 0) return;
-
-    let nextActiveId = tocIds[0] ?? "";
-
-    for (const id of tocIds) {
-      const element = document.getElementById(id);
-      if (!element) continue;
-
-      if (element.getBoundingClientRect().top - HEADING_SCROLL_OFFSET <= 0) {
-        nextActiveId = id;
-        continue;
-      }
-
-      break;
-    }
-
-    if (!nextActiveId) return;
-    setActiveHeadingId((previous) => (previous === nextActiveId ? previous : nextActiveId));
-  }, [tocIds]);
-
   const updateReadingProgress = useCallback(() => {
-    const articleElement = articleRef.current;
-    if (!articleElement) return;
-
-    const rect = articleElement.getBoundingClientRect();
-    const articleStart = window.scrollY + rect.top - HEADING_SCROLL_OFFSET;
-    const articleEnd = articleStart + Math.max(rect.height, 1);
+    const { top, height } = articleMetricsRef.current;
+    if (!height) return;
+    const articleStart = top - HEADING_SCROLL_OFFSET;
+    const articleEnd = articleStart + Math.max(height, 1);
     const current = window.scrollY + HEADING_SCROLL_OFFSET;
     const rawProgress = ((current - articleStart) / Math.max(articleEnd - articleStart, 1)) * 100;
     const nextProgress = Math.min(100, Math.max(0, rawProgress));
@@ -57,30 +35,99 @@ export default function BlogContent({ post }: BlogContentProps) {
   }, []);
 
   useEffect(() => {
+    const nextActive = tocIds[0] ?? "";
+    setActiveHeadingId((previous) => (previous === nextActive ? previous : nextActive));
+  }, [tocIds]);
+
+  useEffect(() => {
+    if (tocIds.length === 0) return;
+
+    const headings = tocIds
+      .map((id) => document.getElementById(id))
+      .filter((element): element is HTMLElement => Boolean(element));
+
+    if (headings.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible[0]?.target?.id) {
+          const nextActiveId = visible[0].target.id;
+          setActiveHeadingId((previous) => (previous === nextActiveId ? previous : nextActiveId));
+        }
+      },
+      {
+        rootMargin: `-${HEADING_SCROLL_OFFSET}px 0px -65% 0px`,
+        threshold: [0.1, 0.25, 0.5, 0.75, 1],
+      },
+    );
+
+    headings.forEach((heading) => observer.observe(heading));
+    return () => observer.disconnect();
+  }, [tocIds]);
+
+  const updateArticleMetrics = useCallback(() => {
+    const articleElement = articleRef.current;
+    if (!articleElement) return;
+    const rect = articleElement.getBoundingClientRect();
+    articleMetricsRef.current = {
+      top: rect.top + window.scrollY,
+      height: rect.height,
+    };
+    updateReadingProgress();
+  }, [updateReadingProgress]);
+
+  useEffect(() => {
+    const articleElement = articleRef.current;
+    if (!articleElement) return;
+
+    const updateMetrics = () => updateArticleMetrics();
+    updateMetrics();
+
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => {
+            updateMetrics();
+          })
+        : null;
+
+    if (resizeObserver) {
+      resizeObserver.observe(articleElement);
+    }
+
+    window.addEventListener("resize", updateMetrics);
+
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener("resize", updateMetrics);
+    };
+  }, [updateArticleMetrics]);
+
+  useEffect(() => {
     const onFrame = () => {
       frameRef.current = null;
-      updateActiveHeading();
       updateReadingProgress();
     };
 
-    const onScrollOrResize = () => {
+    const onScroll = () => {
       if (frameRef.current !== null) return;
       frameRef.current = window.requestAnimationFrame(onFrame);
     };
 
-    onScrollOrResize();
+    onScroll();
 
-    window.addEventListener("scroll", onScrollOrResize, { passive: true });
-    window.addEventListener("resize", onScrollOrResize);
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
       if (frameRef.current !== null) {
         window.cancelAnimationFrame(frameRef.current);
       }
-      window.removeEventListener("scroll", onScrollOrResize);
-      window.removeEventListener("resize", onScrollOrResize);
+      window.removeEventListener("scroll", onScroll);
     };
-  }, [updateActiveHeading, updateReadingProgress]);
+  }, [updateReadingProgress]);
 
   const handleTocNavigate = useCallback((event: MouseEvent<HTMLAnchorElement>, id: string) => {
     event.preventDefault();

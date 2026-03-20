@@ -39,8 +39,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const exploreSizeClasses = {
-      default: "h-11 pl-6 pr-2 text-sm",
-      lg: "h-12 pl-7 pr-2 text-base",
+      default: "h-10 pl-5 pr-2 text-sm",
+      lg: "h-11 pl-6 pr-2 text-[0.96rem] sm:text-base",
     };
 
     const defaultVariantClasses =
@@ -72,14 +72,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const iconClasses = cn(
       "inline-flex shrink-0 items-center justify-center rounded-full transition-transform duration-200 group-hover:translate-x-1",
-      size === "lg" ? "h-9 w-9" : "h-8 w-8",
+      size === "lg" ? "h-8 w-8" : "h-7 w-7",
       variant === "explore"
         ? "bg-accent text-primary"
         : "bg-primary text-accent"
     );
 
     const arrowClasses = cn(
-      size === "lg" ? "h-5 w-5" : "h-[18px] w-[18px]",
+      size === "lg" ? "h-[18px] w-[18px]" : "h-4 w-4",
       "stroke-[2.8]"
     );
 
@@ -95,7 +95,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ...props,
           className: cn(
             baseClasses,
-            "w-auto justify-between gap-3",
+            "w-auto justify-between gap-2.5",
             exploreSizeClasses[size],
             variant === "explore"
               ? exploreVariantClasses
@@ -120,7 +120,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           baseClasses,
           isExploreVariant
             ? cn(
-                "w-auto justify-between gap-3",
+                "w-auto justify-between gap-2.5",
                 exploreSizeClasses[size],
                 variant === "explore"
                   ? exploreVariantClasses
@@ -139,7 +139,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {isExploreVariant ? (
-          <span className="inline-flex items-center gap-3">
+          <span className="inline-flex items-center gap-2.5">
             <span className="font-semibold">
               <Slottable>{children}</Slottable>
             </span>
