@@ -253,7 +253,7 @@ export default function BannerHero({
               type="button"
               onClick={() => setCurrentIndex(i)}
               aria-label={buildSlideLabel(uiText.goToSlide, i + 1)}
-              className={`relative flex min-h-[3.25rem] min-w-[3.25rem] touch-manipulation items-center justify-center rounded-full border backdrop-blur-md transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${
+              className={`relative flex min-h-[1.25rem] min-w-[1.25rem] touch-manipulation items-center justify-center rounded-full border backdrop-blur-md transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/80 ${
                 i === currentIndex
                   ? 'border-white/35 bg-white/18 shadow-[0_14px_30px_rgba(8,23,43,0.24)]'
                   : 'border-white/18 bg-black/30 hover:border-white/28 hover:bg-black/40'
@@ -262,7 +262,7 @@ export default function BannerHero({
               <span
                 aria-hidden
                 className={`rounded-full transition-all duration-300 ${
-                  i === currentIndex ? 'h-3 w-8 bg-white' : 'h-3 w-3 bg-white/82'
+                  i === currentIndex ? 'h-1 w-4 bg-white' : 'h-3 w-3 bg-white/82'
                 }`}
               />
             </button>
