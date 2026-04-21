@@ -227,7 +227,7 @@ export default function BannerHero({
             <button
               type="button"
               onClick={goToPrev}
-              className="absolute left-6 sm:left-8 top-1/2 -translate-y-1/2 hidden h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent sm:flex sm:h-11 sm:w-11 after:absolute after:-inset-1 after:content-['']"
+              className="absolute left-6 sm:left-8 top-1/2 -translate-y-1/2 hidden h-4 w-4 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent sm:flex sm:h-11 sm:w-11 after:absolute after:-inset-1 after:content-['']"
               aria-label={uiText.previousSlide}
             >
               ‹
@@ -236,7 +236,7 @@ export default function BannerHero({
             <button
               type="button"
               onClick={goToNext}
-              className="absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 hidden h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent sm:flex sm:h-11 sm:w-11 after:absolute after:-inset-1 after:content-['']"
+              className="absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 hidden h-4 w-4 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md ring-1 ring-white/20 transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-accent sm:flex sm:h-11 sm:w-11 after:absolute after:-inset-1 after:content-['']"
               aria-label={uiText.nextSlide}
             >
               ›
